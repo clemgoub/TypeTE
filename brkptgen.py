@@ -2,6 +2,8 @@ import subprocess
 import sys
 import signal
 import os
+import math
+
 
 ###############################################################################
 # Helper function to run commands, handle return values and print to log file
@@ -259,7 +261,6 @@ def write_fastq_for_site(myData,siteData):
 def align_to_alts_bwa(myData,siteData):
     if siteData['hasReads'] is False:
         siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
-        siteData['outSamSel'] = siteData['outSAM'] + '.sel'
         outFile = open(siteData['outSamSel'],'w')
         outFile.close()        
         return
@@ -316,6 +317,124 @@ def select_hits_from_sam(siteData):
         outFile.write(ol2)        
     inFile.close()
     outFile.close()
+###############################################################################
+# functions for dealing with genotype likelihoods...
+def read_samsel_hits(siteData):
+   inFile = open(siteData['outSamSel'],'r')
+   siteData['refQuals'] = []
+   siteData['altQuals'] = []
+
+   while True:
+        line = inFile.readline()
+        if line == '':
+            break
+        if line[0] == '@':
+            continue
+        # should be order of pairs
+        ol1 = line
+        line = line.rstrip()
+        line = line.split()
+        samParse1 = parse_sam_line(line)  
+        line = inFile.readline()
+        ol2 = line
+        line = line.rstrip()
+        line = line.split()
+        samParse2 = parse_sam_line(line)
+        # do some checks
+        if samParse1['seqName'] != samParse2['seqName']:
+            print 'seqnames do not match',data['siteID']
+            sys.exit()
+        if samParse1['chrom'] != samParse2['chrom']:
+            print 'seq maped chroms not match',data['siteID']
+            continue
+        
+        minMapQ = samParse1['mapQ']
+        if samParse2['mapQ'] < minMapQ:
+            minMapQ = samParse2['mapQ']
+        
+        if 'genome' in samParse1['chrom']:
+            siteData['refQuals'].append(minMapQ)
+        else:
+            siteData['altQuals'].append(minMapQ)
+   inFile.close()
+   siteData['numRefFrag'] = len(siteData['refQuals'])
+   siteData['numAltFrag'] = len(siteData['altQuals'])
+   siteData['totFrags'] = siteData['numRefFrag']  + siteData['numAltFrag']
+   siteData['refErrorProbs'] = phred_to_error_prop(siteData['refQuals'])
+   siteData['altErrorProbs'] = phred_to_error_prop(siteData['altQuals'])
+   
+   # we will impose a max number of reads to prevent underflow issues
+   # this tends to happen at cases where we have duplication/centromere stuff
+   # going on anyway
+   maxReads = 100
+   if len(siteData['refErrorProbs']) > maxReads:
+       siteData['refErrorProbs'] = siteData['refErrorProbs'][0:maxReads]
+       print 'trimmed down ref counts to',len(siteData['refErrorProbs'])
+
+   if len(siteData['altErrorProbs']) > maxReads:
+       siteData['altErrorProbs'] = siteData['altErrorProbs'][0:maxReads]
+       print 'trimmed down alt counts to',len(siteData['altErrorProbs'])
+
+
+   siteData['numRefFrag'] = len(siteData['refErrorProbs'])
+   siteData['numAltFrag'] = len(siteData['altErrorProbs'])
+   siteData['totFrags'] = siteData['numRefFrag']  + siteData['numAltFrag']
+   
+###############################################################################
+def phred_to_error_prop(myList):
+    pList = []
+    for i in myList:
+        i = (-1)*i
+        i = i/(10.0)
+        i = 10**i
+        pList.append(i)
+    return pList
+###############################################################################
+def calc_gen_likelihood(siteData):
+# based on equation from Heng Li paper
+# we will do it VCF style, 0 --> hom ref, 1 --> het, 2 --> hom alt
+    # het
+    siteData['gl_1'] = 1.0/(2**siteData['totFrags'])
+
+    # for now, we will do it in regular space, can convert to log space later if we need to
+    # due to precision issues at higher coverage
+    # hom ref
+    p = 1.0
+    for i in siteData['refErrorProbs']:
+        p = p * (1.0-i)
+    for i in siteData['altErrorProbs']:
+        p = p * i    
+    siteData['gl_0'] = p
+    # hom alt
+    p = 1.0
+    for i in siteData['altErrorProbs']:
+        p = p * (1.0-i)
+
+    for i in siteData['refErrorProbs']:
+        p = p * i    
+    siteData['gl_2'] = p
+
+    #put in a check for underflow to 0...
+    minVal = 1e-200
+    if siteData['gl_0'] <= minVal:
+        siteData['gl_0'] = minVal
+
+    if siteData['gl_1'] <= minVal:
+        siteData['gl_1'] = minVal
+
+    if siteData['gl_2'] <= minVal:
+        siteData['gl_2'] = minVal
+    make_scaled_likelihoods(siteData)
+###############################################################################
+def make_scaled_likelihoods(data):    
+    maxLikelihood = max(data['gl_0'],data['gl_1'],data['gl_2'])
+    scaledLikelihoods = [data['gl_0']/maxLikelihood,data['gl_1']/maxLikelihood,data['gl_2']/maxLikelihood]    
+    print data['gl_0'],data['gl_1'],data['gl_2']
+    for i in range(3):
+        scaledLikelihoods[i] = math.log10(scaledLikelihoods[i])
+        scaledLikelihoods[i] = -10.0 * scaledLikelihoods[i]
+        scaledLikelihoods[i] = int(round(scaledLikelihoods[i]))
+    data['scaledLikelihoods'] = scaledLikelihoods
 ###############################################################################
 
 

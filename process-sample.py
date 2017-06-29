@@ -63,7 +63,8 @@ if options.bam is None:
 
 
 ###############################################################################
-
+# this is messy and redundant because it is a merge of separate programs into
+# one step...
 
 #setup some info in dictionary
 myData = {}
@@ -299,6 +300,50 @@ for siteInterval in myData['siteIntervals']:
     brkptgen.align_to_alts_bwa(myData,siteData)    
 
 print '*****\nAll Mapping Done\n******\n'
+print 'Calculating genotype likelihoods\n'
+
+
+myData['lhSummaryFileName'] =  myData['sampleBase'] + myData['sampleName'] + '.lksummary'
+
+
+lhSummaryOut = open(myData['lhSummaryFileName'],'w')
+print 'Summary output file name is',myData['lhSummaryFileName']
+lhSummaryOut.write('siteID\tsampleName\ttotFrags\tnumRef\tnumAlt\tgl_00\tgl_01\tgl_11\tscaledGLs\n')
+
+
+
+for siteInterval in myData['siteIntervals']:
+    siteID = siteInterval[0]
+    siteData = {}
+    siteData['siteID'] =  siteID
+    siteData['mappingOutDir'] = myData['mappingDirBase'] + siteID + '/'    
+    siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
+    siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
+    siteData['outSamSel'] = siteData['outSamFilter'] + '.sel'
+
+    brkptgen.read_samsel_hits(siteData)
+    brkptgen.calc_gen_likelihood(siteData)
+        
+
+    nl = [siteData['siteID']]
+    nl.append(myData['sampleName'])
+    nl.append(siteData['totFrags'])
+    nl.append(siteData['numRefFrag'])
+    nl.append(siteData['numAltFrag'])
+    nl.append(siteData['gl_0'])
+    nl.append(siteData['gl_1'])
+    nl.append(siteData['gl_2'])
+    sl = '%i,%i,%i' % (siteData['scaledLikelihoods'][0],siteData['scaledLikelihoods'][1],siteData['scaledLikelihoods'][2])
+    nl.append(sl)
+    
+    nl = [str(j) for j in nl]
+    nl = '\t'.join(nl) + '\n'
+    lhSummaryOut.write(nl)
+    
+    print nl
+
+    
+lhSummaryOut.close()
 
 
 
