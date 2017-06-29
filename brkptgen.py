@@ -28,6 +28,39 @@ def add_breaks_to_line(seq,n=50):
     myStr = ''.join(newList)
     return myStr    
 ###############################################################################
+##############################################################################
+# Returns complement of a bp.  If not ACGT then return same char
+def complement(c):
+    if c == 'A':
+        return 'T'
+    if c == 'T':
+        return 'A'
+    if c == 'C':
+        return 'G'
+    if c == 'G':
+        return 'C'
+    if c == 'a':
+        return 't'
+    if c == 't':
+        return 'a'
+    if c == 'c':
+        return 'g'
+    if c == 'g':
+        return 'c'
+    # If not ACTGactg simply return same character
+    return c   
+##############################################################################
+# Returns the reverse compliment of sequence 
+def revcomp(seq):
+    c = ''    
+    seq = seq[::-1] #reverse
+    # Note, this good be greatly sped up using list operations
+    seq = [complement(i) for i in seq]
+    c = ''.join(seq)
+    return c
+##############################################################################
+
+
 def get_site_intervals_from_table(bpIntervalTable):
     calls = []
     inFile = open(bpIntervalTable,'r')
@@ -148,4 +181,142 @@ def expand_cigar(cigar):
             accumulate = ''
     return res
 #####################################################################
+###############################################################################
+def make_seq_reads_file(samFileName,outFileName):
+    inFile = open(samFileName,'r')
+    outSeq = open(outFileName,'w')
+    for line in inFile:
+        line = line.rstrip()
+        line = line.split('\t')
+        samRec = parse_sam_line(line)
+        seq = samRec['seq']
+        qual = samRec['qual']
+        if samRec['reverseStrand'] is True:
+            qual = qual[::-1]
+            seq = revcomp(seq)
+        if samRec['isFirst'] is True:
+            i = 0
+        else:
+            i = 1
+        nl = [samRec['seqName'],str(i),seq,qual]
+        nl = '\t'.join(nl) + '\n'
+        outSeq.write(nl)
+    inFile.close()
+    outSeq.close()
+###############################################################################
+###############################################################################
+def match_intervals_to_reads(outputReadFile):
+    intervalsToReads = {}
+    inFile = open(outputReadFile,'r')
+    for line in inFile:
+        line = line.rstrip()
+        line = line.split()
+        id = line[0]
+        readName = line[1]
+        if id not in intervalsToReads:
+            intervalsToReads[id] = {}
+        intervalsToReads[id][readName] = 1
+    inFile.close()
+    return intervalsToReads
+###############################################################################
+def make_name_to_seq_dictionary(seqFileName):
+    nameToSeq = {}
+    inFile = open(seqFileName,'r')
+    for line in inFile:
+        line = line.rstrip()
+        line = line.split('\t')
+        rN = line[0]
+        rNum = int(line[1])
+        seq = line[2]
+        qual = line[3]
+        nameToSeq[(rN,rNum)] = [seq,qual]
+    inFile.close()
+    return nameToSeq
+###############################################################################
+###############################################################################
+def write_fastq_for_site(myData,siteData):
+    out1 = open(siteData['fq1'],'w')
+    out2 = open(siteData['fq2'],'w')
+    if siteData['siteID'] not in myData['intervalsToReads']:
+        siteData['hasReads'] = False
+        return
+    else:
+        siteData['hasReads'] = True
+    
+    readNames = myData['intervalsToReads'][siteData['siteID']]
+    readNames = readNames.keys()
+    readNames.sort()
+    print 'Have %i read names' % len(readNames)
+    for rN in readNames:
+        out1.write('@%s\n%s\n+\n%s\n' % (rN,myData['nameToSeq'][(rN,0)][0],myData['nameToSeq'][(rN,0)][1]))
+        out2.write('@%s\n%s\n+\n%s\n' % (rN,myData['nameToSeq'][(rN,1)][0],myData['nameToSeq'][(rN,1)][1]))
+    out1.close()
+    out2.close()
+###############################################################################
+###############################################################################
+# do BWA alignment, in order to get the counts for downstream work.
+# final result will be a BAM/SAM file
+def align_to_alts_bwa(myData,siteData):
+    if siteData['hasReads'] is False:
+        siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
+        siteData['outSamSel'] = siteData['outSAM'] + '.sel'
+        outFile = open(siteData['outSamSel'],'w')
+        outFile.close()        
+        return
+    
+    siteData['targetFA'] = myData['alleleBase'] + 'locusAlleles/' + siteData['siteID'] + '/alleles.fa'
+    print siteData['targetFA']
+    siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
+
+
+    # hard coded in
+    cmd = myData['bwa'] + ' mem  -M  ' +  siteData['targetFA'] + ' ' + siteData['fq1'] + ' ' + siteData['fq2'] + ' > ' + siteData['outSAM']
+    print cmd
+    runCMD(cmd)
+    select_hits_from_sam(siteData)
+###############################################################################
+def select_hits_from_sam(siteData):
+    siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
+    cmd = 'samtools view -S -F 256 %s > %s' % (siteData['outSAM'],siteData['outSamFilter'])
+    print cmd
+    runCMD(cmd)
+    
+    siteData['outSamSel'] = siteData['outSamFilter'] + '.sel'
+    inFile = open(siteData['outSamFilter'],'r')
+    outFile = open(siteData['outSamSel'],'w')
+    while True:
+        line = inFile.readline()
+        if line == '':
+            break
+        if line[0] == '@':
+            outFile.write(line)
+            continue
+        # should be order of pairs
+        ol1 = line
+        line = line.rstrip()
+        line = line.split()
+        samParse1 = parse_sam_line(line)  
+        line = inFile.readline()
+        ol2 = line
+        line = line.rstrip()
+        line = line.split()
+        samParse2 = parse_sam_line(line)  
+        
+        if samParse1['seqName'] != samParse2['seqName'] :
+            print 'Names not equal'
+            print samParse1['seqName'],samParse2['seqName']
+            sys.exit()
+
+        if (samParse1['mapQ'] == 0) or (samParse2['mapQ'] == 0):
+            continue
+        
+        if (samParse1['unMapped'] is True) or (samParse2['unMapped'] is True):
+            continue
+        outFile.write(ol1)
+        outFile.write(ol2)        
+    inFile.close()
+    outFile.close()
+###############################################################################
+
+
 

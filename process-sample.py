@@ -118,7 +118,7 @@ myData['outputSAMFile'] = myData['sampleBase'] + '%s.intervalreads.sam' %  myDat
 # the output of RetroSeq
 
 
-myData['siteIntervals'] = myData['siteIntervals'][0:3]
+myData['siteIntervals'] = myData['siteIntervals'][0:10]
 
 print 'Have %i intervals to process' % len(myData['siteIntervals'])
 
@@ -245,6 +245,69 @@ outSAM.close()
 
 # at this point, we have extracted all of the reads for the sample!
 print 'Have extracted all reads for the sample!'
+
+print 'Begin map to alt alleles steps!'
+
+myData['outPutReadFile'] = myData['sampleBase'] + '%s.intervalreads' %  myData['sampleName']
+myData['seqFileName'] = myData['outPutReadFile'] + '.seq'
+
+print 'Have %i intervals to process' % len(myData['siteIntervals'])
+
+if os.path.isfile(myData['seqFileName']) is False:
+    brkptgen.make_seq_reads_file(myData['outputSAMFile'],myData['seqFileName'])
+    print 'made seq file',myData['seqFileName']
+else:
+    print myData['seqFileName'],'seems to already exist'
+
+
+# make dictionary matching sequence reads to intervals
+myData['intervalsToReads'] = brkptgen.match_intervals_to_reads(myData['outPutReadFile'])
+print 'Read in matching info for %i intervals' % len(myData['intervalsToReads'])    
+
+myData['nameToSeq'] = brkptgen.make_name_to_seq_dictionary(myData['seqFileName'])
+print 'read in %i sequences' % len(myData['nameToSeq'])
+
+myData['mappingDirBase'] = myData['sampleBase'] + 'mapping'
+if os.path.isdir(myData['mappingDirBase']) is False:
+    print 'Making samples base',myData['mappingDirBase']
+    cmd = 'mkdir ' + myData['mappingDirBase']
+    brkptgen.runCMD(cmd)
+else:
+    print myData['mappingDirBase'],'exists!'
+
+myData['mappingDirBase'] += '/'
+
+
+# now we have to do the mapping for each region
+for siteInterval in myData['siteIntervals']:
+    siteID = siteInterval[0]
+    print siteInterval
+    siteData = {}
+    siteData['siteID'] =  siteID
+    siteData['mappingOutDir'] = myData['mappingDirBase'] + siteID
+    if os.path.isdir(siteData['mappingOutDir']) is False:
+        cmd = 'mkdir ' + siteData['mappingOutDir']
+        brkptgen.runCMD(cmd)
+    siteData['mappingOutDir'] += '/'
+    
+        
+    # make the two fastq files of reads
+    siteData['fq1'] = siteData['mappingOutDir'] + 'read1.fq'
+    siteData['fq2'] = siteData['mappingOutDir'] + 'read2.fq'
+
+    brkptgen.write_fastq_for_site(myData,siteData)
+    brkptgen.align_to_alts_bwa(myData,siteData)    
+
+print '*****\nAll Mapping Done\n******\n'
+
+
+
+
+
+
+
+
+
 
 
 
