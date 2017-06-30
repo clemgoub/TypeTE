@@ -61,8 +61,6 @@ def revcomp(seq):
     c = ''.join(seq)
     return c
 ##############################################################################
-
-
 def get_site_intervals_from_table(bpIntervalTable):
     calls = []
     inFile = open(bpIntervalTable,'r')
@@ -71,23 +69,46 @@ def get_site_intervals_from_table(bpIntervalTable):
         line = line.split()
         id = line[0]
         if id == 'siteID':
-             continue
+             continue        
         c = line[1]
+        
+#        if id not in ['chr5_78331579']:
+#            continue
+        
 #        c = c.replace('chr','') #for 1kg   # this should be an option, for now keep 'chr'
         b = int(line[4])
         e = int(line[5])
-        calls.append([id,[c,b,e]])
+        p = int(line[2])
+        calls.append([id,[c,b,e,p]])
     inFile.close()    
     # now I want to sort the list
     calls.sort(key = lambda x: x[1][1])
-    calls.sort(key = lambda x: x[1][0])
+    calls.sort(key = lambda x: chromname_to_number(x[1][0])) # sort by chrom name
     return calls
 ###############################################################################
-def open_bam_read(fileName,reg=''):
-    if reg == '':
-        cmd = 'samtools view  ' + fileName
+def chromname_to_number(c):
+    if 'chr' == c[0:3]:
+        cnum = c[3:]
     else:
-        cmd = 'samtools view  ' + fileName + ' ' + reg    
+        cnum = c
+    if cnum.isdigit() is True:
+        return int(cnum)
+    if cnum == 'X':
+        return 50
+    if 'Y' in cnum:
+        return 51
+    if 'M' in cnum:
+        return 52
+    if 'Un' in cnum:
+        return 53
+    return cnum   # just return it...
+###############################################################################
+def open_bam_read(fileName,reg=''):
+    # note -- skip over non-primary alignments...
+    if reg == '':
+        cmd = 'samtools view -F 256 ' + fileName
+    else:
+        cmd = 'samtools view -F 256 ' + fileName + ' ' + reg    
     signal.signal(signal.SIGPIPE, signal.SIG_DFL)  # To deal with fact that might close file before reading all
     try:
         inFile = os.popen(cmd, 'r')
@@ -260,9 +281,19 @@ def write_fastq_for_site(myData,siteData):
 # final result will be a BAM/SAM file
 def align_to_alts_bwa(myData,siteData):
     if siteData['hasReads'] is False:
+        #make fake empty files so subsequent steps will run
         siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
+        siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
+        siteData['outSamSel'] = siteData['outSamFilter'] + '.sel'        
+
         outFile = open(siteData['outSamSel'],'w')
-        outFile.close()        
+        outFile.close()
+        siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
+        outFile = open(siteData['outSamSel'],'w')
+        outFile.close()
+        
+        
+                
         return
     
     siteData['targetFA'] = myData['alleleBase'] + 'locusAlleles/' + siteData['siteID'] + '/alleles.fa'
@@ -270,10 +301,26 @@ def align_to_alts_bwa(myData,siteData):
     siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
 
 
-    # hard coded in
-    cmd = myData['bwa'] + ' mem  -M  ' +  siteData['targetFA'] + ' ' + siteData['fq1'] + ' ' + siteData['fq2'] + ' > ' + siteData['outSAM']
-    print cmd
-    runCMD(cmd)
+    # hard coded in -- this is for BWA-mem
+    if False:
+        cmd = myData['bwa'] + ' mem  -I 400,40,900,100 -M  ' +  siteData['targetFA'] + ' ' + siteData['fq1'] + ' ' + siteData['fq2'] + ' > ' + siteData['outSAM']
+        print cmd
+        runCMD(cmd)
+    else:
+        sai1 = siteData['fq1'] + '.sai'
+        cmd = myData['bwa'] + ' aln -q 15 ' + siteData['targetFA'] + ' ' + siteData['fq1'] + ' > ' + sai1
+        print cmd
+        runCMD(cmd)
+        sai2 = siteData['fq2'] + '.sai'
+        cmd = myData['bwa'] + ' aln -q 15 ' + siteData['targetFA'] + ' ' + siteData['fq2'] + ' > ' + sai2
+        print cmd
+        runCMD(cmd)
+        
+        cmd = myData['bwa'] + ' sampe -A ' + siteData['targetFA'] + ' ' + sai1 + ' ' + sai2 + ' ' + siteData['fq1'] + ' ' + siteData['fq2'] + '> ' + siteData['outSAM']
+        print cmd
+        runCMD(cmd)
+                        
+        
     select_hits_from_sam(siteData)
 ###############################################################################
 def select_hits_from_sam(siteData):
@@ -345,7 +392,7 @@ def read_samsel_hits(siteData):
             print 'seqnames do not match',data['siteID']
             sys.exit()
         if samParse1['chrom'] != samParse2['chrom']:
-            print 'seq maped chroms not match',data['siteID']
+            print 'seq maped chroms not match',siteData['siteID']
             continue
         
         minMapQ = samParse1['mapQ']
@@ -435,6 +482,17 @@ def make_scaled_likelihoods(data):
         scaledLikelihoods[i] = -10.0 * scaledLikelihoods[i]
         scaledLikelihoods[i] = int(round(scaledLikelihoods[i]))
     data['scaledLikelihoods'] = scaledLikelihoods
+###############################################################################
+###############################################################################
+def calc_gq(gLikeList,i):
+    totP = sum(gLikeList)
+    v = gLikeList[i]/totP
+    v = 1.0 - v
+    if v == 0.0 or v < 0.000001:
+        v = 0.000001
+
+    v = -10.0*math.log10(v)
+    return v
 ###############################################################################
 
 

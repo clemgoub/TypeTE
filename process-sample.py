@@ -77,6 +77,10 @@ if myData['alleleBase'][-1] != '/' :
 
 
 myData['siteIntervals'] = brkptgen.get_site_intervals_from_table(options.alleleFile)
+
+# for testing, only do first 10....
+#myData['siteIntervals'] = myData['siteIntervals'][0:10]  
+
 print 'Found %i siteIntervals' % len(myData['siteIntervals'])
 
 
@@ -117,9 +121,6 @@ myData['outputSAMFile'] = myData['sampleBase'] + '%s.intervalreads.sam' %  myDat
 
 # will just add readlen to the starts to get intervals, this will be off by 1, but will match
 # the output of RetroSeq
-
-
-myData['siteIntervals'] = myData['siteIntervals'][0:10]
 
 print 'Have %i intervals to process' % len(myData['siteIntervals'])
 
@@ -348,6 +349,97 @@ lhSummaryOut.close()
 
 
 
+# make VCF
+myData['lhSummaryFileName'] =  myData['sampleBase'] + myData['sampleName'] + '.lksummary'
+
+
+myData['outVCFName'] = myData['sampleBase'] + myData['sampleName'] + '.vcf'
+outVCF = open(myData['outVCFName'],'w')
+outVCF.write('##fileformat=VCFv4.1\n')
+outVCF.write('##fileDate=20170629\n')
+outVCF.write('##reference=canFam3.1\n')
+outVCF.write('##FORMAT=<ID=AD,Number=.,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">\n')
+outVCF.write('##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read Depth (only filtered reads used for calling)">\n')
+outVCF.write('##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">\n')
+outVCF.write('##FORMAT=<ID=GQ,Number=1,Type=Float,Description="Genotype Quality">\n')
+outVCF.write('##FORMAT=<ID=PL,Number=3,Type=Float,Description="Normalized, Phred-scaled likelihoods for AA,AB,BB genotypes where A=ref and B=alt">\n')
+
+outVCF.write('##ALT=<ID=INS:ME:HERVK,Description="Insertion of HERVK element">\n')
+outVCF.write('##INFO=<ID=DP,Number=1,Type=Integer,Description="Filtered Depth">\n')
+header = ['#CHROM','POS','ID','REF','ALT','QUAL','FILTER','INFO','FORMAT']
+
+header.append(myData['sampleName'])
+nl = '\t'.join(header) + '\n'
+outVCF.write(nl)
+
+# get if ref or alter is smaller....
+
+alleleSeqs = {}
+inFile = open(options.alleleFile,'r')
+for line in inFile:
+    line = line.rstrip()
+    line = line.split()
+    if line[0] == 'siteID':
+        continue
+    siteID = line[0]
+    ref = line[6]
+    alt = line[7]
+    if len(ref) < len(alt):
+         alleleSeqs[siteID] = 'refEmpty'     
+    else:
+         alleleSeqs[siteID] = 'refIns'     
+inFile.close()
+
+# set siteID to pos....
+siteIDToPos = {}
+for siteInterval in myData['siteIntervals']:
+    siteID = siteInterval[0]
+    c = siteInterval[1][0]
+    pos = str(siteInterval[1][3])
+    siteIDToPos[siteID] = [c,pos]
+
+inFile = open(myData['lhSummaryFileName'],'r')
+for line in inFile:
+    line = line.rstrip()
+    line = line.split()
+    if line[0] == 'siteID':
+        continue
+    
+    siteID = line[0]
+    # put in 'N' for ref... not right, but ok for now?
+    # also <MEI> isn't exaclt right
+    nl = [siteIDToPos[siteID][0],siteIDToPos[siteID][1],siteID,'N','<MEI>','.','.']
+    totDepth = int(line[2])
+    i = 'DP=%i' % totDepth
+    i += ';' + alleleSeqs[siteID]
+    nl.append(i)   
+    f = 'GT:AD:GQ:PL'
+    nl.append(f)
+    pl = line[8]
+    naiveGen = '?'
+    GQ = '?'
+    gLikeList = [float(line[5]),float(line[6]),float(line[7])]
+    plParts = pl.split(',')
+    if pl == '0,0,0' :
+        naiveGen  = '.'
+        GQ = 0.0
+    elif plParts[0] == '0':
+        naiveGen  = '0/0'
+        GQ = brkptgen.calc_gq(gLikeList,0)		
+    elif plParts[1] == '0':
+        naiveGen  = '0/1'
+        GQ = brkptgen.calc_gq(gLikeList,1)
+    elif plParts[2] == '0':
+        naiveGen  = '1/1'
+        GQ = brkptgen.calc_gq(gLikeList,2) 
+    gen = naiveGen + ':' + line[3] + ',' + line[4]  + ':' + '%.2f' % GQ + ':' + pl
+    nl.append(gen)
+    nl = '\t'.join(nl) + '\n'
+    outVCF.write(nl)
+inFile.close()
+outVCF.close()
+print 'DONE!'
+print 'VCF written to',myData['outVCFName']
 
 
 
