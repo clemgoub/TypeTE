@@ -49,6 +49,7 @@ For troubleshooting, you can first perform a test on smaller set of loci.
 
 
 Example cmds for running step 1:
+
 First, make a base directory for organizing files
 
 mkdir genotyping-base
@@ -71,7 +72,8 @@ The program performs this in order for all loci by first extracting reads for al
 then mapping all loci, then filtering and calculating genotype likelihoods, and finally
 writing out a VCF for the sample.  For large sets of loci this can take many hours to complete.
 
-example cmd:
+example cmd for step 2:
+
 python insertion-genotype/process-sample.py \
 --allelefile  input-files/combined-TE.txt \
 --allelebase genotyping-base \
