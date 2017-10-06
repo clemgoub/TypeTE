@@ -38,6 +38,7 @@ This file consists of 8 columns and includes a header row:
 **gTSDl**  size of target site duplication.  This information is also not used
 
 **alignFragBegin, alignFragEnd**  the 1-based coordinates of the listed sequence flanking an insertion. This is typically the element of interest plus 500 bp.
+
 **genomeSeq**  the full DNA sequence of the reference alelle
 
 **altSeq** the full DNA sequence of the alternative allele
