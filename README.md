@@ -32,10 +32,14 @@ elements is found in input-files/combined-TE-EXAMPLE.txt
 This file consists of 8 columns and includes a header row:
 
 **siteID**	unique identifier for site, this is used for naming directories and loci
+
 **insBP**	insertion position.  This information is not used in genotyping
+
 **gTSDl**  size of target site duplication.  This information is also not used
+
 **alignFragBegin, alignFragEnd**  the 1-based coordinates of the listed sequence flanking an insertion. This is typically the element of interest plus 500 bp.
 **genomeSeq**  the full DNA sequence of the reference alelle
+
 **altSeq** the full DNA sequence of the alternative allele
 
 The python script create-alternative-alleles.py does the appropriate setup, making
