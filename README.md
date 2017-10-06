@@ -12,6 +12,7 @@ https://www.ncbi.nlm.nih.gov/pubmed/26503250
 ## Required Components
 
 Requires python2.X, samtools and bwa
+
 samtools must be in your path
 
 The path to the version of bwa to be used is given on the command line. The pipeline is designed for bwa version 0.5.9 but should work fine with more recent versions
