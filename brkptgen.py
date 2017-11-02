@@ -316,7 +316,10 @@ def align_to_alts_bwa(myData,siteData):
         print cmd
         runCMD(cmd)
         
-        cmd = myData['bwa'] + ' sampe -A ' + siteData['targetFA'] + ' ' + sai1 + ' ' + sai2 + ' ' + siteData['fq1'] + ' ' + siteData['fq2'] + '> ' + siteData['outSAM']
+#        cmd = myData['bwa'] + ' sampe -A ' + siteData['targetFA'] + ' ' + sai1 + ' ' + sai2 + ' ' + siteData['fq1'] + ' ' + siteData['fq2'] + '> ' + siteData['outSAM']
+# test of a = 1000 for larger insert sizes.....
+        cmd = myData['bwa'] + ' sampe -a 1000 -A ' + siteData['targetFA'] + ' ' + sai1 + ' ' + sai2 + ' ' + siteData['fq1'] + ' ' + siteData['fq2'] + '> ' + siteData['outSAM']
+
         print cmd
         runCMD(cmd)
                         
