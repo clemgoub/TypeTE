@@ -326,7 +326,8 @@ for siteInterval in myData['siteIntervals']:
     siteData['mappingOutDir'] = myData['mappingDirBase'] + siteID + '/'    
     siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
     siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
-    siteData['outSamSel'] = siteData['outSamFilter'] + '.sel'
+    siteData['outSamSel'] = siteData['outSAM'] + '.filter.sel.sam'
+
 
     brkptgen.read_samsel_hits(siteData)
     brkptgen.calc_gen_likelihood(siteData)
