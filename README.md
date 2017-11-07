@@ -11,9 +11,10 @@ https://www.ncbi.nlm.nih.gov/pubmed/26503250
 
 ## Required Components
 
-Requires python2.X, samtools and bwa
+Requires python2.X, pysam module, samtools and bwa
 
 samtools must be in your path
+
 
 The path to the version of bwa to be used is given on the command line. The pipeline is designed for bwa version 0.5.9 but should also work with more recent versions
 
@@ -89,6 +90,13 @@ and other associated information will be in the same directory.
 
 The script process-sample-remap.py can be used to repeat only the mapping portion.
 
+## Update November 2017:
+Two important updates have been added:
+The default max insert size for bwa sampe has been changed to 1000, this allows proper processing if seuqnicng libraries with expected insert sizes > 500bp
+
+An optional additional filtering step using an exclusion file has been added (--excludefile).
+This is a (1-based) set of intervals on the targeted sequences (chr1_xxx_genome and chr1_xxx_alternative, etc) for exclusion.  Read pairs that map nearly entirely within the exclusion region are removed from consideration in genotyping.  This is an important
+improvement for genotyping large insertions (full length LINE or ERV proviruses) as some reads may map entirely within the element and not having any anchoring information unique to that region.
 
 
  
