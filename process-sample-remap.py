@@ -33,6 +33,7 @@ def get_site_intervals_from_table(bpIntervalTable):
 USAGE = """
 python process-sample-remap.py   --allelefile <allele file in proper format>
                            --allelebase <base directory for allele information>
+                           --excludefile <file of coorindates to exclude contained mapping (1 based)>
                            --bwa <path/cmd for bwa 0.5.9
                            --samplename <name of sample>
 
@@ -45,6 +46,7 @@ parser.add_option('--allelefile',dest='alleleFile', help = 'file name of allele 
 parser.add_option('--allelebase',dest='alleleBase', help = 'base dir name for outputs')
 parser.add_option('--bwa',dest='bwa', help = 'path/cmd for bwa 0.7.15')
 parser.add_option('--samplename',dest='sampleName', help = 'sample name')
+parser.add_option('--excludefile',dest='excludeFile', help = 'file of coordinates to exclude contained mappings')
 
 (options, args) = parser.parse_args()
 
@@ -78,7 +80,8 @@ myData['siteIntervals'] = brkptgen.get_site_intervals_from_table(options.alleleF
 
 print 'Found %i siteIntervals' % len(myData['siteIntervals'])
 
-
+myData['excludeFileName'] = options.excludeFile
+brkptgen.setup_exclusion(myData)
 
 samplesBase = myData['alleleBase'] + 'samples'
 if os.path.isdir(samplesBase) is False:
@@ -186,7 +189,9 @@ for siteInterval in myData['siteIntervals']:
     siteData['mappingOutDir'] = myData['mappingDirBase'] + siteID + '/'    
     siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
     siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
-    siteData['outSamSel'] = siteData['outSamFilter'] + '.sel'
+    siteData['outSamSel'] = siteData['outSAM'] + '.filter.sel.sam'
+
+
 
     brkptgen.read_samsel_hits(siteData)
     brkptgen.calc_gen_likelihood(siteData)

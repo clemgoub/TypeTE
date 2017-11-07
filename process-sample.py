@@ -33,6 +33,7 @@ def get_site_intervals_from_table(bpIntervalTable):
 USAGE = """
 python process-sample.py   --allelefile <allele file in proper format>
                            --allelebase <base directory for allele information>
+                           --excludefile <file of coorindates to exclude contained mapping (1 based)>                           
                            --bwa <path/cmd for bwa 0.5.9
                            --samplename <name of sample>
                            --bam <indexed bam of sample>
@@ -45,6 +46,7 @@ parser.add_option('--allelebase',dest='alleleBase', help = 'base dir name for ou
 parser.add_option('--bwa',dest='bwa', help = 'path/cmd for bwa 0.7.15')
 parser.add_option('--samplename',dest='sampleName', help = 'sample name')
 parser.add_option('--bam',dest='bam', help = 'bam of sample')
+parser.add_option('--excludefile',dest='excludeFile', help = 'file of coordinates to exclude contained mappings')
 
 
 (options, args) = parser.parse_args()
@@ -82,6 +84,10 @@ myData['siteIntervals'] = brkptgen.get_site_intervals_from_table(options.alleleF
 #myData['siteIntervals'] = myData['siteIntervals'][0:10]  
 
 print 'Found %i siteIntervals' % len(myData['siteIntervals'])
+
+
+myData['excludeFileName'] = options.excludeFile
+brkptgen.setup_exclusion(myData)
 
 
 print 'Will do sample name %s' % myData['sampleName']

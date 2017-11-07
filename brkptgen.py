@@ -3,7 +3,7 @@ import sys
 import signal
 import os
 import math
-
+import pysam
 
 ###############################################################################
 # Helper function to run commands, handle return values and print to log file
@@ -284,11 +284,8 @@ def align_to_alts_bwa(myData,siteData):
         #make fake empty files so subsequent steps will run
         siteData['outSAM'] = siteData['mappingOutDir'] + 'mapped.sam'
         siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
-        siteData['outSamSel'] = siteData['outSamFilter'] + '.sel'        
+        siteData['outSamSel'] = siteData['outSAM'] + '.filter.sel.sam'
 
-        outFile = open(siteData['outSamSel'],'w')
-        outFile.close()
-        siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
         outFile = open(siteData['outSamSel'],'w')
         outFile.close()
         
@@ -324,49 +321,83 @@ def align_to_alts_bwa(myData,siteData):
         runCMD(cmd)
                         
         
-    select_hits_from_sam(siteData)
+    select_hits_from_sam(siteData,myData)
 ###############################################################################
-def select_hits_from_sam(siteData):
-    siteData['outSamFilter'] = siteData['outSAM'] + '.filter'
-    cmd = 'samtools view -S -F 256 %s > %s' % (siteData['outSAM'],siteData['outSamFilter'])
+def select_hits_from_sam(siteData,myData):
+    siteData['outBAMFilter'] = siteData['outSAM'] + '.filter.bam'
+    cmd = 'samtools view -b -F 256 %s > %s' % (siteData['outSAM'],siteData['outBAMFilter'])
     print cmd
     runCMD(cmd)
     
-    siteData['outSamSel'] = siteData['outSamFilter'] + '.sel'
-    inFile = open(siteData['outSamFilter'],'r')
-    outFile = open(siteData['outSamSel'],'w')
-    while True:
-        line = inFile.readline()
-        if line == '':
-            break
-        if line[0] == '@':
-            outFile.write(line)
-            continue
-        # should be order of pairs
-        ol1 = line
-        line = line.rstrip()
-        line = line.split()
-        samParse1 = parse_sam_line(line)  
-        line = inFile.readline()
-        ol2 = line
-        line = line.rstrip()
-        line = line.split()
-        samParse2 = parse_sam_line(line)  
-        
-        if samParse1['seqName'] != samParse2['seqName'] :
-            print 'Names not equal'
-            print samParse1['seqName'],samParse2['seqName']
-            sys.exit()
+    
+    siteData['outSamSel'] = siteData['outSAM'] + '.filter.sel.sam'
 
-        if (samParse1['mapQ'] == 0) or (samParse2['mapQ'] == 0):
+    inBamFile = pysam.AlignmentFile(siteData['outBAMFilter'],'rb')
+    outSamFile = pysam.AlignmentFile(siteData['outSamSel'],'w',template=inBamFile)
+
+    readCache = []
+    for read in inBamFile:
+        if read.is_secondary is True:
             continue
+        if read.is_supplementary is True:
+            continue
+        if len(readCache) == 0:
+            readCache.append(read)        
+        elif len(readCache) == 1:
+            if read.query_name == readCache[0].query_name:
+                r1 = readCache[0]
+                r2 = read
+                readCache.pop()
+                res = process_read_hits(r1,r2,myData)  
+                if res is True:
+                    outSamFile.write(r1)
+                    outSamFile.write(r2)
+            else:
+                print 'CACHE not match!!'
+                print readCache[0]
+                print read
+                print 'CACHE not match!!'
+                sys.exit()
+    inBamFile.close()
+    outSamFile.close()        
+###############################################################################
+# do the filtering of reads for output
+def process_read_hits(r1,r2,myData):
+    #check if either is unmapped    
+    if r1.is_unmapped is True:
+        return False        
+    if r2.is_unmapped is True:
+        return False
+
+    if r1.mapping_quality == 0:
+        return False
+    if r2.mapping_quality == 0:
+        return False
         
-        if (samParse1['unMapped'] is True) or (samParse2['unMapped'] is True):
-            continue
-        outFile.write(ol1)
-        outFile.write(ol2)        
-    inFile.close()
-    outFile.close()
+    if r1.reference_name != r2.reference_name:
+        return False
+
+    # check to see if mapped entirely within exclusion region
+        
+            
+    chromName = r1.reference_name
+    numR1NotInExclude = 0
+    for i in r1.get_reference_positions():
+        p = i +1
+        if (chromName,p) not in myData['excludeDict']:
+            numR1NotInExclude += 1
+
+    chromName = r2.reference_name
+    numR2NotInExclude = 0
+    for i in r2.get_reference_positions():
+        p = i +1
+        if (chromName,p) not in myData['excludeDict']:
+            numR2NotInExclude += 1
+#    print 'Number of bp not in exclude regions',numR1NotInExclude,numR2NotInExclude
+    t = numR1NotInExclude + numR2NotInExclude
+    if t < 10: # min number bp outside of exclusion region...
+        return False
+    return True    
 ###############################################################################
 # functions for dealing with genotype likelihoods...
 def read_samsel_hits(siteData):
@@ -497,6 +528,26 @@ def calc_gq(gLikeList,i):
     v = -10.0*math.log10(v)
     return v
 ###############################################################################
+# setup regions that will be excluded if both read pairs map entirely within them
+def setup_exclusion(myData):
+     myData['excludeDict'] = {}
+     if myData['excludeFileName'] is None:
+         print 'No exclusion regions to check'
+         return
+     inFile = open(myData['excludeFileName'],'r')
+     for line in inFile:
+         line = line.rstrip()
+         line = line.split()
+         c = line[0]
+         b = int(line[1])
+         e = int(line[2])
+         for i in range(b,e+1):
+              myData['excludeDict'][(c,i)] = 1     
+     inFile.close()
+     print 'Set up %i bp to exclude' % len(myData['excludeDict'])
+   
+###############################################################################   
+
 
 
 
