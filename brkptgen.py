@@ -381,11 +381,14 @@ def process_read_hits(r1,r2,myData):
         
             
     chromName = r1.reference_name
+    totBpInExclude = 0
     numR1NotInExclude = 0
     for i in r1.get_reference_positions():
         p = i +1
         if (chromName,p) not in myData['excludeDict']:
             numR1NotInExclude += 1
+        else:
+            totBpInExclude += 1
 
     chromName = r2.reference_name
     numR2NotInExclude = 0
@@ -393,10 +396,20 @@ def process_read_hits(r1,r2,myData):
         p = i +1
         if (chromName,p) not in myData['excludeDict']:
             numR2NotInExclude += 1
+        else:
+            totBpInExclude += 1
+            
 #    print 'Number of bp not in exclude regions',numR1NotInExclude,numR2NotInExclude
     t = numR1NotInExclude + numR2NotInExclude
     if t < 10: # min number bp outside of exclusion region...
         return False
+
+    # require at least 5bp mapped in excluded region if there are any
+    # exclusions on that allele.  This presents false calls of hets due to ~1bp mismatch
+    
+    if chromName in myData['excludeDict'] and totBpInExclude < 5:
+        return False
+
     return True    
 ###############################################################################
 # functions for dealing with genotype likelihoods...
@@ -531,6 +544,7 @@ def calc_gq(gLikeList,i):
 # setup regions that will be excluded if both read pairs map entirely within them
 def setup_exclusion(myData):
      myData['excludeDict'] = {}
+     
      if myData['excludeFileName'] is None:
          print 'No exclusion regions to check'
          return
@@ -541,6 +555,7 @@ def setup_exclusion(myData):
          c = line[0]
          b = int(line[1])
          e = int(line[2])
+         myData['excludeDict'][c] = 'yes'
          for i in range(b,e+1):
               myData['excludeDict'][(c,i)] = 1     
      inFile.close()
