@@ -15,16 +15,17 @@ use File::Path qw(make_path remove_tree);
 use Data::Dumper;
 use Cwd;
 
-my $version = "3.0";
-my $scriptname = "splitfile_jt_v3.0.pl";
+my $version = "3.1";
+my $scriptname = "splitfile_jt_v3.1.pl";
 my $changelog = "
 #   - v1.0 = 21 May 2017
 #	- v2.0 = 17 June 2017
 #  				added the option sort the files based on the individual name
 #	- v3.0 = 29 August 2017
+#				split based on the number of individuals is added
+#	- v3.1 = 6 April 2017
 #				split based on the number of individuals is the only option
-#
-#
+#				number of individuals made mandatory
 #
 #
 #
