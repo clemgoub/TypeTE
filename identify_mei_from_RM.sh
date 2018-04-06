@@ -29,7 +29,8 @@ mkdir $2 # creates the output folder if inexistent
 paste <(date | awk '{print $4}') <(echo "generates individual .bed file per locus...")
 
 cd $1
-listeofposition=$(ls)
+listeofposition=$(ls) ##### all that before in main script and the rest using parallel over the sublit
+
 for pos in $listeofposition
 do
 	echo "$pos..."
