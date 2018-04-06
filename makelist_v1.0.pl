@@ -11,7 +11,7 @@ use Carp;
 use Getopt::Long;
 use File::Path qw(make_path remove_tree);
 
-my $version = "1.0";
+my $version = "1.5";
 my $scriptname = "makelist.pl";
 my $changelog = "
 #   - v1.0 = 17 July 2017
