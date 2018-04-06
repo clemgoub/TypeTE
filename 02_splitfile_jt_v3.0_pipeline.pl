@@ -30,7 +30,7 @@ my $changelog = "
 #
 \n";
 my $usage = "\nUsage [$version]: 
-    perl $scriptname -f <file that needs to be split> -s <print the sorted  file or not, give yes or no> -n <number of individuals> [-o name of outputfile with the list of files][-v] [-c] [-h] 
+    perl $scriptname -f <file that needs to be split>  -n <number of individuals> [-s <print the sorted  file or not, give yes or no>] [-o name of outputfile with the list of files][-v] [-c] [-h] 
 	
 	MANDATORY ARGUMENT:	
  
@@ -59,7 +59,7 @@ GetOptions ('f=s' => \$file,
             'v'   => \$v);
 
 #check step to see if mandatory argument is provided + if help/changelog
-die "\n Script $scriptname version $version\n\n" if ((! $file) &&   (! $help) && (! $chlog) && ($v));
+die "\n Script $scriptname version $version\n\n" if ((! $file) && (! $indinumber)&&  (! $help) && (! $chlog) && ($v));
 die $changelog if ($chlog);
 die $usage if ((! $file) ||  ($help));
 my $cwd = getcwd();
