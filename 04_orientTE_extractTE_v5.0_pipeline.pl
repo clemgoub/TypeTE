@@ -3,8 +3,8 @@
 # Author :  Jainy Thomas
 # date   :  November 2017
 # email  :  jainythomas1@gmail.com
-# Pupose :  to concatenate all reads from a locus from all individuals and to find orientation of the TE (plus or minus)
-#			and to extract TE sequences
+# Pupose :  concatenate all reads from a locus from all individuals,assemble and blast against TE and genomics seq, find orientation of the TE (plus or minus)
+#			and extract TE sequences with TSD and without TSDs
 #           
 #####################################################
 use warnings;
