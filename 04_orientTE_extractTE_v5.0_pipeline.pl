@@ -3,8 +3,8 @@
 # Author :  Jainy Thomas
 # date   :  November 2017
 # email  :  jainythomas1@gmail.com
-# Pupose :  to concatenate all reads from a locus from all individuals and to find orientation of the TE (plus or minus)
-#			and to extract TE sequences
+# Pupose :  concatenate all reads from a locus from all individuals,assemble and blast against TE and genomics seq, find orientation of the TE (plus or minus)
+#			and extract TE sequences with TSD and without TSDs
 #           
 #####################################################
 use warnings;
@@ -21,7 +21,7 @@ use List::MoreUtils qw(uniq);
 use feature 'fc';
 
 
-my $version = "4.5";
+my $version = "5.0";
 my $scriptname = "orientTE_extractTE.pl";
 my $changelog = "
 #   - v1.0 = 3 November 2017 
@@ -38,6 +38,9 @@ my $changelog = "
 #	- v4.5 = 5 February 2018
 #				generates a output table with prediction and if a full lengthTE was able to extract (yes or no), output the fasta 
 #				sequence with both TSDs in one file and the others in another file (header locus,queryTE,orientation, TE)
+#	- v5.0 = 4 April 2018
+#				modifies the output table with TSD and name of the sequence
+
 \n";
 
 my $usage = "\nUsage [$version]: 
@@ -95,12 +98,13 @@ $TEdir = $1 if ($TEdir =~ /^(.*)\/$/);
 #-----------------------------------------------------------------------------
 #----------------------------------- MAIN ------------------------------------
 #-----------------------------------------------------------------------------
-my $CAP3pro = "/home/jainy/software/CAP3";#vader server
-my $BLASTpro = "/home/jainy/software/ncbi-blast-2.6.0+/bin";
-my $miniapro = "/home/jainy/software/minia-v2.0.7-Source/build/bin";
-my $SPAdepro = "/home/jainy/software/SPAdes-3.11.1-Linux/bin";#vaderserver,Yodaserver
+#change to commandline
+#my $CAP3pro = "/home/jainy/software/CAP3";#vader server
+#my $BLASTpro = "/home/jainy/software/ncbi-blast-2.6.0+/bin";
+#my $miniapro = "/home/jainy/software/minia-v2.0.7-Source/build/bin";
+#my $SPAdepro = "/home/jainy/software/SPAdes-3.11.1-Linux/bin";#vaderserver,Yodaserver
 
-make_path ("$path/Assembled_TEreads");
+-d "$path/Assembled_TEreads"?die "$path/Assembled_TEreads already exist? please delete/rename the existing folder\n":make_path ("$path/Assembled_TEreads");
 my $genomloc;
 my $directory;
 my @zerofiles;
@@ -117,12 +121,14 @@ my %alldirectory;
 %TEinfo = &load_file($listte);
 #print Dumper %TEinfo;
 #concatenate all the files in the directory 
+
 my @dir =`ls $rdir`;
 foreach $directory (@dir) {
 	chomp ($directory);
 	$alldirectory{$directory} =1;
 	print STDERR "the directory now analysing is $directory\n";
-	make_path ("$path/Assembled_TEreads/$directory");
+	
+	make_path ("$path/Assembled_TEreads/$directory") ;
 	$outpath = "$path/Assembled_TEreads/$directory";
 	#my @files = `ls $rdir/$directory`;
 	my @R1files = glob ("'$rdir/$directory/*R1.fasta'");
@@ -147,10 +153,10 @@ foreach $directory (@dir) {
 	# print STDERR "assemble the concatenated sequence\n";
 	if (($R1filesize > 0) || ($R1filesize > 0)) {
 		#Assemble only the mapped reads		   
-		system ("$SPAdepro/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
-		system ("$SPAdepro/dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
-		system ("$miniapro/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
-		system ("$CAP3pro/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+		system ("spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
+		system ("dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
+		system ("minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
+		system ("cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
 		if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
 			#Rename scaffolds.fasta 
 			copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.scaffolds.fasta") or die "Copy failed scaffolds.fasta $directory:$!";
@@ -186,6 +192,7 @@ foreach $directory (@dir) {
 	my $blastgenomefile = "$outpath/$directory.extract.seq.fa.tabular.blast.out";
 	my $genomeblast = &parse_blast($blastgenomefile);
 	#print Dumper %$genomeblast;
+	#predict the orientation of TE insertion
 	&compare_twoHOH($directory,$TEblast,$genomeblast);	
 }
 
@@ -195,6 +202,7 @@ print Dumper %alldirectory;
 print STDERR "DONE with prediction of orientation.... \n";
 
 print STDERR "\n\nstarting to extract TEsequences.... \n";
+
 my $left = 5;
 my $right = 3;
 my @matchingtsdlist;
@@ -203,7 +211,9 @@ my @partial_teseq;
 #my $teseq;
 &loadseq_tohash();
 print Dumper %extractcontiginfo;
+#find the contigs with TEsequence and flanking sequence and extract the flanking sequence
 foreach my $locus (sort keys %extractcontiginfo) {
+	print "locus is $locus\n";
 	my ($genomeloc,$rest) = split (/\./,$locus,2);
 	my ($leftkmer);
 	my ($rightkmer);
@@ -220,6 +230,7 @@ foreach my $locus (sort keys %extractcontiginfo) {
 	my $teend;
 	my $tsdseq;
 	my $tsdsucc;
+	my $contlen;
 	foreach my $info (keys %{$extractcontiginfo{$locus}}) {
 		#print "locus is $info\n";
 		$start = $extractcontiginfo{$locus}{$info} if ($info eq 'sstart');
@@ -228,6 +239,8 @@ foreach my $locus (sort keys %extractcontiginfo) {
 		#print STDERR " strand is $strand\n"; 
 		$seq = $extractcontiginfo{$locus}{$info} if ($info eq 'seq');
 		$qTE = $extractcontiginfo{$locus}{$info} if ($info eq 'qid');
+		$contlen = $extractcontiginfo{$locus}{$info} if ($info eq 'slen');
+		
 	}
 	$newlocus = $locus.".".$start.".".$end.".".$strand if ($strand eq 'plus');
 	$newlocus = $locus.".".$end.".".$start.".".$strand if ($strand eq 'minus');
@@ -237,13 +250,20 @@ foreach my $locus (sort keys %extractcontiginfo) {
 		my $leftend = $start + 5;
 		my $rightend = $end + 40;
 		my $rightstart = $end - 5;
-		$leftflankseq = $seq_obj->subseq($leftstart,$leftend);
+		print "for a plus $leftstart\t$leftend\t$rightstart\t$rightend\n";
+		$leftstart = 1 if ($leftstart <= 0);
+		$rightend = $contlen if ($rightend > $contlen);
+		$leftflankseq = $seq_obj->subseq($leftstart,$leftend) ;
 		$rightflankseq = $seq_obj->subseq($rightstart,$rightend);
 	} elsif ($strand eq "minus") {
 		my $leftstart = $end - 40;
 		my $leftend = $end + 5;
 		my $rightend = $start + 40;
 		my $rightstart = $start - 5;
+		
+		print "for a minus $leftstart\t$leftend\t$rightstart\t$rightend\n";
+		$leftstart = 1 if ($leftstart <= 0);
+		$rightend = $contlen if ($rightend > $contlen);
 		my $leflankseq = $seq_obj->subseq($leftstart,$leftend);
 		my $riflankseq = $seq_obj->subseq($rightstart,$rightend);
 		$rightflankseq = &revcom_seq($leflankseq);
@@ -251,7 +271,7 @@ foreach my $locus (sort keys %extractcontiginfo) {
 	}
 	print "$locus left seq is $leftflankseq\n";
 	print "$locus right seq is $rightflankseq\n";
-	
+	#identifies TSD sequence
 	$leftkmer = &generate_kmer_pos($leftflankseq,$left,$newlocus) if defined ($leftflankseq);
 	$rightkmer = &generate_kmer_pos($rightflankseq,$right,$newlocus) if defined ($rightflankseq);
 	#print Dumper %$leftkmer;
@@ -266,23 +286,27 @@ foreach my $locus (sort keys %extractcontiginfo) {
 		$teseq = $seq_obj->subseq($testart,$teend);
 		$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
 		if ($tsdsucc eq "yes") {
-			&checkprediction($genomeloc,$tsdsucc);
+			
 			my $newID = join (".", $genomeloc,$tsdseq,$qTE);
+			&checkprediction($genomeloc,$tsdsucc,$newID);
 			my $seqout_obj = Bio::Seq->new( -display_id => $newID, -seq => $teseq);
 			push (@full_lengTEs,$seqout_obj);
 			
 		} elsif ($tsdsucc eq "no") {
-			&checkprediction($genomeloc,$tsdsucc);
-			my $seqout_obj = Bio::Seq->new( -display_id => $locus, -seq => $teseq);
+			
+			my $newid =  join (".", $locus,$qTE,"noTSD");
+			&checkprediction($genomeloc,$tsdsucc,$newid);
+			my $seqout_obj = Bio::Seq->new( -display_id => $newid, -seq => $teseq);
 			push (@partial_teseq,$seqout_obj);
 		}
 	} else {
 		$teseq = $seq_obj->subseq($start,$end) if ($strand eq 'plus');
 		$teseq = $seq_obj->subseq($end,$start) if ($strand eq 'minus');
 		$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
-		my $seqout_obj = Bio::Seq->new( -display_id => $locus, -seq => $teseq);
+		my $new_id =  join (".", $locus,$qTE,"noTSD");
+		my $seqout_obj = Bio::Seq->new( -display_id => $new_id, -seq => $teseq);
 		push (@partial_teseq,$seqout_obj);
-		&checkprediction($genomeloc,"no");
+		&checkprediction($genomeloc,"no",$new_id);
 	}
 }
 #compare two hashes of alldirectory strand prediction
@@ -290,7 +314,7 @@ foreach my $locus (sort keys %extractcontiginfo) {
 &printarray_fasta ("$teout.full_len.fasta",@full_lengTEs);
 &printarray_fasta ("$teout.partial.fasta",@partial_teseq);
 &find_no_te_cand();
-print Dumper %strandprediction;
+#print Dumper %strandprediction;
 &print_keyvalue_HOH($fineout,\%strandprediction);
 
 exit;
@@ -298,12 +322,14 @@ exit;
 #----------------------------------- SUB -------------------------------------
 #-----------------------------------------------------------------------------
 sub checkprediction {
-	my ($gloca,$fTEstatus) = @_;
+	my ($gloca,$fTEstatus,$ID) = @_;
 	if (exists ($strandprediction{$gloca}))  {
 		$strandprediction{$gloca}{'fulllengTE'} = $fTEstatus;
+		$strandprediction{$gloca}{'seq_id'} = $ID;
 	} else {
 		$strandprediction{$gloca}{'fulllengTE'} = $fTEstatus;
 		$strandprediction{$gloca}{'strand'} = '?';
+		$strandprediction{$gloca}{'seq_id'} = $ID;
 	}
 }
 sub load_file {
@@ -322,9 +348,13 @@ sub load_file {
 sub blast_file {
 	my ($qpath,$qloc,$directory) = @_;
 	unless (-e "$outpath/Renamed_Assembledseq/$directory.rename.fasta.nhr") {
-		system ("$BLASTpro/makeblastdb -in $outpath/Renamed_Assembledseq/$directory.rename.fasta -input_type fasta -dbtype nucl") == 0 or die ("unable to makeblastdb on $outpath/Renamed_Assembledseq/$directory.rename.fasta \n");
+		system ("makeblastdb -in $outpath/Renamed_Assembledseq/$directory.rename.fasta -input_type fasta -dbtype nucl") == 0 or die ("unable to makeblastdb on $outpath/Renamed_Assembledseq/$directory.rename.fasta \n");
 	}
-	system ("$BLASTpro/blastn -db $outpath/Renamed_Assembledseq/$directory.rename.fasta -query $qpath/$qloc -evalue 0.0001 -outfmt \"6 qseqid sseqid pident qlen length slen sstrand qstart qend sstart send qcovs mismatch gapopen evalue bitscore \" -out $outpath/$directory.$qloc.tabular.blast.out");
+	if ($qloc eq "$directory.extract.seq.fa") {
+		system ("blastn -db $outpath/Renamed_Assembledseq/$directory.rename.fasta -query $qpath/$qloc -evalue 0.0001 -outfmt \"6 qseqid sseqid pident qlen length slen sstrand qstart qend sstart send qcovs mismatch gapopen evalue bitscore \" -out $outpath/$qloc.tabular.blast.out");
+	} else {
+		system ("blastn -db $outpath/Renamed_Assembledseq/$directory.rename.fasta -query $qpath/$qloc -evalue 0.0001 -outfmt \"6 qseqid sseqid pident qlen length slen sstrand qstart qend sstart send qcovs mismatch gapopen evalue bitscore \" -out $outpath/$directory.$qloc.tabular.blast.out");
+	}
 }	
 sub concatenatefiles {
 	my ($outputfile, @files) = @_;
@@ -386,6 +416,7 @@ sub parse_blast {
 			$d{$contig}{'sstart'}  = $col[9];
 			$d{$contig}{'send'}  = $col[10];
 			$d{$contig}{'qid'} = $col[0];
+			$d{$contig}{'slen'} = $col[5];
 			if (exists ($d{$contig})) {
 				my $currentscore = $d{$contig}{'score'};
 				if ($currentscore > $score){
@@ -396,6 +427,7 @@ sub parse_blast {
 					$d{$contig}{'sstart'}  = $col[9];
 					$d{$contig}{'send'}  = $col[10];
 					$d{$contig}{'qid'} = $col[0];
+					$d{$contig}{'slen'} = $col[5];
 				}
 			}
 		}
@@ -439,17 +471,25 @@ sub find_no_te_cand {
 		} else {
 			$strandprediction{$locus}{'fulllengTE'} = 'no';
 			$strandprediction{$locus}{'strand'} = '?';
+			$strandprediction{$locus}{'seq_id'} = 'noTE';
 		}	
 	}
 	return (\%strandprediction);
 }
-
 sub print_keyvalue_HOH {
 	my ($filepath,$hashtoprint) = @_;
 	my %hashtoprint =%$hashtoprint;
 	open (my $kp,">","$filepath") || die ("failed to open file to write $filepath $!\n");
 	foreach my $mate (sort keys %hashtoprint) {
-		print $kp "$mate\t$hashtoprint{$mate}{'fulllengTE'}\t$hashtoprint{$mate}{'strand'}\n";
+		#splitting to get TSD separate
+		if ($hashtoprint{$mate}{'fulllengTE'} eq "yes") {
+			my $info = $hashtoprint{$mate}{'seq_id'};
+			my @features = split (/\./, $info);
+			my $tsdfeat = $features[1];
+			print $kp "$mate\t$hashtoprint{$mate}{'fulllengTE'}\t$hashtoprint{$mate}{'strand'}\t$hashtoprint{$mate}{'seq_id'}\t$tsdfeat\n";
+		} else {
+			print $kp "$mate\t$hashtoprint{$mate}{'fulllengTE'}\t$hashtoprint{$mate}{'strand'}\n";
+		}	
 	}
 	close $kp;
 }
@@ -597,9 +637,7 @@ sub findcord_bothtsds {
 		$tsdsuccess = "no";
 		$tsd1start = $te_start;
 		$tsd2end  = $te_end;
-		 
 	}
-	
 	return ($tsd1start,$tsd2end,$tsd,$tsdsuccess);
 }
 sub revcom_seq {
