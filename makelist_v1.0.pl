@@ -53,7 +53,7 @@ GetOptions ('t=s' => \$table,
 die "\n Script $scriptname version $version\n\n" if ((! $table) && (! $file) && (! $help) && (! $chlog) && ($v));
 die $changelog if ($chlog);
 die $usage if ((! $file) || !($table) || ($help));
-$out = "$path/$file.list.txt" if (! $out);
+$out = "$path/file.list.txt" if (! $out);
 #-----------------------------------------------------------------------------
 #----------------------------------- MAIN ------------------------------------
 #-----------------------------------------------------------------------------
