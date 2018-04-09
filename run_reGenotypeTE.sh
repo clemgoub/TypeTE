@@ -25,11 +25,14 @@ fi
 
 mkdir -p $OUTDIR/$PROJECT
 
-#Creates the <project>.input 
+#Creates the <project>.input in $OUTDIR/$PROJECT
 
 ./input_from_melt.sh $VCF $PROJECT
 
-#makeklist.pl uses input.input + $BAMFILE --> file.list.text
+
+#Join ind names and bam files to generate the list of locus/individuals
+
+perl makelist_v1.0.pl -t $BAMFILE -f sample_file.txt -p $OUTDIR/$PROJECT
 
 #splitfile.pl -out $OUTDIR uses file.list.text based on -individuals --> splitbyindividuals folder created with one file per individual_nb + list_of_splitted_files_names in $OUTDIR
 
