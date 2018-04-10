@@ -20,10 +20,13 @@ BAMFILE="/vbod2/jainy/SGDP/Project2/findgenotype/1KGP_45_individuals_bams_IDlist
 PROJECT="TEST_1" # Name of the project
 OUTDIR="/home/cgoubert/CorrectHet" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
 
-# options
+# mendatory parameters
 individual_nb="10" # number of individual per job
 CPU="10" # number of CPU
 GENOME="" # Paht the the reference genome sequence
 MAP="YES" #OR NO
+
+# non-mendatory parameters
+
 
 # DEPENDENCIES PATH

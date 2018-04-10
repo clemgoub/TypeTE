@@ -49,11 +49,13 @@ perl makelist_v1.0.pl -t $BAMFILE -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/
 # split the input in order to paralellize read extraction
 
 paste <(date | awk '{print $4}') <(echo "DONE.")
-echo "Splitting individuals for paralellization of read extraction..."
+paste <(date | awk '{print $4}') <(echo "Splitting individuals for paralellization of read extraction...")
 
 perl 02_splitfile_jt_v3.0_pipeline.pl -f $OUTDIR/$PROJECT/file.list.txt -s yes -n $individual_nb -p $OUTDIR/$PROJECT
 
 # Process bams: extract reads from bam files and extract mappability
+
+paste <(date | awk '{print $4}') <(echo "Extracting reads and mappability scores...")
 
 #cd in splitfile directory
 cd  $OUTDIR/$PROJECT/splitbyindividuals
@@ -73,6 +75,16 @@ cd $whereamI
 
 # $SCRIPT_PATH/process_bam........pl $BAMFILE $BAMPATH -p $OUTDIR
 
+# Fing TE annotations and consensus using RepeatMasker track
+
+paste <(date | awk '{print $4}') <(echo "Finding Repbase consensus for each MEI...")
+
 # orienTE_extracTE.pl -d $OUTDIR/processbamout -t TE_directory_from_indetify_mei_from_RM.sh -l list_outout_from_indetify_mei_from_RM.sh -g ExtractGenomicSequences
 
+paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
+
 # de_novo_create_input.sh (correct it, and modify Jainy's table before)
+
+paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...")
+
+
