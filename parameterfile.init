@@ -14,14 +14,14 @@
 # input
 VCF="/home/cgoubert/CorrectHet/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz" #Path to MELT vcf (.vcf or .vcf.gz)
 BAMPATH="" # Path to the bams' folder
-BAMFILE="" # indiv_name bam_name (table 2 fields)
+BAMFILE="/vbod2/jainy/SGDP/Project2/findgenotype/1KGP_45_individuals_bams_IDlist.txt" # indiv_name bam_name (table 2 fields)
 
 # output
 PROJECT="TEST_1" # Name of the project
 OUTDIR="/home/cgoubert/CorrectHet" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
 
 # options
-individual_nb="" # number of individual per job
+individual_nb="10" # number of individual per job
 CPU="" # number of CPU
 GENOME="" # Paht the the reference genome sequence
 SCRIPT_PATH=$(pwd)
