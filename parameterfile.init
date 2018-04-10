@@ -22,9 +22,8 @@ OUTDIR="/home/cgoubert/CorrectHet" # Path to place the output directory (will be
 
 # options
 individual_nb="10" # number of individual per job
-CPU="" # number of CPU
+CPU="10" # number of CPU
 GENOME="" # Paht the the reference genome sequence
-SCRIPT_PATH=$(pwd)
 MAP="YES" #OR NO
 
 # DEPENDENCIES PATH
