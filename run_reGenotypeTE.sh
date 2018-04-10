@@ -10,11 +10,11 @@
 # Version: 1.0                            #
 ###########################################
 
-#load the user options, outdir path and dependencies paths 
+#load the user options, outdir path and dependencies paths
 source parameterfile.init
 
 #START
-#Creates the $OUTDIR 
+#Creates the $OUTDIR
 
 {
 if [ $OUTDIR == "" ]; then
@@ -32,7 +32,7 @@ mkdir -p $OUTDIR/$PROJECT
 
 #Join ind names and bam files to generate the list of locus/individuals
 
-perl makelist_v1.0.pl -t $BAMFILE -f sample_file.txt -p $OUTDIR/$PROJECT
+perl makelist_v1.0.pl -t $BAMFILE -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT
 
 #splitfile.pl -out $OUTDIR uses file.list.text based on -individuals --> splitbyindividuals folder created with one file per individual_nb + list_of_splitted_files_names in $OUTDIR
 
