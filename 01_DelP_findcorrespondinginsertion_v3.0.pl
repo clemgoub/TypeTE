@@ -23,7 +23,8 @@ my $changelog = "
 #				print the corresponding breakpoints as well in another file
 #	- v3.0 = 12 April 2018
 #				-not done that-> check the breakpoint with the end of the RM cordinate as in addition to the start
-#				only output is with unique locus name 
+#				only output is with unique locus name
+# 				the script is modified to find only Alu
 #				 
 #	
 #				
