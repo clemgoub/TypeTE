@@ -103,7 +103,7 @@ print STDERR "Fetching data from mysql database..\n";
 close $fh;
 print STDERR "Printing data from mysql database..\n";
 #print Dumper %allindimappingscores,"\n";
-make_path ("$path");
+make_path ("$path") if ($path);
 &print_AOH (%allindimappingscores);
 # Disconnect from the database.
 $dbh->disconnect();
