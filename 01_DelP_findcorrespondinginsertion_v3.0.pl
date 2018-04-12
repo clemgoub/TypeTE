@@ -86,6 +86,7 @@ my @logvalues;
 my @valueswithbrkpnt;
 my $found;
 my $rip;
+make_path("$path") if ($path);
 print STDERR "loading the Repeatmasker data....\n";
 %repeatmaskerfile = load_file ($table);
 #print Dumper %repeatmaskerfile;
