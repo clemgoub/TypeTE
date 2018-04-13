@@ -405,11 +405,6 @@ sub findcord_bothtsds {
 	}
 	return (\%TEcor_bothtsd,\%exactmatch);
 }
-=pod
-This subroutine will find the cordinates A and B where is a perfect TSD identified
-----A|TSDxxxxxxxxxxxxBTSD|----
-=cut
-
 sub print_array {
 	my ($filetoprint,@array)= @_;
 	my @sortedarray = sort @array;
@@ -510,9 +505,9 @@ sub findcord_bothTSDs_approx {
 			if ($tstrand eq '+') {
 				my $gchr = $tchr;
 				my $tsd1start = ($tstart - $lefindex)+1;
-				my $tsd1end = ($tsd1start + $tkmerlen);
+				my $tsd1end = ($tsd1start + $tkmerlen)-1;
 				my $tsd2start = $tend + $rigindex;
-				my $tsd2end = ($tsd2start + $tkmerlen) - 1;
+				my $tsd2end = ($tsd2start + $tkmerlen)-1;
 				$gloca = $uniqlocus."\t".$gchr.":".$tsd1start."-".$tsd1end."\t".$gchr.":".$tsd2start."-".$tsd2end;
 				print "$gloca\n";
 				$TEcor_bothtsd_approx{$gloca} = $ltsd.".".$rtsd;
