@@ -142,7 +142,7 @@ die $usage if ((! $table) || (! $file) ||  ($help));
 my $cwd = getcwd();
 #die $usage if (($mappability eq "yes") && ((! $mysqldb) || (! $user) ||  ($password))) ;
 $path = $cwd if (!$path) ;
-my $mapscores = "$path/$file.mappabilityscores.txt";
+my $mapscores = "$path/file.mappabilityscores.txt";
 
 #-----------------------------------------------------------------------------
 #----------------------------------- MAIN ------------------------------------
