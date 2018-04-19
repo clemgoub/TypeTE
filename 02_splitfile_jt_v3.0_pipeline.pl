@@ -96,7 +96,7 @@ sub split_byindivi {
 	my $count =0;
 	my $lastindivi;
 	
-	make_path ("$path/splitbyindividuals");
+	make_path ("$path/splitbyindividuals") if ($path);
 	foreach my $name (sort { $sortindividual{$a} cmp  $sortindividual{$b}} keys %sortindividual) {
 		$currentindividual = $sortindividual{$name};
 		
@@ -144,9 +144,8 @@ sub sorthashbyvalue {
 
 sub print_array {
 	my ($num,@array) = @_;
-	
 	open (my $ah,">","$path/splitbyindividuals/file.$num.individuals.sorted.txt") || die ("cannot open file (sub print_array) to write $!\n");
-	push (@listofsplitfiles,"$file.$num.individuals.sorted.txt");
+	push (@listofsplitfiles,"file.$num.individuals.sorted.txt");
 		foreach my $dataline (@array) {
 			print $ah "$dataline\n";
 		}
