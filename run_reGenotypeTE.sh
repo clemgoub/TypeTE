@@ -60,14 +60,7 @@ paste <(date | awk '{print $4}') <(echo "Extracting reads and mappability scores
 #cd in splitfile directory
 cd  $OUTDIR/$PROJECT/splitbyindividuals
 
-#perl 03_processbam_extract_GM_scoresv15.0.pl \
-#-t $BAMFILE \ #bam id list
-#-f MEI_1KGP_data_10av \
-#-g /vbod2/jainy/SGDP/Project2/hg19.refFIX.fa \
-#-bl /vbod2/cgoubert/Correct_Genotypes/1KGP_bams \
-#-p version15.0 -pt /home/jainy/software/picard-2.9.2 \
-#-m $MAP -db jainys_db -u jainy -pd wysql123 \
-#-mt hg19wgEncodeCrgMapabilityAlign100mer_index
+cat ../List_of_split_files.txt | nohup $PARALLEL -j 10 --results $OUTDIR/$PROJECT/Process_bams 'perl $whereamI 03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -m yes -db mysqldb -u user -pd password -mt mysqltable’ & 
 
 
 #comes back to working dir

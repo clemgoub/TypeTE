@@ -13,7 +13,7 @@
 ### MAIN PARAMETERS
 # input
 VCF="/home/cgoubert/CorrectHet/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz" #Path to MELT vcf (.vcf or .vcf.gz)
-BAMPATH="" # Path to the bams' folder
+BAMPATH="/vbod2/cgoubert/Correct_Genotypes/1KGP_bams" # Path to the bams' folder
 BAMFILE="/vbod2/jainy/SGDP/Project2/findgenotype/1KGP_45_individuals_bams_IDlist.txt" # indiv_name bam_name (table 2 fields)
 
 # output
@@ -25,6 +25,8 @@ individual_nb="10" # number of individual per job
 CPU="10" # number of CPU
 GENOME="" # Paht the the reference genome sequence
 MAP="YES" #OR NO
+PARALLEL="/usr/bin/parallel" #Path to the GNU Parallel program
+$PICARD="/home/jainy/software/picard-2.9.2" #Path to Picard Tools
 
 # non-mendatory parameters
 
