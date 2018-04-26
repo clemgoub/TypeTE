@@ -12,21 +12,22 @@
 
 ### MAIN PARAMETERS
 # input
-VCF="/home/cgoubert/CorrectHet/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz" #Path to MELT vcf (.vcf or .vcf.gz)
+VCF="/home/cgoubert/CorrectHet/for_tests/out.recode.vcf" #Path to MELT vcf (.vcf or .vcf.gz)
 BAMPATH="/vbod2/cgoubert/Correct_Genotypes/1KGP_bams" # Path to the bams' folder
-BAMFILE="/vbod2/jainy/SGDP/Project2/findgenotype/1KGP_45_individuals_bams_IDlist.txt" # indiv_name bam_name (table 2 fields)
+BAMFILE="/home/cgoubert/CorrectHet/for_tests/testinds_bams.txt" # indiv_name bam_name (table 2 fields)
 
 # output
-PROJECT="TEST_1" # Name of the project
+PROJECT="TEST_short" # Name of the project
 OUTDIR="/home/cgoubert/CorrectHet" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
 
 # mendatory parameters
-individual_nb="10" # number of individual per job
-CPU="10" # number of CPU
+individual_nb="1" # number of individual per job (try to minimize that number)
+CPU="10" # number of CPU (try to maximize that number)
 GENOME="" # Paht the the reference genome sequence
 MAP="YES" #OR NO
 PARALLEL="/usr/bin/parallel" #Path to the GNU Parallel program
-$PICARD="/home/jainy/software/picard-2.9.2" #Path to Picard Tools
+PICARD="/home/jainy/software/picard-2.9.2" #Path to Picard Tools
+SEQTK="/home/jainy/software/seqtk/seqtk" #Path to seqtk
 
 # non-mendatory parameters
 

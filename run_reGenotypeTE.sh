@@ -60,7 +60,7 @@ paste <(date | awk '{print $4}') <(echo "Extracting reads and mappability scores
 #cd in splitfile directory
 cd  $OUTDIR/$PROJECT/splitbyindividuals
 
-cat ../List_of_split_files.txt | nohup $PARALLEL -j 10 --results $OUTDIR/$PROJECT/Process_bams 'perl $whereamI 03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -m yes -db mysqldb -u user -pd password -mt mysqltable’ & 
+cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -m yes -db jainys_db -u jainy -pd wysql123 -mt hg19wgEncodeCrgMapabilityAlign100mer_index" 
 
 
 #comes back to working dir
