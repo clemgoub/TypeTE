@@ -190,15 +190,15 @@ if ($mappability eq "yes") {
 }
 open (my $fh, "<", $file) or confess "\n ERROR (main): could not open to read $file $!\n";
 	while(<$fh>) {
-		chomp (my $line = $_);
+		chomp (my $line = $_);	#NA06985    14_85161024 14 85161024 AluYc1 + null
 		my @col = split(/\s+/,$line);
 		$individual = $col[0];
-		my $chr = $col[1] ;
-		my $start = $col[2] - 250;
-		my $end = $col[2] + 250;
+		my $chr = $col[2] ;
+		my $start = $col[3] - 250;
+		my $end = $col[3] + 250;
 		my $genomeloc = $chr.":".$start."-".$end;
-		my $m5start = $col[2] - 500;
-		my $m5end = $col[2] + 500;
+		my $m5start = $col[3] - 500;
+		my $m5end = $col[3] + 500;
 		#$genomeloc =  $chr.":".$m5start."-".$m5end;
 		#$cordinates500{$genomeloc} = 1;
 		#$cordinates250{$genomeloc2} = 1;
@@ -276,12 +276,12 @@ open ($fh, "<", $file) or confess "\n ERROR (main): could not open to read $file
 		my $numcol = @col;
 		print "the number of colums is $numcol\n";
 		$individual = $col[0];
-		my $chr = $col[1] ;
+		my $chr = $col[2] ;
 		#my $gstart = $col[2] - 20;
 		#my $gend = $col[2] + 20;
 		#$gextract = $chr."_".$gstart."-".$gend;
-		my $start = $col[2] - 250;
-		my $end = $col[2] + 250;
+		my $start = $col[3] - 250;
+		my $end = $col[3] + 250;
 		#my $start2 = $col[2] - 500;
 		#my $end2 = $col[2] + 500;
 		#$genomeloc =  $chr.":".$start2."-".$end2;
