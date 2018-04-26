@@ -66,11 +66,12 @@ cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Pr
 #comes back to working dir
 cd $whereamI
 
-# $SCRIPT_PATH/process_bam........pl $BAMFILE $BAMPATH -p $OUTDIR
-
 # Fing TE annotations and consensus using RepeatMasker track
 
 paste <(date | awk '{print $4}') <(echo "Finding Repbase consensus for each MEI...")
+
+total_locus=(ls $OUTDIR/IGV)
+./identify_mei_from_RM.sh $OUTDIR/IGV $OUTDIR/Repbase_intersect
 
 # orienTE_extracTE.pl -d $OUTDIR/processbamout -t TE_directory_from_indetify_mei_from_RM.sh -l list_outout_from_indetify_mei_from_RM.sh -g ExtractGenomicSequences
 
