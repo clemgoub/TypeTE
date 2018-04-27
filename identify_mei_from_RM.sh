@@ -13,14 +13,10 @@
 #                                        #
 # Author: Clement Goubert                #
 # Date: 02/01/2018                       #
+# Update: 04/27/2018                     #
 ##########################################
 
 ### USAGE: ./identify_mei_from_RM.sh loci_bam_folder output_folder #folders must be in full path (no relative) without final "/"
-
-### Set paths (CHANGE IN FINAL VERSION TO MATCH ALL SCRIPTS)
-BEDTOOLS="/home/cgoubert/bin/bedtools2/bin"
-RM_TRACK="/home/cgoubert/CorrectHet/RepeatMasker_Alu_hg38_lift_hg19.bed"
-RM_FASTA="/home/cgoubert/bin/RepeatMasker/Libraries/dc20170127-rb20170127/homo_sapiens/refinelib"
 
 rm -r $2 # erase previous output if same name
 mkdir $2 # creates the output folder if inexistent
@@ -28,14 +24,14 @@ mkdir $2 # creates the output folder if inexistent
 # Pick up the discordant mates from the bam files, generates .bed per individual / locus
 paste <(date | awk '{print $4}') <(echo "generates individual .bed file per locus...")
 
-cd $1
-listeofposition=$(ls) ##### all that before in main script and the rest using parallel over the sublit
+#cd $1
+listeofposition=$(cat $OUTDIR/IGV/$1) ##### all that before in main script and the rest using parallel over the sublit
 
 for pos in $listeofposition
 do
 	echo "$pos..."
 	mkdir -p $2/$pos # create one folder per position in the outfolder
-	cd $1/$pos # switch inside the position folder in the bam folder
+	cd $OUTDIR/IGV/$pos # switch inside the position folder in the bam folder
 	listofbams=*.bam # list the individual bams. One bam / individual / locus without full TE assembly.
 	for bam in $listofbams
 	do

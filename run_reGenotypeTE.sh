@@ -19,59 +19,74 @@ echo "#      reGenotypeTE       #"
 echo "###########################"
 
 #locate working directoty
-whereamI=$(pwd)
+# whereamI=$(pwd)
 
-#Creates the $OUTDIR
+# #Creates the $OUTDIR
 
-{
-if [ $OUTDIR == "" ]; then
-    echo "OUTDIR not set, don't know where to create output folder..."
-    exit 0
-fi
-}
+# {
+# if [ $OUTDIR == "" ]; then
+#     echo "OUTDIR not set, don't know where to create output folder..."
+#     exit 0
+# fi
+# }
 
-mkdir -p $OUTDIR/$PROJECT
+# mkdir -p $OUTDIR/$PROJECT
 
-#Creates the <project>.input in $OUTDIR/$PROJECT
+# #Creates the <project>.input in $OUTDIR/$PROJECT
 
-paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
+# paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
 
-./input_from_melt.sh $VCF $PROJECT
-
-
-#Join ind names to coordinates and generate the list of locus/individuals ("$OUTDIR/$PROJECT/sample_file.txt.list.txt")
-
-paste <(date | awk '{print $4}') <(echo "DONE.")
-echo "Joining individuals and MEI coordinates..."
-
-perl makelist_v1.0.pl -t $BAMFILE -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT
-
-# split the input in order to paralellize read extraction
-
-paste <(date | awk '{print $4}') <(echo "DONE.")
-paste <(date | awk '{print $4}') <(echo "Splitting individuals for paralellization of read extraction...")
-
-perl 02_splitfile_jt_v3.0_pipeline.pl -f $OUTDIR/$PROJECT/file.list.txt -s yes -n $individual_nb -p $OUTDIR/$PROJECT
-
-# Process bams: extract reads from bam files and extract mappability
-
-paste <(date | awk '{print $4}') <(echo "Extracting reads and mappability scores...")
-
-#cd in splitfile directory
-cd  $OUTDIR/$PROJECT/splitbyindividuals
-
-cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -m yes -db jainys_db -u jainy -pd wysql123 -mt hg19wgEncodeCrgMapabilityAlign100mer_index" 
+# ./input_from_melt.sh $VCF $PROJECT
 
 
-#comes back to working dir
-cd $whereamI
+# #Join ind names to coordinates and generate the list of locus/individuals ("$OUTDIR/$PROJECT/sample_file.txt.list.txt")
+
+# paste <(date | awk '{print $4}') <(echo "DONE.")
+# echo "Joining individuals and MEI coordinates..."
+
+# perl makelist_v1.0.pl -t $BAMFILE -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT
+
+# # split the input in order to paralellize read extraction
+
+# paste <(date | awk '{print $4}') <(echo "DONE.")
+# paste <(date | awk '{print $4}') <(echo "Splitting individuals for paralellization of read extraction...")
+
+# perl 02_splitfile_jt_v3.0_pipeline.pl -f $OUTDIR/$PROJECT/file.list.txt -s yes -n $individual_nb -p $OUTDIR/$PROJECT
+
+# # Process bams: extract reads from bam files and extract mappability
+
+# paste <(date | awk '{print $4}') <(echo "Extracting reads and mappability scores...")
+
+# #cd in splitfile directory
+# cd  $OUTDIR/$PROJECT/splitbyindividuals
+
+# cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -m yes -db jainys_db -u jainy -pd wysql123 -mt hg19wgEncodeCrgMapabilityAlign100mer_index" 
+
+
+# #comes back to working dir
+# cd $whereamI
 
 # Fing TE annotations and consensus using RepeatMasker track
 
 paste <(date | awk '{print $4}') <(echo "Finding Repbase consensus for each MEI...")
 
-total_locus=(ls $OUTDIR/IGV)
-./identify_mei_from_RM.sh $OUTDIR/IGV $OUTDIR/Repbase_intersect
+# counting loci and dividing into subfiles for paralellization
+total_locus=$(ls -lh $OUTDIR/$PROJECT/IGV | awk ' NR > 1 {print $NF}')
+nb_locus=$(echo "total_locus" | wc -l)
+per_file=$( echo "$nb_locus/$CPU" | bc)
+if(($per_file < 1))
+then 
+	splitnb=$((1))
+else
+	splitnb=$(((nb_locus+1)/$CPU))
+fi
+
+mkdir -p $OUTDIR/$PROJECT/splitbylocus
+split -l $splitnb <(echo "$total_locus") --additional-suffix .part $OUTDIR/$PROJECT/splitbylocus/locus_
+ls $OUTDIR/$PROJECT/splitbylocus/locus_* > $OUTDIR/$PROJECT/splitbylocus/List_of_loci_files.txt
+
+# Run in parallel find TE from Repbase
+cat $OUTDIR/$PROJECT/splitbylocus/List_of_loci_files.txt | $PARALLEL -j $CPU --results $OUTDIR/Repbase_intersect "./identify_mei_from_RM.sh {} $OUTDIR/Repbase_intersect"
 
 # orienTE_extracTE.pl -d $OUTDIR/processbamout -t TE_directory_from_indetify_mei_from_RM.sh -l list_outout_from_indetify_mei_from_RM.sh -g ExtractGenomicSequences
 
