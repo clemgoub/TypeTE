@@ -86,7 +86,7 @@ split -l $splitnb <(echo "$total_locus") --additional-suffix .part $OUTDIR/$PROJ
 ls $OUTDIR/$PROJECT/splitbylocus/locus_* > $OUTDIR/$PROJECT/splitbylocus/List_of_loci_files.txt
 
 # Run in parallel find TE from Repbase
-cat $OUTDIR/$PROJECT/splitbylocus/List_of_loci_files.txt | $PARALLEL -j $CPU --results $OUTDIR/Repbase_intersect "./identify_mei_from_RM.sh {} $OUTDIR/Repbase_intersect"
+ls $OUTDIR/$PROJECT/splitbylocus/*.part | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Repbase_intersect "./identify_mei_from_RM.sh {} $OUTDIR/$PROJECT/Repbase_intersect"
 
 # orienTE_extracTE.pl -d $OUTDIR/processbamout -t TE_directory_from_indetify_mei_from_RM.sh -l list_outout_from_indetify_mei_from_RM.sh -g ExtractGenomicSequences
 

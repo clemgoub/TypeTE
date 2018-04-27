@@ -18,6 +18,7 @@
 
 ### USAGE: ./identify_mei_from_RM.sh loci_bam_folder output_folder #folders must be in full path (no relative) without final "/"
 
+source parameterfile.init
 rm -r $2 # erase previous output if same name
 mkdir $2 # creates the output folder if inexistent
 
@@ -25,13 +26,13 @@ mkdir $2 # creates the output folder if inexistent
 paste <(date | awk '{print $4}') <(echo "generates individual .bed file per locus...")
 
 #cd $1
-listeofposition=$(cat $OUTDIR/IGV/$1) ##### all that before in main script and the rest using parallel over the sublit
+listeofposition=$(cat $1) ##### all that before in main script and the rest using parallel over the sublit
 
 for pos in $listeofposition
 do
 	echo "$pos..."
 	mkdir -p $2/$pos # create one folder per position in the outfolder
-	cd $OUTDIR/IGV/$pos # switch inside the position folder in the bam folder
+	cd $OUTDIR/$PROJECT/IGV/$pos # switch inside the position folder in the bam folder
 	listofbams=*.bam # list the individual bams. One bam / individual / locus without full TE assembly.
 	for bam in $listofbams
 	do
@@ -44,18 +45,17 @@ paste <(date | awk '{print $4}') <(echo "concatenate individual discordant reads
 
 cd $2 # switch to output folder
 mkdir -p concatenated_bed # creates the folder that will hold the concatenated bed per position
-listeofposition2=$(ls | grep -v 'bed') # make the list of position folders
-for pos2 in $listeofposition2 # loop over every position to concatenate the beds
+#listeofposition2=$(ls | grep -v 'bed') # make the list of position folders
+for pos in $listeofposition # loop over every position to concatenate the beds
 do
-	echo "$pos2..."
-	cd $2/$pos2
+	echo "$pos..."
+	cd $2/$pos
 	#positions=$(ls *.bed | sed $'s/\./\t/g' | cut -f 2 | sort | uniq) # creates the list of unique positions (locus)
 	#for posi in $positions
 	#do
-cat *$pos2*.bed | grep -v "chr\*" > $2/concatenated_bed/$pos2""_concat.bed # concatenates the individual bed per locus
+cat *$pos*.bed | grep -v "chr\*" > $2/concatenated_bed/$pos""_concat.bed # concatenates the individual bed per locus
 
 done
-
 
 # Intersect the locus .bed with the RM track
 paste <(date | awk '{print $4}') <(echo "intersect concatenated locus .bed with RepeatMasker track...")
