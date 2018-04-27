@@ -19,8 +19,6 @@
 ### USAGE: ./identify_mei_from_RM.sh loci_bam_folder output_folder #folders must be in full path (no relative) without final "/"
 
 source parameterfile.init
-rm -r $2 # erase previous output if same name
-mkdir $2 # creates the output folder if inexistent
 
 # Pick up the discordant mates from the bam files, generates .bed per individual / locus
 paste <(date | awk '{print $4}') <(echo "generates individual .bed file per locus...")
