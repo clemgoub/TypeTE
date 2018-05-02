@@ -96,7 +96,7 @@ ls $OUTDIR/$PROJECT/splitbylocus/*.part | $PARALLEL -j $CPU --results $OUTDIR/$P
 # Extract the TE sequence
 paste <(date | awk '{print $4}') <(echo "Extracting the TE sequences in fasta format...")
 
-mkdir $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences
+mkdir -p $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences
 awk '{print $3}' $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE | sort | uniq | awk '{print $1"#SINE/Alu"}' > $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
 
 TEheads=$(cat $OUTDIR/$PROJECT/Repbase_intersect/TE_headers)
