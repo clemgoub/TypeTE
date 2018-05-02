@@ -107,6 +107,7 @@ do
 	perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$head") $RM_FASTA > $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/$name"".fasta
 done
 
+cat $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/*.fasta > $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/RM_consensus.fa
 rm $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
 
 paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
