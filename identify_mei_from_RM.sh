@@ -59,15 +59,14 @@ done
 paste <(date | awk '{print $4}') <(echo "intersect concatenated locus .bed with RepeatMasker track...")
 
 cd $2/concatenated_bed
-filelist=*_concat.bed # list the locus bedfile in preparation of the intersection with the RM track
 
-for file in $filelist
+for file in $listeofposition
 do
 	echo "$file..."
 	# intersect for each locus the RepeatMasker track and select the best overlap
-	TE=$($BEDTOOLS/bedtools intersect -wao -a <(awk '{print $0"\t"NR}' $file) -b $RM_TRACK | awk '{print $1"_"$2"_"$3"_"$4"\t"$0}' | sort -k1,1 -k9,9nr | sort -u -k1,1 | sed $'s/repName=//g;s/;/\t/g' | cut -f 9 | sort | uniq -c | sort -k1,1nr | grep -v "\." | head -n 1)
+	TE=$($BEDTOOLS/bedtools intersect -wao -a <(awk '{print $0"\t"NR}' $file""_concat.bed) -b $RM_TRACK | awk '{print $1"_"$2"_"$3"_"$4"\t"$0}' | sort -k1,1 -k9,9nr | sort -u -k1,1 | sed $'s/repName=//g;s/;/\t/g' | cut -f 9 | sort | uniq -c | sort -k1,1nr | grep -v "\." | head -n 1)
 	echo "$TE"
-	paste <(echo "$file") <(echo $TE) | sed $'s/_concat\.bed//g' | sed 's/\.\.\///g' >> $2/position_and_TE # print the locus | number of discordant mates that support | TE (one line per locus)
+	paste <(echo "$file") <(echo $TE) | sed 's/\.\.\///g' >> $2/position_and_TE # print the locus | number of discordant mates that support | TE (one line per locus)
 	#paste <(echo "$file") <(echo $TE) | sed $'s/_concat\.bed//g' | sed 's/\.\.\///g;s/\t/xXx/g;s/ /xXx/g' >> $2/position_and_TE # print the locus | number of discordant mates that support | TE (one line per locus)
 done
 
