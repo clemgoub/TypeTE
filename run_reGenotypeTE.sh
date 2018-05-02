@@ -66,7 +66,8 @@ echo "###########################"
 # #comes back to working dir
 # cd $whereamI
 
-# Fing TE annotations and consensus using RepeatMasker track
+#############################################################################################################################
+################## MODULE 4: Find TE annotations and consensus using RepeatMasker track #####################################
 
 paste <(date | awk '{print $4}') <(echo "Finding Repbase consensus for each MEI...")
 
@@ -91,6 +92,27 @@ rm -r $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE # remove the output tab
 ls $OUTDIR/$PROJECT/splitbylocus/*.part | $PARALLEL --bibtex -j $CPU --results $OUTDIR/$PROJECT/Repbase_intersect "./identify_mei_from_RM.sh {} $OUTDIR/$PROJECT/Repbase_intersect"
 
 # orienTE_extracTE.pl -d $OUTDIR/processbamout -t TE_directory_from_indetify_mei_from_RM.sh -l list_outout_from_indetify_mei_from_RM.sh -g ExtractGenomicSequences
+
+# Extract the TE sequence
+paste <(date | awk '{print $4}') <(echo "Extracting the TE sequences in fasta format...")
+
+mkdir $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences
+awk '{print $3}' $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE | sort | uniq | awk '{print $1"#SINE/Alu"}' > $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
+
+TEheads=$(cat $OUTDIR/$PROJECT/Repbase_intersect/TE_headers)
+for head in $TEheads
+do
+	name=$(echo "$head" | sed 's/\#SINE\/Alu//g')
+	echo "$name"
+	perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$head") $RM_FASTA > $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/$name"".fasta
+done
+
+rm $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
+
+paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
+
+##################################################### END OF MODULE 4 #####################################################
+###########################################################################################################################
 
 paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 

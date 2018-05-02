@@ -70,20 +70,4 @@ do
 	#paste <(echo "$file") <(echo $TE) | sed $'s/_concat\.bed//g' | sed 's/\.\.\///g;s/\t/xXx/g;s/ /xXx/g' >> $2/position_and_TE # print the locus | number of discordant mates that support | TE (one line per locus)
 done
 
-# Extract the TE sequence
-paste <(date | awk '{print $4}') <(echo "Extracting the TE sequences in fasta format...")
 
-mkdir $2/TE_sequences
-awk '{print $3}' $2/position_and_TE | sort | uniq | awk '{print $1"#SINE/Alu"}' > $2/TE_headers
-
-TEheads=$(cat $2/TE_headers)
-for head in $TEheads
-do
-	name=$(echo "$head" | sed 's/\#SINE\/Alu//g')
-	echo "$name"
-	perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$head") $RM_FASTA > $2/TE_sequences/$name"".fasta
-done
-
-rm $2/TE_headers
-
-paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
