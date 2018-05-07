@@ -58,7 +58,7 @@ $out = "$path/file.list.txt" if (! $out);
 #----------------------------------- MAIN ------------------------------------
 #-----------------------------------------------------------------------------
 my %individualids;
-make_path ("$path");
+make_path ("$path") if ($path);
 &load_IDs();
 &print_file();
 exit;
