@@ -68,13 +68,14 @@ paste <(date | awk '{print $4}') <(echo "Extracting reads...")
 
 cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
 
-cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD" 
+cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g  -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD" 
 
-cd $whereamI #comes back to the working dir
+cd $whereamI #comes back to the
+ working dir
 
 paste <(date | awk '{print $4}') <(echo "Extracting mappability scores...")
 
-perl denovo_extract_GM_scoresv1.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f 164_CEU_PCR-KGP_MEI_info.txt -p $OUTDIR/$PROJECT/gmscore_all -db jainys_db -u jainy -pd wysql123
+perl denovo_extract_GM_scoresv1.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/gmscore_all -db jainys_db -u jainy -pd wysql123
 
 
 ####################################################################
@@ -130,7 +131,7 @@ paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 
 paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 
-perl 04_orientTE_extractTE_v5.0_pipeline.pl -d -g -t -l
+#perl 04_orientTE_extractTE_v5.0_pipeline.pl -d -g -t -l
 
 #######################################
 # 6: Generate input for genotyping ####
