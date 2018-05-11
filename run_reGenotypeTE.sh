@@ -6,7 +6,7 @@
 # This is the main script of the pipeline #
 #                                         #
 # Author: Clement Goubert                 #
-# Date: 04/2018                           #
+# Date: 05/2018                           #
 # Version: 1.0                            #
 ###########################################
 
@@ -17,6 +17,10 @@ source parameterfile.init
 echo "###########################"
 echo "#      reGenotypeTE       #"
 echo "###########################"
+
+################################################
+# 0: Setup and create input from MELT files ####
+################################################
 
 #locate working directoty
 # whereamI=$(pwd)
@@ -38,36 +42,44 @@ echo "###########################"
 
 # ./input_from_melt.sh $VCF $PROJECT
 
-
-# #Join ind names to coordinates and generate the list of locus/individuals ("$OUTDIR/$PROJECT/sample_file.txt.list.txt")
-
 # paste <(date | awk '{print $4}') <(echo "DONE.")
-# echo "Joining individuals and MEI coordinates..."
 
+#################################################
+# 1: Joining individuals and MEI coordinates ####
+#################################################
+
+# echo "Joining individuals and MEI coordinates..."
 # perl makelist_v1.0.pl -t $BAMFILE -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT
 
-# # split the input in order to paralellize read extraction
+#####################################
+# 2: Split input per individuals ####
+#####################################
 
 # paste <(date | awk '{print $4}') <(echo "DONE.")
 # paste <(date | awk '{print $4}') <(echo "Splitting individuals for paralellization of read extraction...")
 
 # perl 02_splitfile_jt_v3.0_pipeline.pl -f $OUTDIR/$PROJECT/file.list.txt -s yes -n $individual_nb -p $OUTDIR/$PROJECT
 
-# # Process bams: extract reads from bam files and extract mappability
+#######################################################
+# 3: Extract reads and mapability scores per locus ####
+#######################################################
 
-# paste <(date | awk '{print $4}') <(echo "Extracting reads and mappability scores...")
+paste <(date | awk '{print $4}') <(echo "Extracting reads...")
 
-# #cd in splitfile directory
-# cd  $OUTDIR/$PROJECT/splitbyindividuals
+cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
 
-# cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -m yes -db jainys_db -u jainy -pd wysql123 -mt hg19wgEncodeCrgMapabilityAlign100mer_index" 
+cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_extract_GM_scoresv15.0.pl -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD" 
+
+cd $whereamI #comes back to the working dir
+
+paste <(date | awk '{print $4}') <(echo "Extracting mappability scores...")
+
+perl denovo_extract_GM_scoresv1.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f 164_CEU_PCR-KGP_MEI_info.txt -p $OUTDIR/$PROJECT/gmscore_all -db jainys_db -u jainy -pd wysql123
 
 
-# #comes back to working dir
-# cd $whereamI
-
-#############################################################################################################################
-################## MODULE 4: Find TE annotations and consensus using RepeatMasker track #####################################
+####################################################################
+# 4: Find TE annotations and consensus using RepeatMasker track ####
+####################################################################
 
 paste <(date | awk '{print $4}') <(echo "Finding Repbase consensus for each MEI...")
 
@@ -112,12 +124,17 @@ rm $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
 
 paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 
-##################################################### END OF MODULE 4 #####################################################
-###########################################################################################################################
+############################################################
+# 5: de novo Assembly, orientation and find TSDs of MEI ####
+############################################################
 
 paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 
-# de_novo_create_input.sh (correct it, and modify Jainy's table before)
+perl 04_orientTE_extractTE_v5.0_pipeline.pl -d -g -t -l
+
+#######################################
+# 6: Generate input for genotyping ####
+#######################################
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...")
 
