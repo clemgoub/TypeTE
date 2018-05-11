@@ -72,7 +72,8 @@ die $usage if ((! $mysqltable) || (! $file) ||  ($help));
 my $cwd = getcwd();
 #die $usage if (($mappability eq "yes") && ((! $mysqldb) || (! $user) ||  ($password))) ;
 $path = $cwd if (!$path) ;
-my $mapscores = "$path/$file.mappabilityscores.txt";
+make_path ("$path") if ($path);
+my $mapscores = "$path/file.mappabilityscores.txt";
 
 #-----------------------------------------------------------------------------
 #----------------------------------- MAIN ------------------------------------
@@ -104,7 +105,7 @@ print STDERR "Fetching data from mysql database..\n";
 close $fh;
 print STDERR "Printing data from mysql database..\n";
 #print Dumper %allindimappingscores,"\n";
-make_path ("$path") if ($path);
+
 &print_AOH (%allindimappingscores);
 # Disconnect from the database.
 $dbh->disconnect();
