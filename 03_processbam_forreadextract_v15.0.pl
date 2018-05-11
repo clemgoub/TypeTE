@@ -191,7 +191,7 @@ open (my $fh, "<", $file) or confess "\n ERROR (main): could not open to read $f
 		#my $tetype = $col[3];
 		&find_bamid();
 		$uniqueid = $individual.".".$genomeloc;
-		&extractgmscores($uniqueid) if ($mappability eq "yes");
+		
 		#for viewing in IGV- step1
 		make_path  ("$path/IGV/$genomeloc");
 		system("samtools view -b -o $path/IGV/$genomeloc/$uniqueid.bam $bamlocation/$bamid $genomeloc") == 0 or die ("unable to run command on $uniqueid \n");
