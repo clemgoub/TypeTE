@@ -23,7 +23,7 @@ echo "###########################"
 ################################################
 
 #locate working directoty
-# whereamI=$(pwd)
+whereamI=$(pwd)
 
 # #Creates the $OUTDIR
 
