@@ -70,8 +70,7 @@ cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
 
 cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g  -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD" 
 
-cd $whereamI #comes back to the
- working dir
+cd $whereamI #comes back to the working dir
 
 paste <(date | awk '{print $4}') <(echo "Extracting mappability scores...")
 
