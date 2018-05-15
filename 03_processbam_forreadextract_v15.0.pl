@@ -91,7 +91,7 @@ my $changelog = "
 \n";
 
 my $usage = "\nUsage [$version]: 
-    perl $scriptname -t <table> -f <split files> -g <pathtogenomefile> -bl <bam location> -pt <path to picard tools> [-p <path of the outputdirectory processbamout>][-v] [-c] [-h] [-s] 
+    perl $scriptname -t <table> -f <split files> -g <pathtogenomefile> -bl <bam location> -pt <path to picard tools> -sq <path of seqtk> -bu <path of bamutils>[-p <path of the outputdirectory processbamout>][-v] [-c] [-h] [-s] 
 	
 	
 	
@@ -116,13 +116,15 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($file,$path,$table,$GENOME,$bamlocation,$picardtools,$verbose,$help,$v,$chlog);
+my ($file,$path,$table,$GENOME,$bamlocation,$seqtkpro,$bamUtilpro,$picardtools,$verbose,$help,$v,$chlog);
 GetOptions ('f=s' => \$file,
             'p=s' => \$path,
             'g=s' => \$GENOME,
             't=s' => \$table,
             'bl=s'=> \$bamlocation,
-            'pt=s'=> \$picardtools,	
+            'pt=s'=> \$picardtools,
+            'sq=s'=> \$seqtkpro,
+            'bu=s'=> \$bamUtilpro, 	
             'c'   => \$chlog, 
             'h'   => \$help,
             's'   => \$verbose, 
@@ -202,7 +204,7 @@ open (my $fh, "<", $file) or confess "\n ERROR (main): could not open to read $f
 		##Extracting discordant reads
 		make_path  ("$path/Discordantreads/$individual");
 		system ("samtools view -b -F 3854 $bamlocation/$bamid $genomeloc > $path/Discordantreads/$individual/$uniqueid.discordantF3854.outfile.bam") == 0 or die ("unable to extract readsby F 3854 flag $!");
-		system ("samtools bam2fq $path/Discordantreads/$individual/$uniqueid.discordantF3854.outfile.bam | seqtk seq -A -q20 > $path/Discordantreads/$individual/$uniqueid.dismapped.reads.fasta") == 0 or die ("unable to convert discordant bam file  to fasta $uniqueid \n");
+		system ("samtools bam2fq $path/Discordantreads/$individual/$uniqueid.discordantF3854.outfile.bam | $seqtkpro/seqtk seq -A -q20 > $path/Discordantreads/$individual/$uniqueid.dismapped.reads.fasta") == 0 or die ("unable to convert discordant bam file  to fasta $uniqueid \n");
 		#identifying mates of discordant reads
 		$dispath = "$path/Discordantreads/$individual";
 		my $mappedisreads = "$uniqueid.dismapped.reads.fasta";
@@ -282,18 +284,18 @@ open ($fh, "<", $file) or confess "\n ERROR (main): could not open to read $file
 		#extracting only the mapped reads
 		unless (-e "$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.fasta") {
 			system("samtools view -b -F 4 $bamlocation/$bamid $genomeloc > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.bam ") == 0 or die ("unable to extract bam at $uniqueid \n");
-			#system ("samtools bam2fq $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.bam | seqtk seq -A -q20  > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.fasta") == 0 or die ("unable to convert to fasta $uniqueid \n");
+			#system ("samtools bam2fq $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.bam | $seqtkpro/seqtk seq -A -q20  > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.fasta") == 0 or die ("unable to convert to fasta $uniqueid \n");
 			#sort the bam file on name
 			system ("samtools sort -n -o $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.bam $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.bam") == 0 or die ("unable to name sort bam file $uniqueid \n");
 			#Extract mapped reads as R1, R2 and Unparied from the bam
-			system ("bam bam2FastQ --in $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.bam --firstOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R1.fastq --secondOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R2.fastq --unpairedOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fastq --noReverseComp") == 0 or die ("unable to extract reads using bamUtil $uniqueid \n");
+			system ("$bamUtilpro/bam bam2FastQ --in $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.bam --firstOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R1.fastq --secondOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R2.fastq --unpairedOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fastq --noReverseComp") == 0 or die ("unable to extract reads using bamUtil $uniqueid \n");
 			unlink ("$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R1.fastq","$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R2.fastq") or warn "Could not unlink : $!";
 			#extracting the R1 and R2 from bedtools as there is a bug with bamutil for R1 and R2
 			system ("bedtools bamtofastq -i $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.bam -fq $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fastq -fq2 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fastq") == 0 or die ("unable to extract reads using bamUtil $uniqueid \n");
 			#changing fastq to fasta
-			system ("seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fasta") == 0 or die ("unable to run seqtk on R1 $uniqueid \n");
-			system ("seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fasta") == 0 or die ("unable to run seqtk on R2 $uniqueid \n");
-			system ("seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fasta") == 0 or die ("unable to run seqtk on Up $uniqueid \n");
+			system ("$seqtkpro/seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fasta") == 0 or die ("unable to run seqtk on R1 $uniqueid \n");
+			system ("$seqtkpro/seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fasta") == 0 or die ("unable to run seqtk on R2 $uniqueid \n");
+			system ("$seqtkpro/seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fasta") == 0 or die ("unable to run seqtk on Up $uniqueid \n");
 		}
 	
 		if (-e "$path/Discordantreads/$file/discordantmatesonly/$uniqueid.discordantmatesreadIDlist.txt.fasta") {
@@ -442,7 +444,7 @@ sub extractreads_bam {
 		#extract reads using picard tools
 		unless (-e "$path/Allreadsforbam/$file/$allreadindi.allreadIDs.bam") {
 			system ("java -jar $picardtools/picard.jar FilterSamReads INPUT=$bamlocation/$bam_id VALIDATION_STRINGENCY=LENIENT FILTER=includeReadList READ_LIST_FILE=$path/Allreadsforbam/$file/$allreadindi.allreadIDs.txt WRITE_READS_FILES=false OUTPUT=$path/Allreadsforbam/$file/$allreadindi.allreadIDs.bam") == 0 or die ("unable to run picard tools in $file on $allreadindi \n");
-			system ("samtools bam2fq $path/Allreadsforbam/$file/$allreadindi.allreadIDs.bam | seqtk seq -A -q20 > $path/Allreadsforbam/$file/$allreadindi.allreadIDs.fasta") == 0 or die ("unable to convert to fasta $allreadindi \n");
+			system ("samtools bam2fq $path/Allreadsforbam/$file/$allreadindi.allreadIDs.bam | $seqtkpro/seqtk seq -A -q20 > $path/Allreadsforbam/$file/$allreadindi.allreadIDs.fasta") == 0 or die ("unable to convert to fasta $allreadindi \n");
 
 		}
 	}
