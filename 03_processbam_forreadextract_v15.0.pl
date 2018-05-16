@@ -116,7 +116,7 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($file,$path,$table,$GENOME,$bamlocation,$seqtkpro,$bamUtilpro,$picardtools,$verbose,$help,$v,$chlog,$bt);
+my ($file,$path,$table,$GENOME,$bamlocation,$seqtkpro,$bamUtilpro,$picardtools,$verbose,$help,$v,$chlog,$bedtoolsdir);
 GetOptions ('f=s' => \$file,
             'p=s' => \$path,
             'g=s' => \$GENOME,
