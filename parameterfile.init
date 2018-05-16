@@ -35,5 +35,6 @@ MAP="YES" #OR NO
 PARALLEL="/usr/bin/parallel" #Path to the GNU Parallel program
 PICARD="/home/jainy/software/picard-2.9.2" #Path to Picard Tools
 BEDTOOLS="/home/cgoubert/bin/bedtools2/bin" #Path to bedtools
-#SEQTK="/home/jainy/software/seqtk/seqtk" /!\ seqtk MUST BE IN PATH /!\
+SEQTK="/home/jainy/software/seqtk/seqtk"
+BAMUTILS="/home/jainy/software/bamUtil/bam"
 # /!\ PERL MUST BE IN PATH /!\
