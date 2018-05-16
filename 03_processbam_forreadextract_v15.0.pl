@@ -91,7 +91,7 @@ my $changelog = "
 \n";
 
 my $usage = "\nUsage [$version]: 
-    perl $scriptname -t <table> -f <split files> -g <pathtogenomefile> -bl <bam location> -pt <path to picard tools> -sq <path of seqtk> -bu <path of bamutils>[-p <path of the outputdirectory processbamout>][-v] [-c] [-h] [-s] 
+    perl $scriptname -t <table> -f <split files> -g <pathtogenomefile> -bl <bam location> -pt <path to picard tools> -sq <path of seqtk> -bu <path of bamutils>[-p <path of the outputdirectory processbamout>] -bt <path to bedtools bin directory> [-v] [-c] [-h] [-s] 
 	
 	
 	
@@ -116,7 +116,7 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($file,$path,$table,$GENOME,$bamlocation,$seqtkpro,$bamUtilpro,$picardtools,$verbose,$help,$v,$chlog);
+my ($file,$path,$table,$GENOME,$bamlocation,$seqtkpro,$bamUtilpro,$picardtools,$verbose,$help,$v,$chlog,$bt);
 GetOptions ('f=s' => \$file,
             'p=s' => \$path,
             'g=s' => \$GENOME,
@@ -124,7 +124,8 @@ GetOptions ('f=s' => \$file,
             'bl=s'=> \$bamlocation,
             'pt=s'=> \$picardtools,
             'sq=s'=> \$seqtkpro,
-            'bu=s'=> \$bamUtilpro, 	
+            'bu=s'=> \$bamUtilpro, 
+            'bt=s'=> \$bedtoolsdir,	
             'c'   => \$chlog, 
             'h'   => \$help,
             's'   => \$verbose, 
@@ -291,7 +292,7 @@ open ($fh, "<", $file) or confess "\n ERROR (main): could not open to read $file
 			system ("$bamUtilpro/bam bam2FastQ --in $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.bam --firstOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R1.fastq --secondOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R2.fastq --unpairedOut $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fastq --noReverseComp") == 0 or die ("unable to extract reads using bamUtil $uniqueid \n");
 			unlink ("$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R1.fastq","$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDsBU.namesorted.R2.fastq") or warn "Could not unlink : $!";
 			#extracting the R1 and R2 from bedtools as there is a bug with bamutil for R1 and R2
-			system ("bedtools bamtofastq -i $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.bam -fq $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fastq -fq2 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fastq") == 0 or die ("unable to extract reads using bamUtil $uniqueid \n");
+			system ("$bedtoolsdir/bedtools bamtofastq -i $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.bam -fq $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fastq -fq2 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fastq") == 0 or die ("unable to extract reads using bamUtil $uniqueid \n");
 			#changing fastq to fasta
 			system ("$seqtkpro/seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fasta") == 0 or die ("unable to run seqtk on R1 $uniqueid \n");
 			system ("$seqtkpro/seqtk seq -A -q20 $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fastq > $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fasta") == 0 or die ("unable to run seqtk on R2 $uniqueid \n");
