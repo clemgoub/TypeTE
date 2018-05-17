@@ -66,13 +66,16 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($rdir,$gdir,$TEdir,$listte,$teout,$path,$fineout,$verbose,$help,$v,$chlog);
+my ($rdir,$gdir,$TEdir,$listte,$teout,$path,$fineout,$verbose,$help,$v,$chlog,$spadesdir, $miniadir, $capdir);
 GetOptions ('d=s' => \$rdir,
 			'g=s' => \$gdir,
 			't=s' => \$TEdir,
 			'l=s' => \$listte,
             'p=s' => \$path,
             'o=s' => \$fineout,
+            'sp=s' => \$spadesdir,
+            'mn=s' => \$miniadir,
+            'cp=s' => \$capdir,
            'te=s' => \$teout,
             'c'   => \$chlog, 
             'h'   => \$help,
@@ -153,10 +156,10 @@ foreach $directory (@dir) {
 	# print STDERR "assemble the concatenated sequence\n";
 	if (($R1filesize > 0) || ($R1filesize > 0)) {
 		#Assemble only the mapped reads		   
-		system ("spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
-		system ("dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
-		system ("minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
-		system ("cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+		system ("$spadesdir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
+		system ("$spadesdir/dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
+		system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
+		system ("$capdir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
 		if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
 			#Rename scaffolds.fasta 
 			copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.scaffolds.fasta") or die "Copy failed scaffolds.fasta $directory:$!";
