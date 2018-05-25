@@ -51,7 +51,10 @@ my $usage = "\nUsage [$version]:
 	-g,--genomedir  (STRING) input directory with the corresponding reference genome sequence   
     -t,--TEdir	  	(STRING) input directory with TE sequences (separate fasta files with location name)
     -l,--list		(STRING) input file containing the information on TE insertion
-    
+    -bp, --blastn   (STRING) location of blastn
+    -cp, --CAP3     (STRING) location of cap3 assembler
+    -mp, --minia    (STRING) location of minia
+    -sp, --spade    (STRING) location of spade
     
     OPTIONAL ARGUMENTS:
     -p,--path   (STRING) output directory name (path)
@@ -66,7 +69,7 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($rdir,$gdir,$TEdir,$listte,$teout,$path,$fineout,$verbose,$help,$v,$chlog);
+my ($rdir,$gdir,$TEdir,$listte,$teout,$miniapro,$CAP3pro,$BLASTpro,$spadepro,$path,$fineout,$verbose,$help,$v,$chlog);
 GetOptions ('d=s' => \$rdir,
 			'g=s' => \$gdir,
 			't=s' => \$TEdir,
@@ -74,6 +77,10 @@ GetOptions ('d=s' => \$rdir,
             'p=s' => \$path,
             'o=s' => \$fineout,
            'te=s' => \$teout,
+           'bp=s' => \$BLASTpro,
+           'cp=s' => \$CAP3pro,
+           'mp=s' => \$miniapro,
+           'sp=s' => \$spadepro,
             'c'   => \$chlog, 
             'h'   => \$help,
             's'   => \$verbose, 
@@ -85,6 +92,7 @@ die $changelog if ($chlog);
 die $usage if ((! $rdir) ||(! $gdir) ||(! $TEdir) || ($help));
 my $cwd = getcwd();
 $path = $cwd if (!$path) ;
+make_path ("$path");
 $fineout = "$path/genomeloc.strand.prediction.$version.txt" if (! $fineout);
 $teout = "$path/Assembled_TEsequences.$version.txt" if (! $teout);
 die "\n -d $rdir does not exist?\n\n"  if (! -e $rdir);
