@@ -51,7 +51,10 @@ my $usage = "\nUsage [$version]:
 	-g,--genomedir  (STRING) input directory with the corresponding reference genome sequence   
     -t,--TEdir	  	(STRING) input directory with TE sequences (separate fasta files with location name)
     -l,--list		(STRING) input file containing the information on TE insertion
-    
+    -bp, --blastn   (STRING) location of blastn
+    -cp, --CAP3     (STRING) location of cap3 assembler
+    -mn, --minia    (STRING) location of minia
+    -sp, --spade    (STRING) location of spade
     
     OPTIONAL ARGUMENTS:
     -p,--path   (STRING) output directory name (path)
@@ -66,17 +69,18 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($rdir,$gdir,$TEdir,$listte,$teout,$path,$fineout,$verbose,$help,$v,$chlog,$spadesdir, $miniadir, $capdir);
+my ($rdir,$gdir,$TEdir,$listte,$teout,$miniadir,$CAP3dir,$BLASTdir,$spadedir,$path,$fineout,$verbose,$help,$v,$chlog);
 GetOptions ('d=s' => \$rdir,
 			'g=s' => \$gdir,
 			't=s' => \$TEdir,
 			'l=s' => \$listte,
             'p=s' => \$path,
             'o=s' => \$fineout,
-            'sp=s' => \$spadesdir,
-            'mn=s' => \$miniadir,
-            'cp=s' => \$capdir,
            'te=s' => \$teout,
+           'bp=s' => \$BLASTdir,
+           'cp=s' => \$CAP3dir,
+           'mn=s' => \$miniadir,
+           'sp=s' => \$spadedir,
             'c'   => \$chlog, 
             'h'   => \$help,
             's'   => \$verbose, 
@@ -88,6 +92,7 @@ die $changelog if ($chlog);
 die $usage if ((! $rdir) ||(! $gdir) ||(! $TEdir) || ($help));
 my $cwd = getcwd();
 $path = $cwd if (!$path) ;
+make_path("$path");
 $fineout = "$path/genomeloc.strand.prediction.$version.txt" if (! $fineout);
 $teout = "$path/Assembled_TEsequences.$version.txt" if (! $teout);
 die "\n -d $rdir does not exist?\n\n"  if (! -e $rdir);
@@ -156,10 +161,10 @@ foreach $directory (@dir) {
 	# print STDERR "assemble the concatenated sequence\n";
 	if (($R1filesize > 0) || ($R1filesize > 0)) {
 		#Assemble only the mapped reads		   
-		system ("$spadesdir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
-		system ("$spadesdir/dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
+		system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
+		system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
 		system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
-		system ("$capdir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+		system ("$CAP3dir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
 		if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
 			#Rename scaffolds.fasta 
 			copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.scaffolds.fasta") or die "Copy failed scaffolds.fasta $directory:$!";
@@ -351,12 +356,12 @@ sub load_file {
 sub blast_file {
 	my ($qpath,$qloc,$directory) = @_;
 	unless (-e "$outpath/Renamed_Assembledseq/$directory.rename.fasta.nhr") {
-		system ("makeblastdb -in $outpath/Renamed_Assembledseq/$directory.rename.fasta -input_type fasta -dbtype nucl") == 0 or die ("unable to makeblastdb on $outpath/Renamed_Assembledseq/$directory.rename.fasta \n");
+		system ("$BLASTdir/makeblastdb -in $outpath/Renamed_Assembledseq/$directory.rename.fasta -input_type fasta -dbtype nucl") == 0 or die ("unable to makeblastdb on $outpath/Renamed_Assembledseq/$directory.rename.fasta \n");
 	}
 	if ($qloc eq "$directory.extract.seq.fa") {
-		system ("blastn -db $outpath/Renamed_Assembledseq/$directory.rename.fasta -query $qpath/$qloc -evalue 0.0001 -outfmt \"6 qseqid sseqid pident qlen length slen sstrand qstart qend sstart send qcovs mismatch gapopen evalue bitscore \" -out $outpath/$qloc.tabular.blast.out");
+		system ("$BLASTdir/blastn -db $outpath/Renamed_Assembledseq/$directory.rename.fasta -query $qpath/$qloc -evalue 0.0001 -outfmt \"6 qseqid sseqid pident qlen length slen sstrand qstart qend sstart send qcovs mismatch gapopen evalue bitscore \" -out $outpath/$qloc.tabular.blast.out");
 	} else {
-		system ("blastn -db $outpath/Renamed_Assembledseq/$directory.rename.fasta -query $qpath/$qloc -evalue 0.0001 -outfmt \"6 qseqid sseqid pident qlen length slen sstrand qstart qend sstart send qcovs mismatch gapopen evalue bitscore \" -out $outpath/$directory.$qloc.tabular.blast.out");
+		system ("$BLASTdir/blastn -db $outpath/Renamed_Assembledseq/$directory.rename.fasta -query $qpath/$qloc -evalue 0.0001 -outfmt \"6 qseqid sseqid pident qlen length slen sstrand qstart qend sstart send qcovs mismatch gapopen evalue bitscore \" -out $outpath/$directory.$qloc.tabular.blast.out");
 	}
 }	
 sub concatenatefiles {
