@@ -69,7 +69,7 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($rdir,$gdir,$TEdir,$listte,$teout,$miniapro,$CAP3dir,$BLASTdir,$spadedir,$path,$fineout,$verbose,$help,$v,$chlog);
+my ($rdir,$gdir,$TEdir,$listte,$teout,$miniadir,$CAP3dir,$BLASTdir,$spadedir,$path,$fineout,$verbose,$help,$v,$chlog);
 GetOptions ('d=s' => \$rdir,
 			'g=s' => \$gdir,
 			't=s' => \$TEdir,
