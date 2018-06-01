@@ -128,10 +128,10 @@ whereamI=$(pwd)
 # 5: de novo Assembly, orientation and find TSDs of MEI ####
 ############################################################
 
-paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
+# paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 
-rm -r $OUTDIR/$PROJECT/Assembled_TEreads
-perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST
+# rm -r $OUTDIR/$PROJECT/Assembled_TEreads
+# perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST
 
 #######################################
 # 6: Generate input for genotyping ####
@@ -139,4 +139,7 @@ perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJ
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...")
 
+FullLength="$OUTDIR/$PROJECT/Assembled_TEsequences.4.5.txt.full_len.fasta"
+./de_novo_create_input_v2.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.5.0.txt $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT
 
+paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...Done.")

@@ -10,19 +10,21 @@
 # Date: 03/2018                          #
 ##########################################
 
-# usage: ./de_novo_create_input.sh <input>.input <orientTE_extractTE.pl>.outputtable <indentify_mei_from_RM.sh>.outfolder
+# usage: ./de_novo_create_input.sh <input>.input <orientTE_extractTE.pl>.outputtable <indentify_mei_from_RM.sh>.outfolder <Assembled.TE> <output.file>
 
 # SET PATH FOR FILES AND PROGRAMS
-BEDTOOLS="/home/cgoubert/bin/bedtools2/bin"
-FullLength="/vbod2/jainy/SGDP/Project2/findgenotype/Assembled_TEsequences.4.5.txt.full_len.fasta"
-RefGenome="/vbod2/cgoubert/Correct_Genotypes/Ref_Genome/genome/hg19.fa"
-RM_FASTA="/home/cgoubert/bin/RepeatMasker/Libraries/dc20170127-rb20170127/homo_sapiens/refinelib"
+#$FullLength is now passed in input variable $4 ?
 
 ### Add line to process Jainy's output
-join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
-| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}' > pre_input
+# join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
+# | awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}' > pre_input
 
-input=$(cat pre_input) # change it so $1 is the output of previous line
+# input=$(cat pre_input) # change it so $1 is the output of previous line
+
+input=$(join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
+| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}')
+
+
 # change delimiter (IFS) to new line.
 IFS_BAK=$IFS
 IFS=$'\n'
@@ -52,9 +54,9 @@ if [[ $assembled == "yes" ]] ### For assembled
 then
 
 	#echo "left"
-	$BEDTOOLS/bedtools getfasta -fi $RefGenome -bed left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".left.seq
+	$BEDTOOLS/bedtools getfasta -fi $GENOME -bed left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".left.seq
 	#echo "right"
-	$BEDTOOLS/bedtools getfasta -fi $RefGenome -bed right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".right.seq
+	$BEDTOOLS/bedtools getfasta -fi $GENOME -bed right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".right.seq
 
 	if [[ $direction == "-" ]]
 	then
@@ -65,7 +67,7 @@ then
 		paste -d, <(perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $FullLength | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | sed "s/$TSD//g" | cut -f 2) <(echo "$TSD") | sed 's/,//g;s/null//g' > $pos"".TE.seq
 	fi
 
-	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(paste -d, $pos"".left.seq $pos"".right.seq | sed 's/,//g')  <(paste -d, $pos"".left.seq $pos"".TE.seq $pos"".right.seq | sed 's/,//g') >> input_test_2
+	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(paste -d, $pos"".left.seq $pos"".right.seq | sed 's/,//g')  <(paste -d, $pos"".left.seq $pos"".TE.seq $pos"".right.seq | sed 's/,//g') >> $5
 
 
 
@@ -73,9 +75,9 @@ else ### For non-assembled
 
 
 	#echo "left"
-	$BEDTOOLS/bedtools getfasta -fi $RefGenome -bed left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".left.seq
+	$BEDTOOLS/bedtools getfasta -fi $GENOME -bed left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".left.seq
 	#echo "right"
-	$BEDTOOLS/bedtools getfasta -fi $RefGenome -bed right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".right.seq
+	$BEDTOOLS/bedtools getfasta -fi $GENOME -bed right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".right.seq
 
 	if [[ $direction == "-" ]]
 	then
@@ -86,7 +88,7 @@ else ### For non-assembled
 		paste -d, <(perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2) <(echo "$TSD") | sed 's/,//g;s/null//g' > $pos"".TE.seq
 	fi
 
-	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(paste -d, $pos"".left.seq $pos"".right.seq | sed 's/,//g')  <(paste -d, $pos"".left.seq $pos"".TE.seq $pos"".right.seq | sed 's/,//g') >> input_test_2
+	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(paste -d, $pos"".left.seq $pos"".right.seq | sed 's/,//g')  <(paste -d, $pos"".left.seq $pos"".TE.seq $pos"".right.seq | sed 's/,//g') >> $5
 
 fi
 
