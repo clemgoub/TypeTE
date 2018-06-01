@@ -15,14 +15,14 @@
 # SET PATH FOR FILES AND PROGRAMS
 #$FullLength is now passed in input variable $4 ?
 
-### Add line to process Jainy's output
-# join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
-# | awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}' > pre_input
+## Add line to process Jainy's output
+join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
+| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}' > pre_input
 
-# input=$(cat pre_input) # change it so $1 is the output of previous line
+input=$(cat pre_input) # change it so $1 is the output of previous line
 
-input=$(join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
-| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}')
+#input=$(join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
+#| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}')
 
 
 # change delimiter (IFS) to new line.
