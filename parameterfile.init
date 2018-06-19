@@ -41,4 +41,7 @@ SPADES="/home/jainy/software/SPAdes-3.11.1-Linux/bin" #Path to spades bin direct
 MINIA="/home/jainy/software/minia-v2.0.7-Source/build/bin" #Path to minia bin directory
 CAP3="/home/jainy/software/CAP3" #Path to CAP3 directory
 BLAST="/home/jainy/software/ncbi-blast-2.6.0+/bin" #Path to blast bin directory
+BWA="/home/cgoubert/bin/bwa-0.7.16a/bwa" #Path to bwa
+BGZIP="/usr/local/bin/bgzip" #Path to bgzip
+TABIX="/usr/local/bin/tabix" #Path to tabix
 # /!\ PERL MUST BE IN PATH /!\

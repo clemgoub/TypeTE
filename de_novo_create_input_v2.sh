@@ -92,10 +92,19 @@ else ### For non-assembled
 
 fi
 
+### cleaning
+rm left.bed
+rm right.bed
+rm *.seq
+
 done
+
+rm pre_input
+
 # return delimiter to previous value
 IFS=$IFSq_BAK
 IFS_BAK=
+
 
 #### NEED TO FIX --> turn RC the assembled TSD if on neg strand to print a user-friendly table
 #awk '{if ($7 == "yes" && $8 == "-") {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10; printf system("echo " $10 " | rev | tr \"ATGCatgc\" \"TACGtacg\"")} else {if ($7 == "yes" && $8 == "?" && $5 == "-") {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10, printf system("echo " $10 " | rev | tr \"ATGCatgc\" \"TACGtacg\"")} else {print $0}}}' pre_input

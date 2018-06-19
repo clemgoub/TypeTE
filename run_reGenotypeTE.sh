@@ -143,3 +143,37 @@ FullLength="$OUTDIR/$PROJECT/Assembled_TEsequences.4.5.txt.full_len.fasta"
 ./de_novo_create_input_v2.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.5.0.txt $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...Done.")
+
+#####################
+# 7: re-Genotype ####
+#####################
+
+### create alternatives alleles
+python insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
+
+### genotype per individual
+list=$(cut -f 1 $BAMFILE)
+for ind in $list
+do
+
+bamf=$(grep "$ind" $BAMFILE | cut -f 2)
+python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename $ind --bwa $BWA --bam $bamf
+
+done
+
+### tabix the individuals vcfs
+cd $OUTDIR/$PROJECT/samples/
+folders=$(ls -d */)
+for fol in $folders
+do
+
+$BGZIP -c $fol/$fol.vcf > $fol/$fol.vcf.gz
+$TABIX -p vcf $fol/$fol.vcf.gz
+
+done
+
+### merging final VCF
+vcf-merge ./*/*.vcf.gz | $BGZIP -c > $OUTDIR/$PROJECT.reGenotypeTE.vcf.gz
+
+cd $whereamI
+
