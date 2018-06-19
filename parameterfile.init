@@ -13,20 +13,20 @@
 ### MAIN PARAMETERS
 ## input
 # user data
-VCF="/home/cgoubert/CorrectHet/20.20.vcf" #Path to MELT vcf (.vcf or .vcf.gz)
+VCF="/home/cgoubert/CorrectHet/20.40.vcf" #Path to MELT vcf (.vcf or .vcf.gz)
 BAMPATH="/vbod2/cgoubert/Correct_Genotypes/1KGP_bams" # Path to the bams folder
-BAMFILE="/home/cgoubert/CorrectHet/20_bams.txt" # indiv_name bam_name (table 2 fields)
+BAMFILE="/home/cgoubert/CorrectHet/40_bams.txt" # indiv_name bam_name (table 2 fields)
 # genome data
 RM_TRACK="/home/cgoubert/CorrectHet/RepeatMasker_Alu_hg38_lift_hg19.bed"
 RM_FASTA="/home/cgoubert/bin/RepeatMasker/Libraries/dc20170127-rb20170127/homo_sapiens/refinelib"
 # output
 OUTDIR="/home/cgoubert/CorrectHet" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
-PROJECT="TEST_20" # Name of the project (name of the folder)
+PROJECT="TEST_40" # Name of the project (name of the folder)
 
 ### OPTIONS
 ## mendatory parameters
-individual_nb="2" # number of individual per job (try to minimize that number)
-CPU="10" # number of CPU (try to maximize that number)
+individual_nb="1" # number of individual per job (try to minimize that number)
+CPU="40" # number of CPU (try to maximize that number)
 GENOME="/vbod2/cgoubert/Correct_Genotypes/Ref_Genome/genome/hg19.fa" # Path the the reference genome sequence
 ## non-mendatory parameters
 MAP="YES" #OR NO
