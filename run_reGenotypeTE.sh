@@ -157,7 +157,7 @@ for ind in $list
 do
 
 bamf=$(grep "$ind" $BAMFILE | cut -f 2)
-python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename $ind --bwa $BWA --bam $bamf
+python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename $ind --bwa $BWA --bam $BAMPATH/$bamf
 
 done
 
