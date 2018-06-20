@@ -41,7 +41,7 @@ mkdir -p $OUTDIR/$PROJECT
 
 paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
 
-./input_from_melt.sh $VCF $PROJECT
+./input_from_melt_Del.sh $VCF $PROJECT
 
 paste <(date | awk '{print $4}') <(echo "DONE.")
 
@@ -49,7 +49,7 @@ paste <(date | awk '{print $4}') <(echo "DONE.")
 # 1:  #### Match MEI with RM insertions #
 #########################################
 
-perl findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
+perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
 
 #####################
 # 7: re-Genotype ####
