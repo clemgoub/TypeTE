@@ -12,7 +12,7 @@
 ###########################################
 
 #load the user options, outdir path and dependencies paths
-source parameterfile_Del.init # load the parameterfile as argument
+source $1 # load the parameterfile as argument
 
 #START
 echo "###########################"
