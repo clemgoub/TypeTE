@@ -173,7 +173,7 @@ $TABIX -p vcf $fol/$fol.vcf.gz
 done
 
 ### merging final VCF
-vcf-merge ./*/*.vcf.gz | $BGZIP -c > $OUTDIR/$PROJECT.reGenotypeTE.vcf.gz
+vcf-merge ./*/*.vcf.gz | $BGZIP -c > $OUTDIR/$PROJECT/$PROJECT.reGenotypeTE.vcf.gz
 
 cd $whereamI
 
