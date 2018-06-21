@@ -57,9 +57,16 @@ perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -
 # 2:  #### Find Mappability Intervals   #
 #########################################
 
-paste <(date | awk '{print $4}') <(echo "Computing Mappability score of MEI...")
+#paste <(date | awk '{print $4}') <(echo "Computing Mappability score of MEI...")
 
-perl 02_DelP_findmappabilityscores_genomicintervalsv2.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt -db jainys_db -u jainy -pd wysql123 -p $OUTDIR/$PROJECT
+#perl 02_DelP_findmappabilityscores_genomicintervalsv2.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt -db jainys_db -u jainy -pd wysql123 -p $OUTDIR/$PROJECT
+
+#########################################
+# 3:  #### Find TSD and TE coordinates  #
+#########################################
+
+
+perl 03_DelP_findTSD_forRMTEcordinates_v3.3.pl -t $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt -p $OUTDIR/$PROJECT/output_TSD_Intervals.out -g $GENOME
 
 
 #####################
