@@ -11,10 +11,10 @@ TE_del=$(awk '{print $9"\t"($10-500)"\t"($11+500)}' $1)
 
 
 # extract the sequence of them | change the refgenome path by a user input
-left=$($BEDTOOLS/bedtools getfasta -fi /Users/clementgoubert/Documents/Postdoc/Lynn/Hetero_correct_project/Ref_Genome/genome/hg19.fa -bed <(echo "$left_TE_del"))
-right=$($BEDTOOLS/bedtools getfasta -fi /Users/clementgoubert/Documents/Postdoc/Lynn/Hetero_correct_project/Ref_Genome/genome/hg19.fa -bed <(echo "$right_TE_del"))
+left=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del"))
+right=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$right_TE_del"))
 noTE=$(paste -d "," <(echo "$left") <(echo "$right") | awk 'getline seq {print seq}' | sed $'s/,//g')
-TE=$($BEDTOOLS/bedtools getfasta -fi /Users/clementgoubert/Documents/Postdoc/Lynn/Hetero_correct_project/Ref_Genome/genome/hg19.fa -bed <(echo "$TE_del") | awk 'getline seq {print seq}')
+TE=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$TE_del") | awk 'getline seq {print seq}')
 
 # generate the table
 infos=$(awk '{print $7":"$8"-"($8+1)"\t"$1"\t"$2"\t\.\t"($2-500)"\t"($3+500)}' $1)
