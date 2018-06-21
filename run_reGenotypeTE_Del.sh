@@ -49,7 +49,18 @@ paste <(date | awk '{print $4}') <(echo "DONE.")
 # 1:  #### Match MEI with RM insertions #
 #########################################
 
+paste <(date | awk '{print $4}') <(echo "Finding corresponding Repeat Masker insertions on reference genome...")
+
 perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
+
+#########################################
+# 2:  #### Find Mappability Intervals   #
+#########################################
+
+paste <(date | awk '{print $4}') <(echo "Computing Mappability score of MEI...")
+
+perl 02_DelP_findmappabilityscores_genomicintervalsv2.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt -db jainys_db -u jainy -pd wysql123 -p $OUTDIR/$PROJECT
+
 
 #####################
 # 7: re-Genotype ####
