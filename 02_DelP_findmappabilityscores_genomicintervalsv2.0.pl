@@ -74,7 +74,7 @@ die $usage if ((! $mysqltable) || (! $file) ||  ($help));
 my $cwd = getcwd();
 #die $usage if (($mappability eq "yes") && ((! $mysqldb) || (! $user) ||  ($password))) ;
 $path = $cwd if (!$path) ;
-my $mapscores = "$path/$file.mappabilityscores.txt";
+my $mapscores = "$path/Del.mappabilityscores.txt";
 
 #-----------------------------------------------------------------------------
 #----------------------------------- MAIN ------------------------------------
