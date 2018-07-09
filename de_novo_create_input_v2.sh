@@ -99,7 +99,7 @@ rm *.seq
 
 done
 
-rm pre_input
+#rm pre_input
 
 # return delimiter to previous value
 IFS=$IFSq_BAK
