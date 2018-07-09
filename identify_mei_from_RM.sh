@@ -34,7 +34,7 @@ do
 	listofbams=*.bam # list the individual bams. One bam / individual / locus without full TE assembly.
 	for bam in $listofbams
 	do
-		samtools view -F 14 $bam | awk '($3!=$7 && $7!="=")' | awk '{print "chr"$7"\t"$8"\t"($8+100)}' > $2/$pos/$bam"".bed # generates individual bed from bam
+		samtools view -F 14 $bam | awk '($3!=$7 && $7!="=")' | awk '! /chr/ {print "chr"$7"\t"$8"\t"($8+100)} /chr/ {print $7"\t"$8"\t"($8+100)}' > $2/$pos/$bam"".bed # generates individual bed from bam
 	done
 
 done
