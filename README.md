@@ -27,7 +27,16 @@ Perl executable must be in the user path
 * BGZIP http://www.htslib.org/doc/bgzip.html
 * TABIX http://www.htslib.org/doc/tabix.html
 
-### Getting ready
+### Download and install
+
+Clone from git repository:
+
+```sh
+git clone https://github.com/clemgoub/reGenotypeTE
+cd reGenotypeTE
+```
+
+Then edit the file "parameterfile.init" following the indications within
 
 ## Running reGenotypeTE
 
