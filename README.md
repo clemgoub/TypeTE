@@ -52,7 +52,45 @@ sample3 sample3-zzz-file.bam
 ```
 4. Reference genome in fasta format (to date tested with hg19 and hg38)
 
-5. Edit the file "parameterfile.init" following the indications within.
+5. Edit the file "parameterfile.init" following the indications within:
+
+```sh
+### MAIN PARAMETERS
+## input
+# user data
+VCF="/home/xxx/MELT.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type (1)
+BAMPATH="/vbod2/xxx/bams" # Path to the bams folder (2)
+BAMFILE="/home/xxx/bams.txt" # <indiv_name> <bam_name> (two fields tab separated table) (3)
+# genome data
+RM_TRACK="./Ressources/RepeatMasker_Alu_hg38_lift_hg19.bed" # set by default for hg19 / use  
+RM_FASTA="./Ressources/refinelib" # set by default to be compatible with the Repeat Masker track included in the package
+# output
+OUTDIR="/home/cgoubert/CorrectHet" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
+PROJECT="TEST_400-100" # Name of the project (name of the folder)
+
+### OPTIONS
+## mendatory parameters
+individual_nb="10" # number of individual per job (try to minimize that number)
+CPU="40" # number of CPU (try to maximize that number such as CPU x individual_nb = total nb of individuals)
+GENOME="" # Path the the reference genome sequence
+## non-mendatory parameters
+MAP="NO" #OR NO # to give mappability score of MEI (experimental)
+
+### DEPENDENCIES PATH
+PARALLEL="/usr/bin/parallel" #Path to the GNU Parallel program (executable)
+PICARD="/home/xxx/software/picard-2.9.2" #Path to Picard Tools (executable)
+BEDTOOLS="/home/xxx/bin/bedtools2/bin" #Path to bedtools (folder)
+SEQTK="/home/xxx/software/seqtk" (folder)
+BAMUTILS="/home/xxx/software/bamUtil" (folder)
+SPADES="/home/xxx/software/SPAdes-3.11.1-Linux/bin" #Path to spades bin directory (to locate spades.py and dispades.py)
+MINIA="/home/xxx/software/minia-v2.0.7-Source/build/bin" #Path to minia bin directory
+CAP3="/home/xxx/software/CAP3" #Path to CAP3 directory
+BLAST="/home/xxx/software/ncbi-blast-2.6.0+/bin" #Path to blast bin directory
+BWA="/home/xxx/bin/bwa-0.7.16a/bwa" #Path to bwa
+BGZIP="/usr/local/bin/bgzip" #Path to bgzip
+TABIX="/usr/local/bin/tabix" #Path to tabix
+# /!\ PERL MUST BE IN PATH /!\
+```
 
 ### Run reGenotypeTE
 
