@@ -62,7 +62,7 @@ VCF="/home/xxx/MELT.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO f
 BAMPATH="/vbod2/xxx/bams" # Path to the bams folder (2)
 BAMFILE="/home/xxx/bams.txt" # <indiv_name> <bam_name> (two fields tab separated table) (3)
 # genome data
-RM_TRACK="./Ressources/RepeatMasker_Alu_hg38_lift_hg19.bed" # set by default for hg19 / use  
+RM_TRACK="./Ressources/RepeatMasker_Alu_hg38_lift_hg19.bed" # set by default for hg19 / use ./Ressources/RepeatMasker_Alu_hg38.bed
 RM_FASTA="./Ressources/refinelib" # set by default to be compatible with the Repeat Masker track included in the package
 # output
 OUTDIR="/home/cgoubert/CorrectHet" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
