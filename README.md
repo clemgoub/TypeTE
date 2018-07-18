@@ -97,7 +97,7 @@ TABIX="/usr/local/bin/tabix" #Path to tabix
 Once your files are ready and parameterfile.init properly filled, run the following command in the reGenotypeTE folder:
 
 ```sh
-nohup ./run_reGenotypeTE.sh &> reGenotypeTE.log
+nohup ./run_reGenotypeTE.sh &> reGenotypeTE.log &
 ```
 ## Deletions (reference-insertions)
 Soon! We are currently testing it!
