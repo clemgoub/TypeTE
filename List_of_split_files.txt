@@ -1,5 +1,0 @@
-/home/cgoubert/CorrectHet/TEST_1/file.list.txt.1.individuals.sorted.txt
-/home/cgoubert/CorrectHet/TEST_1/file.list.txt.2.individuals.sorted.txt
-/home/cgoubert/CorrectHet/TEST_1/file.list.txt.3.individuals.sorted.txt
-/home/cgoubert/CorrectHet/TEST_1/file.list.txt.4.individuals.sorted.txt
-/home/cgoubert/CorrectHet/TEST_1/file.list.txt.5.individuals.sorted.txt
