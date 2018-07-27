@@ -99,5 +99,64 @@ Once your files are ready and parameterfile.init properly filled, run the follow
 ```sh
 nohup ./run_reGenotypeTE.sh &> reGenotypeTE.log &
 ```
+
+#### Test run
+We have prepared a small tutorial/test-run to check if all the components of reGenotypeTE works perfectly.
+
+We are going to run the pipeline on 2 loci of 3 individuals from the 1000 Genome Project.
+
+1. Download the bam and bam.bai files
+
+Within the reGenotypeTE folder, type:
+```sh
+cd test_data
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA07056/alignment/NA07056.mapped.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA07056/alignment/NA07056.mapped.ILLUMINA.bwa.CEU.low_coverage.20130415.bam.bai
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11830/alignment/NA11830.mapped.ILLUMINA.bwa.CEU.low_coverage.20120522.bam
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11830/alignment/NA11830.mapped.ILLUMINA.bwa.CEU.low_coverage.20120522.bam.bai
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA12144/alignment/NA12144.mapped.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA12144/alignment/NA12144.mapped.ILLUMINA.bwa.CEU.low_coverage.20130415.bam.bai
+```
+The corresponding bam/bam.bai files will be downladed into <yourpath>/reGenotypeTE/test_data
+  
+2. Copy the parameterfile.init present in <yourpath>/reGenotypeTE/test_data to the main folder
+  
+```sh
+cp parameterfile.init ../
+cd ../
+```
+
+3. Edit the parameterfile.init according to your dependancies and local path (but do not change anything else!)
+
+4. Run reGenotypeTE
+
+```sh
+nohup ./run_reGenotypeTE.sh &> reGenotypeTE_TESTRUN.log &
+```
+5. Expected results
+
+The genotype from the original vcf (<>/reGenotypeTE/test_data/testDiscoveryAlu.vcf) are the following
+
+|         | 1_72639020 | 10_69994906 |
+|---------|------------|-------------|
+| NA07056 | 1          | 0           |
+| NA11830 | 0          | 1           |
+| NA12155 | 1          | 1           |
+
+After running the test, you can convert your output vcf.gz into a 012 table using:
+
+```
+vcftools --gzvcf TEST_dataALU.reGenotypeTE.vcf.gz --012
+```
+
+The new genotype should be 
+
+|         | 1_72639020 | 10_69994906 |
+|---------|------------|-------------|
+| NA07056 | 2          | 0           |
+| NA11830 | 0          | 2           |
+| NA12155 | 2          | 1           |
+
+
 ## Deletions (reference-insertions)
 Soon! We are currently testing it!
