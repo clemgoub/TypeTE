@@ -25,56 +25,56 @@ echo "###########################"
 #locate working directoty
 whereamI=$(pwd)
 
-# #Creates the $OUTDIR
+#Creates the $OUTDIR
 
-# {
-# if [ $OUTDIR == "" ]; then
-#     echo "OUTDIR not set, don't know where to create output folder..."
-#     exit 0
-# fi
-# }
+{
+if [ $OUTDIR == "" ]; then
+    echo "OUTDIR not set, don't know where to create output folder..."
+    exit 0
+fi
+}
 
-# mkdir -p $OUTDIR/$PROJECT
+mkdir -p $OUTDIR/$PROJECT
 
-# #Creates the <project>.input in $OUTDIR/$PROJECT
+#Creates the <project>.input in $OUTDIR/$PROJECT
 
-# paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
+paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
 
-# ./input_from_melt.sh $VCF $PROJECT
+./input_from_melt.sh $VCF $PROJECT
 
-# paste <(date | awk '{print $4}') <(echo "DONE.")
+paste <(date | awk '{print $4}') <(echo "DONE.")
 
-# #################################################
-# # 1: Joining individuals and MEI coordinates ####
-# #################################################
+#################################################
+# 1: Joining individuals and MEI coordinates ####
+#################################################
 
-# echo "Joining individuals and MEI coordinates..."
-# perl makelist_v1.0.pl -t $BAMFILE -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT
+echo "Joining individuals and MEI coordinates..."
+perl makelist_v1.0.pl -t $BAMFILE -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT
 
-# #####################################
-# # 2: Split input per individuals ####
-# #####################################
+#####################################
+# 2: Split input per individuals ####
+#####################################
 
-# paste <(date | awk '{print $4}') <(echo "DONE.")
-# paste <(date | awk '{print $4}') <(echo "Splitting individuals for paralellization of read extraction...")
+paste <(date | awk '{print $4}') <(echo "DONE.")
+paste <(date | awk '{print $4}') <(echo "Splitting individuals for paralellization of read extraction...")
 
-# perl 02_splitfile_jt_v3.0_pipeline.pl -f $OUTDIR/$PROJECT/file.list.txt -s yes -n $individual_nb -p $OUTDIR/$PROJECT
+perl 02_splitfile_jt_v3.0_pipeline.pl -f $OUTDIR/$PROJECT/file.list.txt -s yes -n $individual_nb -p $OUTDIR/$PROJECT
 
-# #######################################################
-# # 3: Extract reads and mapability scores per locus ####
-# #######################################################
+#######################################################
+# 3: Extract reads and mapability scores per locus ####
+#######################################################
 
-# paste <(date | awk '{print $4}') <(echo "Extracting reads...")
+paste <(date | awk '{print $4}') <(echo "Extracting reads...")
 
-# cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
+cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
 
-# cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" 
+cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" 
 
-# cd $whereamI #comes back to the working dir
+cd $whereamI #comes back to the working dir
 
-# paste <(date | awk '{print $4}') <(echo "Extracting mappability scores...")
+paste <(date | awk '{print $4}') <(echo "Extracting mappability scores...")
 
-# perl denovo_extract_GM_scoresv1.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/gmscore_all -db jainys_db -u jainy -pd wysql123
+perl denovo_extract_GM_scoresv1.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/gmscore_all -db jainys_db -u jainy -pd wysql123
 
 
 ####################################################################
