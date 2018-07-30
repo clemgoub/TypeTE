@@ -158,7 +158,8 @@ The new genotype should be
 | NA12144 | 2          | 1           |
 
 ```diff
-- The results of this test run are not expected to reflect the true genotypes since they are generated with only 3 individuals
+- The results of this test run are not expected to reflect the true genotypes -
+- since they are generated with only 3 individuals                            -
 ```
 
 
