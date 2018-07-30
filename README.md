@@ -141,11 +141,11 @@ The genotype from the original vcf (<>/reGenotypeTE/test_data/testDiscoveryAlu.v
 |---------|------------|-------------|
 | NA07056 | 1          | 0           |
 | NA11830 | 0          | 1           |
-| NA12155 | 1          | 1           |
+| NA12144 | 1          | 1           |
 
 After running the test, you can convert your output vcf.gz into a 012 table using:
 
-```
+```sh
 vcftools --gzvcf TEST_dataALU.reGenotypeTE.vcf.gz --012
 ```
 
@@ -155,7 +155,11 @@ The new genotype should be
 |---------|------------|-------------|
 | NA07056 | 2          | 0           |
 | NA11830 | 0          | 2           |
-| NA12155 | 2          | 1           |
+| NA12144 | 2          | 1           |
+
+```diff
+- The results of this test run are not expected to reflect the true genotypes since they are generated with only 3 individuals
+```
 
 
 ## Deletions (reference-insertions)
