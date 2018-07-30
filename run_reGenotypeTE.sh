@@ -6,7 +6,7 @@
 # This is the main script of the pipeline #
 #                                         #
 # Author: Clement Goubert                 #
-# Date: 05/2018                           #
+# Date: 07/2018                           #
 # Version: 1.0                            #
 ###########################################
 
