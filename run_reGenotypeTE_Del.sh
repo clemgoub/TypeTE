@@ -74,7 +74,7 @@ perl 03_DelP_findTSD_forRMTEcordinates_v3.3.pl -t $OUTDIR/$PROJECT/RM_intervals.
 # 4:  #### Create input for genotyping  #
 #########################################
 
-paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_bothtsd_cordinates.v.3.3.txt) <(sort -k1,1 $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt) > $OUTDIR/$PROJECT/RM_insertions_TSD_strands
+paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_bothtsd_cordinates.v.3.3.txt) <(sort -k1,1 $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt) | cut -f 1,2,3,4,11 > $OUTDIR/$PROJECT/RM_insertions_TSD_strands
 
 #####################
 # 7: re-Genotype ####
