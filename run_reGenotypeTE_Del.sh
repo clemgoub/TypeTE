@@ -37,6 +37,8 @@ fi
 
 mkdir -p $OUTDIR/$PROJECT
 
+rm -r $OUTDIR/$PROJECT/* #cleanup previous failed run
+
 #Creates the <project>.input in $OUTDIR/$PROJECT
 
 paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
