@@ -46,6 +46,40 @@ if [[ $TSD == "noTSDs" ]]
 	# generate the table
 	paste <(echo "$left") <(echo "$left" | sed 's/:/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
 
+	# elif [[ $TSD == "*\.*" ]] # if TSDs have mismatches, will keep the 5' one for the non TE
+
+	# then
+
+	# left_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500),$2}')
+	# right_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$right") | awk '{print $1,$3,($3+500)}')
+	# TE_loc=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500),($3+500)}') # the left and right TSD coordinates in case of "noTSDs" are actually the start and stop of the TE of the input file
+
+	# echo "$left_TE_del"
+	# echo "$right_TE_del"
+	# echo "$TE_loc"
+
+	# # extract the sequence of them | change the refgenome path by a user input
+	# leftsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
+	# rightsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$right_TE_del" | sed 's/ /\t/g'))
+	# noTE=$(paste -d "," <(echo "$leftsq") <(echo "$rightsq") | awk 'getline seq {print seq}' | sed $'s/,/\t/g')
+	
+	
+	# leftTSD=$(echo "$TSD" | sed 's/\./\t/g' | awk '{print $1}')
+	# rightTSD=$(echo "$TSD" | sed 's/\./\t/g' | awk '{print $2}')
+	
+	# 	if [[ $2 == "+" ]] # keep left if + ; keep right if -
+	# 	then # keep left TSD
+	# 	else # keep right TSD
+	
+
+	# 	fi
+
+	# TE=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
+
+	# # generate the table
+	# paste <(echo "$left") <(echo "$left" | sed 's/:/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
+
+
 	else
 
 	left_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500),$2}')
