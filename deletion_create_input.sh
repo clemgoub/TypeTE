@@ -55,6 +55,7 @@ if [[ $TSD == "noTSDs" ]]
 	right_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$right") | awk '{print $1,$3,($3+500)}')
 	TE_loc=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500),($3+500)}') # the left and right TSD coordinates in case of "noTSDs" are actually the start and stop of the TE of the input file
 
+	echo "TWO TSD !!!!!!!!!!"
 	echo "$left_TE_del"
 	echo "$right_TE_del"
 	echo "$TE_loc"
