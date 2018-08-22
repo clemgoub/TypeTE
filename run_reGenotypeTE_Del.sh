@@ -68,6 +68,11 @@ perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -
 
 perl 03_DelP_findTSD_forRMTEcordinates_v3.3.pl -t $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt -p $OUTDIR/$PROJECT/output_TSD_Intervals.out -g $GENOME
 
+#########################################
+# 4:  #### Create input for genotyping  #
+#########################################
+
+paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_bothtsd_cordinates.v.3.3.txt) <(sort -k1,1 $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt) > $OUTDIR/$PROJECT/RM_insertions_TSD_strands
 
 #####################
 # 7: re-Genotype ####
