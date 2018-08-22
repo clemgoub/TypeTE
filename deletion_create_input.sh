@@ -47,7 +47,7 @@ if [[ $TSD == "noTSDs" ]]
 	# generate the table
 	paste <(echo "$left") <(echo "$left" | sed 's/:/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
 
-	elif [[ $TSD == "*\.*" ]] # if TSDs have mismatches, will keep the 5' one for the non TE
+elif [[ $TSD == "*\.*" ]] # if TSDs have mismatches, will keep the 5' one for the non TE
 
 	then
 
@@ -88,7 +88,7 @@ if [[ $TSD == "noTSDs" ]]
 	paste <(echo "$left") <(echo "$left" | sed 's/:/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
 
 
-	else
+else
 
 	left_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500),$2}')
         right_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$right") | awk '{print $1,$3,($3+500)}')
