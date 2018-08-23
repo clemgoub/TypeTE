@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# usage deletion_create_input.sh TEcordinates_with_bothtsd_cordinates.v.3.3.txt
+# usage deletion_create_input.sh RM_insertions_TSD_strands
 
 source parameterfile_Del.init
 
@@ -20,11 +20,11 @@ right=$(echo "$locus" | awk '{print $3}')
 TSD=$(echo "$locus" | awk '{print $4}')
 strand=$(echo "$locus" | awk '{print $5}')
 
-echo "$locus"
-echo "$loc" 
-echo "$left" 
-echo "$right" 
-echo "$TSD" 
+# echo "$locus"
+# echo "$loc" 
+# echo "$left" 
+# echo "$right" 
+# echo "$TSD" 
 
 if [[ $TSD == "noTSDs" ]]
 	
@@ -34,9 +34,9 @@ if [[ $TSD == "noTSDs" ]]
 	right_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$right") | awk '{print $1,$3,($3+500)}')
 	TE_loc=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500),($3+500)}') # the left and right TSD coordinates in case of "noTSDs" are actually the start and stop of the TE of the input file
 
-	echo "$left_TE_del"
-	echo "$right_TE_del"
-	echo "$TE_loc"
+	# echo "$left_TE_del"
+	# echo "$right_TE_del"
+	# echo "$TE_loc"
 
 	# extract the sequence of them | change the refgenome path by a user input
 	leftsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
@@ -55,10 +55,10 @@ elif [[ $TSD == *.* ]] # if TSDs have mismatches, will keep the 5' one for the n
 	right_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$right") | awk '{print $1,$3,($3+500)}')
 	TE_loc=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500),($3+500)}') # the left and right TSD coordinates in case of "noTSDs" are actually the start and stop of the TE of the input file
 
-	echo "TWO TSD !!!!!!!!!!"
-	echo "$left_TE_del"
-	echo "$right_TE_del"
-	echo "$TE_loc"
+	# echo "TWO TSD !!!!!!!!!!"
+	# echo "$left_TE_del"
+	# echo "$right_TE_del"
+	# echo "$TE_loc"
 
 	# extract the sequence of them | change the refgenome path by a user input
 	leftsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
@@ -94,9 +94,9 @@ else
         right_TE_del=$(sed 's/:/\t/g;s/-/\t/g' <(echo "$right") | awk '{print $1,$3,($3+500)}')
         TE_loc=$(paste -d ","  <(sed 's/:/\t/g;s/-/\t/g' <(echo "$left") | awk '{print $1,($2-500)}') <(sed 's/:/\t/g;s/-/\t/g' <(echo "$right") | awk '{print ($3+500)}') | sed $'s/,/\t/g')
 	
-	echo "$left_TE_del"
-	echo "$right_TE_del"
-        echo "$TE_loc"
+	# echo "$left_TE_del"
+	# echo "$right_TE_del"
+ #        echo "$TE_loc"
 
 	# extract the sequence of them | change the refgenome path by a user input
 	leftsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
