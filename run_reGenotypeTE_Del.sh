@@ -7,7 +7,7 @@
 # This script genotype the non-reference  #
 # insertions                              #
 # Author: Clement Goubert                 #
-# Date: 06/2018                           #
+# Date: 08/2018                           #
 # Version: 1.0                            #
 ###########################################
 
@@ -41,17 +41,17 @@ rm -r $OUTDIR/$PROJECT/* #cleanup previous failed run
 
 #Creates the <project>.input in $OUTDIR/$PROJECT
 
-paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
+paste <(date) <(echo "preparing input from MELT vcf...")
 
 ./input_from_melt_Del.sh $VCF $PROJECT
 
-paste <(date | awk '{print $4}') <(echo "DONE.")
+paste <(date) <(echo "DONE.")
 
 #########################################
 # 1:  #### Match MEI with RM insertions #
 #########################################
 
-paste <(date | awk '{print $4}') <(echo "Finding corresponding Repeat Masker insertions on reference genome...")
+paste <(date) <(echo "Finding corresponding Repeat Masker insertions on reference genome...")
 
 perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
 
@@ -59,7 +59,7 @@ perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -
 # 2:  #### Find Mappability Intervals   #
 #########################################
 
-#paste <(date | awk '{print $4}') <(echo "Computing Mappability score of MEI...")
+#paste <(date) <(echo "Computing Mappability score of MEI...")
 
 #perl 02_DelP_findmappabilityscores_genomicintervalsv2.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt -db jainys_db -u jainy -pd wysql123 -p $OUTDIR/$PROJECT
 
@@ -67,6 +67,7 @@ perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -
 # 3:  #### Find TSD and TE coordinates  #
 #########################################
 
+paste <(date) <(echo "Finding TSD and TE coordinates...")
 
 perl 03_DelP_findTSD_forRMTEcordinates_v3.3.pl -t $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt -p $OUTDIR/$PROJECT/output_TSD_Intervals.out -g $GENOME
 
@@ -74,48 +75,52 @@ perl 03_DelP_findTSD_forRMTEcordinates_v3.3.pl -t $OUTDIR/$PROJECT/RM_intervals.
 # 4:  #### Create input for genotyping  #
 #########################################
 
+paste <(date) <(echo "generating inputs for genotyping...")
+
 paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_bothtsd_cordinates.v.3.3.txt) <(sort -k1,1 $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt) | cut -f 1,2,3,4,11 > $OUTDIR/$PROJECT/RM_insertions_TSD_strands
 
+./deletion_create_input.sh $OUTDIR/$PROJECT/RM_insertions_TSD_strands > $OUTDIR/$PROJECT/$PROJECT.allele
+
 #####################
-# 7: re-Genotype ####
+# 5: re-Genotype ####
 #####################
 
-# paste <(date | awk '{print $4}') <(echo "Genotyping...")
+paste <(date | awk '{print $4}') <(echo "Genotyping...")
 
-# ### create alternatives alleles
-# python insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
+### create alternatives alleles
+python insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
 
-# ### genotype per individual
-# list=$(cut -f 1 $BAMFILE)
-# for ind in $list
-# do
+### genotype per individual
+list=$(cut -f 1 $BAMFILE)
+for ind in $list
+do
 
-# bamf=$(grep "$ind" $BAMFILE | cut -f 2)
-# python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename $ind --bwa $BWA --bam $BAMPATH/$bamf
+bamf=$(grep "$ind" $BAMFILE | cut -f 2)
+python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename $ind --bwa $BWA --bam $BAMPATH/$bamf
 
-# done
+done
 
-# paste <(date | awk '{print $4}') <(echo "Genotyping... Done")
-# paste <(date | awk '{print $4}') <(echo "Generating outputs...")
+paste <(date | awk '{print $4}') <(echo "Genotyping... Done")
+paste <(date | awk '{print $4}') <(echo "Generating outputs...")
 
-# ### tabix the individuals vcfs
-# cd $OUTDIR/$PROJECT/samples/
-# folders=$(ls -d */ | sed 's/\///g')
-# for fol in $folders
-# do
+### tabix the individuals vcfs
+cd $OUTDIR/$PROJECT/samples/
+folders=$(ls -d */ | sed 's/\///g')
+for fol in $folders
+do
 
-# $BGZIP -c $fol/$fol.vcf > $fol/$fol.vcf.gz
-# $TABIX -p vcf $fol/$fol.vcf.gz
+$BGZIP -c $fol/$fol.vcf > $fol/$fol.vcf.gz
+$TABIX -p vcf $fol/$fol.vcf.gz
 
-# done
+done
 
-# ### merging final VCF
-# vcf-merge ./*/*.vcf.gz | $BGZIP -c > $OUTDIR/$PROJECT/$PROJECT.reGenotypeTE.vcf.gz
+### merging final VCF
+vcf-merge ./*/*.vcf.gz | $BGZIP -c > $OUTDIR/$PROJECT/$PROJECT.reGenotypeTE.vcf.gz
 
-# cd $whereamI
+cd $whereamI
 
-# paste <(date | awk '{print $4}') <(echo "Generating outputs... Done")
+paste <(date | awk '{print $4}') <(echo "Generating outputs... Done")
 
-# paste <(date | awk '{print $4}') <(echo "reGenotypeTE completed!!!")
+paste <(date | awk '{print $4}') <(echo "reGenotypeTE completed!!!")
 
 
