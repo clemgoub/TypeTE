@@ -171,6 +171,9 @@ foreach $directory (@dir) {
 			#rename the fasta sequence with its filename
 			my $assembledfile = "$directory.allreads.scaffolds.fasta";
 			&renameseq_filename($assembledfile,$outpath,$directory);
+		}elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta" ) {
+			my $assembledfile = "$directory.allreads.contigs.fasta";
+			&renameseq_filename($assembledfile,$outpath,$directory);
 		} elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout/dipspades/consensus_contigs.fasta") { 
 			copy("$path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout/dipspades/consensus_contigs.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.consensus_contigs.fasta") or die "Copy failed consensus_contigs.fasta $directory:$!";
 			my $assembledfile = "$directory.allreads.consensus_contigs.fasta";
