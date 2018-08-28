@@ -21,7 +21,7 @@ use List::MoreUtils qw(uniq);
 use feature 'fc';
 
 
-my $version = "5.0";
+my $version = "5.1";
 my $scriptname = "orientTE_extractTE.pl";
 my $changelog = "
 #   - v1.0 = 3 November 2017 
@@ -40,6 +40,9 @@ my $changelog = "
 #				sequence with both TSDs in one file and the others in another file (header locus,queryTE,orientation, TE)
 #	- v5.0 = 4 April 2018
 #				modifies the output table with TSD and name of the sequence
+#
+#	- v5.1 = 28 August 2018
+#				fixed bug when spades created contigs.fasta
 
 \n";
 
@@ -172,6 +175,7 @@ foreach $directory (@dir) {
 			my $assembledfile = "$directory.allreads.scaffolds.fasta";
 			&renameseq_filename($assembledfile,$outpath,$directory);
 		}elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta" ) {
+			copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.contigs.fasta") or die "Copy failed contigs.fasta $directory:$!";
 			my $assembledfile = "$directory.allreads.contigs.fasta";
 			&renameseq_filename($assembledfile,$outpath,$directory);
 		} elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout/dipspades/consensus_contigs.fasta") { 
