@@ -74,7 +74,7 @@ cd $whereamI #comes back to the working dir
 
 paste <(date | awk '{print $4}') <(echo "Extracting mappability scores...")
 
-perl denovo_extract_GM_scoresv1.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/gmscore_all -db jainys_db -u jainy -pd wysql123
+perl denovo_extract_GM_scoresv1.0.pl -t hg19wgEncodeCrgMapabilityAlign100mer_index -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/gmscore_all -db $DATABASE -u $USER -pd $PSWD
 
 
 ####################################################################
