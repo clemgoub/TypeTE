@@ -67,7 +67,7 @@ my $usage = "\nUsage [$version]:
                          Default = <current working directory>
     -o,--output (STRING) output file with strand prediction
     -te,--TEout (STRING) output file with Assembled TE sequences only if nearly full length
-    -p,--cpus   (STRING) #CPUs you would pass
+    -cu,--cpus   (STRING) #CPUs you would pass
     -c,--chlog  (BOOL)   Print updates
     -v,--v      (BOOL)   Print version if only option
     -s,--verbose(BOOL)   The script will talk to you
@@ -88,7 +88,7 @@ GetOptions ('d=s' => \$rdir,
            'cp=s' => \$CAP3dir,
            'mn=s' => \$miniadir,
            'sp=s' => \$spadedir,
-           'p=s'  => \$cpus,
+           'cu=s'  => \$cpus,
             'c'   => \$chlog, 
             'h'   => \$help,
             's'   => \$verbose, 
