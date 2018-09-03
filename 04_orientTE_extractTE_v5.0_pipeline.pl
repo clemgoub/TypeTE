@@ -43,6 +43,8 @@ my $changelog = "
 #
 #	- v5.1 = 28 August 2018
 #				fixed bug when spades created contigs.fasta
+#	- v5.2 = 31 August 2018
+#				add threads to the SPADes assembly, be that part of CPU (requested earlier)	
 
 \n";
 
@@ -54,16 +56,18 @@ my $usage = "\nUsage [$version]:
 	-g,--genomedir  (STRING) input directory with the corresponding reference genome sequence   
     -t,--TEdir	  	(STRING) input directory with TE sequences (separate fasta files with location name)
     -l,--list		(STRING) input file containing the information on TE insertion
-    -bp, --blastn   (STRING) location of blastn
-    -cp, --CAP3     (STRING) location of cap3 assembler
-    -mn, --minia    (STRING) location of minia
-    -sp, --spade    (STRING) location of spade
+    -bp,--blastn   (STRING) location of blastn
+    -cp,--CAP3     (STRING) location of cap3 assembler
+    -mn,--minia    (STRING) location of minia
+    -sp,--spade    (STRING) location of spade
+    
     
     OPTIONAL ARGUMENTS:
     -p,--path   (STRING) output directory name (path)
                          Default = <current working directory>
     -o,--output (STRING) output file with strand prediction
     -te,--TEout (STRING) output file with Assembled TE sequences only if nearly full length
+    -cu,--cpus   (STRING) #CPUs you would pass
     -c,--chlog  (BOOL)   Print updates
     -v,--v      (BOOL)   Print version if only option
     -s,--verbose(BOOL)   The script will talk to you
@@ -72,7 +76,7 @@ my $usage = "\nUsage [$version]:
 #-----------------------------------------------------------------------------
 #------------------------------ LOAD AND CHECK -------------------------------
 #-----------------------------------------------------------------------------
-my ($rdir,$gdir,$TEdir,$listte,$teout,$miniadir,$CAP3dir,$BLASTdir,$spadedir,$path,$fineout,$verbose,$help,$v,$chlog);
+my ($rdir,$gdir,$TEdir,$listte,$teout,$cpus,$miniadir,$CAP3dir,$BLASTdir,$spadedir,$path,$fineout,$verbose,$help,$v,$chlog);
 GetOptions ('d=s' => \$rdir,
 			'g=s' => \$gdir,
 			't=s' => \$TEdir,
@@ -84,6 +88,7 @@ GetOptions ('d=s' => \$rdir,
            'cp=s' => \$CAP3dir,
            'mn=s' => \$miniadir,
            'sp=s' => \$spadedir,
+           'cu=s'  => \$cpus,
             'c'   => \$chlog, 
             'h'   => \$help,
             's'   => \$verbose, 
@@ -96,6 +101,7 @@ die $usage if ((! $rdir) ||(! $gdir) ||(! $TEdir) || ($help));
 my $cwd = getcwd();
 $path = $cwd if (!$path) ;
 make_path("$path");
+$cpus = 3 if (! $cpus);
 $fineout = "$path/genomeloc.strand.prediction.$version.txt" if (! $fineout);
 $teout = "$path/Assembled_TEsequences.$version.txt" if (! $teout);
 die "\n -d $rdir does not exist?\n\n"  if (! -e $rdir);
@@ -164,8 +170,8 @@ foreach $directory (@dir) {
 	# print STDERR "assemble the concatenated sequence\n";
 	if (($R1filesize > 0) || ($R1filesize > 0)) {
 		#Assemble only the mapped reads		   
-		system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
-		system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
+		system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful -t $cpus --only-assembler -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
+		system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout --only-assembler -t $cpus --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
 		system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
 		system ("$CAP3dir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
 		if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
