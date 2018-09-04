@@ -75,11 +75,11 @@ whereamI=$(pwd)
 # # 4:  #### Create input for genotyping  #
 # #########################################
 
-# paste <(date) <(echo "generating inputs for genotyping...")
+paste <(date) <(echo "generating inputs for genotyping...")
 
-# paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_bothtsd_cordinates.v.3.3.txt) <(sort -k1,1 $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt) | cut -f 1,2,3,4,11 > $OUTDIR/$PROJECT/RM_insertions_TSD_strands
+paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_bothtsd_cordinates.v.3.3.txt) <(sort -k1,1 $OUTDIR/$PROJECT/RM_intervals.out/file.correspondingRepeatMaskerTEs.txt) | cut -f 1,2,3,4,11 > $OUTDIR/$PROJECT/RM_insertions_TSD_strands
 
-# ./deletion_create_input.sh $OUTDIR/$PROJECT/RM_insertions_TSD_strands > $OUTDIR/$PROJECT/$PROJECT.allele
+./deletion_create_input.sh $OUTDIR/$PROJECT/RM_insertions_TSD_strands > $OUTDIR/$PROJECT/$PROJECT.allele
 
 #####################
 # 5: re-Genotype ####
