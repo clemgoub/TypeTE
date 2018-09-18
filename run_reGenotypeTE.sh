@@ -155,14 +155,8 @@ paste <(date | awk '{print $4}') <(echo "Genotyping...")
 python insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
 
 ### genotype per individual
-list=$(awk '{print $1}' $BAMFILE)
-for ind in $list
-do
+cat $BEDFILE | parallel -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
 
-bamf=$(grep "$ind" $BAMFILE | awk '{print $2}')
-python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename $ind --bwa $BWA --bam $BAMPATH/$bamf
-
-done
 
 paste <(date | awk '{print $4}') <(echo "Genotyping... Done")
 paste <(date | awk '{print $4}') <(echo "Generating outputs...")
