@@ -180,7 +180,7 @@ foreach $directory (@dir) {
 			#rename the fasta sequence with its filename
 			my $assembledfile = "$directory.allreads.scaffolds.fasta";
 			&renameseq_filename($assembledfile,$outpath,$directory);
-		}elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta" ) {
+		} elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta" ) {
 			copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.contigs.fasta") or die "Copy failed contigs.fasta $directory:$!";
 			my $assembledfile = "$directory.allreads.contigs.fasta";
 			&renameseq_filename($assembledfile,$outpath,$directory);
@@ -468,7 +468,7 @@ sub compare_twoHOH {
 			#print STDERR " $contigkey exists in ghash\n";
 			#%extractcontiginfo = %{ $TEhash{$contigkey} };# copying only next level of keys and values
 			$extractcontiginfo{$contigkey} = $TEhash{$contigkey};
-			foreach my $features (keys ${$TEhash}{$contigkey}) {#derefence second level
+			foreach my $features (keys %{${$TEhash}{$contigkey}}) {#derefence second level
 				$TEstrand = ${$TEhash}{$contigkey} {$features} if ($features eq 'strand');
 				$genomestrand = ${$ghash}{$contigkey} {$features} if ($features eq 'strand');
 				#print STDERR "TEstrand is $TEstrand and gstrand is $genomestrand \n";
@@ -573,12 +573,12 @@ sub compare_kmers {
 	my %tsdlist;
 	my @potentialtsdlist;
 	for my $loc (keys %lefthash) {
-		for my $klen ( sort { $a <=> $b } keys $lefthash{$loc} ) {#sort keys numerically
+		for my $klen ( sort { $a <=> $b } keys %{$lefthash{$loc}} ) {#sort keys numerically
 			#print "$klen is the first level key\n"; 
 			if (exists ($righthash{$loc}{$klen})) {
-				for my $lindex (sort keys $lefthash{$loc}{$klen}) {
+				for my $lindex (sort keys %{$lefthash{$loc}{$klen}}) {
 					#print "$lindex is the second level key for secondhash\n"; 
-					for my $rindex (sort keys $righthash{$loc}{$klen}) {
+					for my $rindex (sort keys %{$righthash{$loc}{$klen}}) {
 					     my $lefttsd = $lefthash{$loc}{$klen}{$lindex};
 					     my $righttsd = $righthash{$loc}{$klen}{$rindex};
 						 #if ( $lefthash{$loc}{$klen}{$lindex} eq $righthash{$loc}{$klen}{$rindex} ) {
