@@ -432,12 +432,7 @@ sub parse_blast {
 		my $strand = $col[6];
 		my $pident = $col[2];
 		if 	($pident > 95) {	
-			$d{$contig}{'score'}  = $score;
-			$d{$contig}{'strand'}  = $strand;
-			$d{$contig}{'sstart'}  = $col[9];
-			$d{$contig}{'send'}  = $col[10];
-			$d{$contig}{'qid'} = $col[0];
-			$d{$contig}{'slen'} = $col[5];
+			
 			if (exists ($d{$contig})) {
 				my $currentscore = $d{$contig}{'score'};
 				if ($currentscore > $score){
@@ -450,6 +445,13 @@ sub parse_blast {
 					$d{$contig}{'qid'} = $col[0];
 					$d{$contig}{'slen'} = $col[5];
 				}
+			} else {
+				$d{$contig}{'score'}  = $score;
+				$d{$contig}{'strand'}  = $strand;
+				$d{$contig}{'sstart'}  = $col[9];
+				$d{$contig}{'send'}  = $col[10];
+				$d{$contig}{'qid'} = $col[0];
+				$d{$contig}{'slen'} = $col[5];
 			}
 		}
 	}
@@ -468,7 +470,7 @@ sub compare_twoHOH {
 			#print STDERR " $contigkey exists in ghash\n";
 			#%extractcontiginfo = %{ $TEhash{$contigkey} };# copying only next level of keys and values
 			$extractcontiginfo{$contigkey} = $TEhash{$contigkey};
-			foreach my $features (keys %{${$TEhash}{$contigkey}}) {#derefence second level
+			foreach my $features (keys %{$TEhash{$contigkey}}) {#derefence second level
 				$TEstrand = ${$TEhash}{$contigkey} {$features} if ($features eq 'strand');
 				$genomestrand = ${$ghash}{$contigkey} {$features} if ($features eq 'strand');
 				#print STDERR "TEstrand is $TEstrand and gstrand is $genomestrand \n";
@@ -532,7 +534,7 @@ sub loadseq_tohash {
 		while (my $seque = $readio_obj->next_seq() ){
 			my $header = $seque->display_id;
 			my $sequence = $seque->seq;
-			if ($header =~ /$locus/) {
+			if ($header =~ /$locus$/) {
 				$extractcontiginfo{$locus}{'seq'} = $sequence;
 			} else {
 				next;
@@ -541,7 +543,7 @@ sub loadseq_tohash {
 	}
 }
 sub generate_kmer_pos {
-	my $kmersize = 10;
+	my $kmersize = 4;#was 10 before
 	my ($seq,$direction,$genomeloc) = @_;
 	my $lenseq = length $seq;	
 	#print "the length of the sequence $lenseq\n";

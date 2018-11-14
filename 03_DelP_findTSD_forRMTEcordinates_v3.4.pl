@@ -20,7 +20,7 @@ use List::MoreUtils qw(uniq);
 use feature 'fc';
 
 
-my $version = "3.3";
+my $version = "3.4";
 my $scriptname = "findtsdinfasta.pl";
 my $changelog = "
 #   - v1.0 = 27 November 2017 
@@ -42,6 +42,11 @@ my $changelog = "
 #				added TE locus to the output, also added approximate TSDs and no TSD data has the same cordinates as the RMout file
 #				TSD is in proper orientation as that of the insertion
 #				To do : the cordinates of  appmatch TSD will have to be adjusted, if I find more cases it would be easy especially + strand cases
+#
+#	-v3.4 = 14 November 2018
+#				Previus version outputted all possible matches for approximate match. Now changed in such a way the first one with the lowest left index and lowest right index will be outputted
+#				also changed the max. kmer to 26
+#				compare_kmers_approx criteria changed from 3% to 5%
 
 \n";
 
@@ -81,7 +86,7 @@ GetOptions ('f=s' => \$file,
             'v'   => \$v);
 
 #check step to see if mandatory argument is provided + if help/changelog
-die "\n Script $scriptname version $version\n\n" if ((! $table)  && (! $help) && (! $chlog) && ($v));
+die "\n Script $scriptname version $version\n\n" if ((! $table)  &&  (! $help) && (! $chlog) && ($v));
 die $changelog if ($chlog);
 die $usage if  ($help);
 my $cwd = getcwd();
@@ -93,7 +98,7 @@ my $appout = "$path/appmatch_tsdinfo.v.$version.txt";
 my $notsdlist = "$path/no_tsds.v.$version.txt";
 
 #my $logfile = "$file.log";
-my $wholeout = "$path/TEcordinates_with_bothtsd_cordinates.v.$version.txt";
+my $wholeout = "$path/TEcordinates_with_bothtsd_cordinates.v.$version.txt";#should be removed before doing reruns
 #my $appwholeout = "$path/appmatch_TEcordinates_with_bothtsd_cordinates.v.$version.txt";
 #-----------------------------------------------------------------------------
 #----------------------------------- MAIN ------------------------------------
@@ -113,10 +118,12 @@ step 4 compare the hashes for kmers, do approximate check as well, regenerated k
 #extracting the sequence based on the RM cordinates
   
 make_path("$path") if ($path);
+#my %gloci;
 #extracted flanking genomic sequence
 &extract_genomicseqflank() if ($table);
+#print Dumper %gloci,"\n"; 
 my %flankseq = load_seq ();
-print Dumper  %flankseq;
+#print Dumper  %flankseq;
 my $left = 5;
 my $right = 3;
 my @matchingtsdlist;
@@ -127,7 +134,9 @@ my @approxtsdlist;
 my %TEcor_bothtsd_approx;
 my @likelynotsds;
 my %apptsdfound;
-
+#my %duplicatesappmatch;
+#my @multipelTSDinfo;
+my %approxtsdhash;
 
 foreach my $locus (keys %flankseq) {
 	my ($leftkmer);
@@ -151,6 +160,9 @@ foreach my $locus (keys %flankseq) {
 &print_keyvalue($wholeout,%TEcor_bothtsd);
 #print Dumper %exactmatch;
 my %appromatch = &find_notsd_cand(%exactmatch);#takes the locus for which no exact matches has been identified or no proper match identified
+
+#print "appromatch\n";
+
 #print Dumper %appromatch;
 foreach my $locus (keys %appromatch) {# same process is repeated and checked for approximate matches
 	my ($leftkmer);
@@ -166,11 +178,16 @@ foreach my $locus (keys %appromatch) {# same process is repeated and checked for
 	}
 	&compare_kmers_approx($leftkmer,$rightkmer);
 }
+print Dumper %approxtsdhash,"\n";
 &print_array($appout,@approxtsdlist);
 #&findcord_afteronetsd_approx(@approxtsdlist);
-&findcord_bothTSDs_approx(@approxtsdlist);
+#&findcord_bothTSDs_approx(@approxtsdlist);
+&findcord_bothTSDs_approxhASH(%approxtsdhash);
 #&print_keyvalue($appwholeout,%TEcor_bothtsd_approx);
 &print_keyvalue($wholeout,%TEcor_bothtsd_approx);
+#print Dumper %duplicatesappmatch, "\n";
+#my $uniqueapprox = &choose_bestapproxi(\%duplicatesappmatch);
+#print Dumper %$uniqueapprox, "\n";
 #finding the elements for which no approximate TSDs have been identified
 my @noTSDswithapp = &findinarray(\@likelynotsds,\%apptsdfound);
 print "@noTSDswithapp\n";
@@ -219,7 +236,7 @@ sub generate_kmer_pos {
 	#print "the length of the sequence $lenseq\n";
 	#print "the length of the left right $lenleft\n";    
     my %kmers;    
-    for (my $j = $kmersize; $j <= 24; $j++) {#index starts from 0
+    for (my $j = $kmersize; $j <= 26; $j++) {#index starts from 0
     	my $klen = $j;
 		if ($direction == 3) {
 			for (my $i = 0; $i + $j <= $lenseq; $i++) {
@@ -307,6 +324,7 @@ sub extract_genomicseqflank {
 			my $start = $col[2];
 			my $end = $col[3];
 			my $strand = $col[6];
+			#$gloci{$ulocus} =1;
 			if ($strand eq "+") {
 				my $leftstart = $start - 40;
 				my $leftend = $start + 5;
@@ -443,7 +461,11 @@ sub compare_kmers_approx {
 	my %lefthash = %$l;
 	my %righthash = %$r;
 	my @approx_poten_tsdlist;
+	
 	for my $loc (keys %lefthash) {
+	my @listapprox=();
+		print "the locus is $loc\n";
+		$approxtsdhash{$loc}=[@listapprox];
 		for my $klen ( sort { $b <=> $a } keys $lefthash{$loc} ) {#sort keys numerically in the descending order
 			#print "$klen is the first level key\n"; 
 			if (exists ($righthash{$loc}{$klen})) {
@@ -454,10 +476,12 @@ sub compare_kmers_approx {
 					     my $righttsd = $righthash{$loc}{$klen}{$rindex};
 						 #if ( $lefthash{$loc}{$klen}{$lindex} eq $righthash{$loc}{$klen}{$rindex} ) {
 						 #if ( fc($lefttsd) eq fc($righttsd) ) {
-						 if (amatch ($lefthash{$loc}{$klen}{$lindex},["i 5%"],$righthash{$loc}{$klen}{$rindex}) ) {
+						 if (amatch ($lefthash{$loc}{$klen}{$lindex},["i 3%"],$righthash{$loc}{$klen}{$rindex}) ) {
 							 #print "for $klen is the approximate matching TSD  $lefthash{$loc}{$klen}{$lindex} is at $lindex, $righthash{$loc}{$klen}{$rindex} is at $rindex\n";
 							 my $tsdinfo = "$loc.$klen.$lefthash{$loc}{$klen}{$lindex}.$lindex.$rindex.$righthash{$loc}{$klen}{$rindex}";
+							 
 							 push (@approx_poten_tsdlist,$tsdinfo);
+							 
 							 #print "$tsdinfo\n";
 						 } #elsif (amatch ($lefthash{$g},["i 9%"],$righthash{$m}) ) {
 							#print "the approximate matching TSD $lefthash{$g} is at $g, $righthash{$m} at  $m\n";
@@ -469,9 +493,11 @@ sub compare_kmers_approx {
 				if ($count == 0) {
 					next;
 				} else {
-					
 					push (@approxtsdlist,@approx_poten_tsdlist);
+					push @{$approxtsdhash{$loc}},@approx_poten_tsdlist;
+					@{$approxtsdhash{$loc}} = uniq @{$approxtsdhash{$loc}};
 					@approxtsdlist = uniq @approxtsdlist ;
+					
 					#print STDERR "@approxtsdlist\n";
 					@approx_poten_tsdlist = ();
 					last;
@@ -486,10 +512,12 @@ sub compare_kmers_approx {
 sub findcord_bothTSDs_approx {
 	my (@arraywithtsdinfo) = @_;
 	my $gloca;
+	
 	foreach my $element (@arraywithtsdinfo) {
 		#print "$element\n";
 		my @details = split (/\./,$element);
 		my $uniqlocus = $details[0];
+		#$duplicatesappmatch{$uniqlocus} = [@multipelTSDinfo];
 		my $tchr = $details[1];
 		my $tstart = $details[2];
 		my $tend = $details[3];
@@ -502,6 +530,7 @@ sub findcord_bothTSDs_approx {
 		my $gID = $uniqlocus.".".$tchr.".".$tstart.".".$tend.".".$tstrand;
 		my $diff = ($lefindex - $tkmerlen);
 		if ($diff < 10) {
+			
 			if ($tstrand eq '+') {
 				my $gchr = $tchr;
 				my $tsd1start = ($tstart - $lefindex)+1;
@@ -509,9 +538,12 @@ sub findcord_bothTSDs_approx {
 				my $tsd2start = $tend + $rigindex;
 				my $tsd2end = ($tsd2start + $tkmerlen)-1;
 				$gloca = $uniqlocus."\t".$gchr.":".$tsd1start."-".$tsd1end."\t".$gchr.":".$tsd2start."-".$tsd2end;
-				print "$gloca\n";
+				#print "$gloca\n";
 				$TEcor_bothtsd_approx{$gloca} = $ltsd.".".$rtsd;
+				#my $eledetails= $gloca ."=".$ltsd.".".$rtsd;
 				$apptsdfound{$gID} = 1;
+				#push (@{$duplicatesappmatch{$uniqlocus}},{$element => $eledetails});
+				#push (@multipelTSDinfo, {$element => $eledetails}) ;
 			} elsif ($tstrand eq 'C') {
 				my $gchr = $tchr;
 				my $tsd1end = $tstart - $rigindex;
@@ -523,7 +555,10 @@ sub findcord_bothTSDs_approx {
 				my $revltsd = &revcom_seq($ltsd); 
 				my $revrtsd = &revcom_seq($rtsd);     
 				$TEcor_bothtsd_approx{$gloca} = $revrtsd.".".$revltsd;
+				#my $eledetails= $gloca ."=".$ltsd.".".$rtsd;
 				$apptsdfound{$gID} = 1;
+				#push (@{$duplicatesappmatch{$uniqlocus}},{$element => $eledetails});
+				#push (@multipelTSDinfo, {$element => $eledetails}) ;
 			}
 		} else {
 			#print STDERR "TSD with approximate match cannot be identified for $element\n";
@@ -533,6 +568,68 @@ sub findcord_bothTSDs_approx {
 	}
 	return (\%TEcor_bothtsd_approx,\%apptsdfound,\@likelynotsds);
 }
+sub findcord_bothTSDs_approxhASH {
+	my (%arraywithtsdinfo) = @_;
+	my $gloca;
+	
+	foreach my $element (%arraywithtsdinfo) {
+		foreach my $hash_ref (@{$arraywithtsdinfo{$element}}) {
+			
+			#print "$element\n";
+			my @details = split (/\./,$hash_ref);
+			my $uniqlocus = $details[0];
+			my $tchr = $details[1];
+			my $tstart = $details[2];
+			my $tend = $details[3];
+			my $tstrand = $details[4];
+			my $tkmerlen = $details[5];
+			my $ltsd = $details[6];
+			my $lefindex = $details[7];
+			my $rigindex = $details[8];
+			my $rtsd = $details[9];
+			my $gID = $uniqlocus.".".$tchr.".".$tstart.".".$tend.".".$tstrand;
+			my $diff = ($lefindex - $tkmerlen);
+			if ($diff < 10) {			
+				if ($tstrand eq '+') {
+					my $gchr = $tchr;
+					my $tsd1start = ($tstart - $lefindex)+1;
+					my $tsd1end = ($tsd1start + $tkmerlen)-1;
+					my $tsd2start = $tend + $rigindex;
+					my $tsd2end = ($tsd2start + $tkmerlen)-1;
+					$gloca = $uniqlocus."\t".$gchr.":".$tsd1start."-".$tsd1end."\t".$gchr.":".$tsd2start."-".$tsd2end;
+					#print "$gloca\n";
+					$TEcor_bothtsd_approx{$gloca} = $ltsd.".".$rtsd;
+					#my $eledetails= $gloca ."=".$ltsd.".".$rtsd;
+					$apptsdfound{$gID} = 1;
+					#push (@{$duplicatesappmatch{$uniqlocus}},{$element => $eledetails});
+					#push (@multipelTSDinfo, {$element => $eledetails}) ;
+				} elsif ($tstrand eq 'C') {
+					my $gchr = $tchr;
+					my $tsd1end = $tstart - $rigindex;
+					my $tsd1start = ($tsd1end - $tkmerlen) + 1;#  because the tsd is identifed on reverse complimented sequence
+				
+					my $tsd2end = ($tend + $lefindex) - 1;
+					my $tsd2start = ($tsd2end - $tkmerlen)+1;
+					$gloca = $uniqlocus."\t".$gchr.":".$tsd1start."-".$tsd1end."\t".$gchr.":".$tsd2start."-".$tsd2end;
+					my $revltsd = &revcom_seq($ltsd); 
+					my $revrtsd = &revcom_seq($rtsd);     
+					$TEcor_bothtsd_approx{$gloca} = $revrtsd.".".$revltsd;
+					#my $eledetails= $gloca ."=".$ltsd.".".$rtsd;
+					$apptsdfound{$gID} = 1;
+					#push (@{$duplicatesappmatch{$uniqlocus}},{$element => $eledetails});
+					#push (@multipelTSDinfo, {$element => $eledetails}) ;
+				}
+				last;
+			} else {
+				#print STDERR "TSD with approximate match cannot be identified for $element\n";
+				push (@likelynotsds,$gID);
+				@likelynotsds = uniq @likelynotsds;
+			}
+		}
+	}
+	return (\%TEcor_bothtsd_approx,\%apptsdfound,\@likelynotsds);
+}
+
 sub revcom_seq {
 	my ($inputseq) = @_; 
 	my $seqobj = Bio::Seq->new(-seq => "$inputseq", #to obtain reverse compliment of tsd when the strand is minus as I am extracting the reverse compliment of the sequence 
