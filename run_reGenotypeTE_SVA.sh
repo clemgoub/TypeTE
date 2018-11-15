@@ -109,12 +109,12 @@ ls $OUTDIR/$PROJECT/splitbylocus/*.part | $PARALLEL -j $CPU --results $OUTDIR/$P
 paste <(date | awk '{print $4}') <(echo "Extracting the TE sequences in fasta format...")
 
 mkdir -p $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences
-awk '{print $3}' $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE | sort | uniq | awk '{print $1"#SINE/Alu"}' > $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
+awk '{print $3}' $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE | sort | uniq | awk '{print $1"#Retroposon/SVA"}' > $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
 
 TEheads=$(cat $OUTDIR/$PROJECT/Repbase_intersect/TE_headers)
 for head in $TEheads
 do
-	name=$(echo "$head" | sed 's/\#SINE\/Alu//g')
+	name=$(echo "$head" | sed 's/\Retroposon\/SVA//g')
 	echo "$name"
 	perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$head") $RM_FASTA > $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/$name"".fasta
 done
