@@ -40,7 +40,7 @@ mkdir -p $OUTDIR/$PROJECT
 
 paste <(date | awk '{print $4}') <(echo "preparing input from MELT vcf...")
 
-./input_from_melt.sh $VCF $PROJECT
+./input_from_melt_SVA.sh $VCF $PROJECT
 
 paste <(date | awk '{print $4}') <(echo "DONE.")
 
@@ -114,7 +114,7 @@ awk '{print $3}' $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE | sort | uni
 TEheads=$(cat $OUTDIR/$PROJECT/Repbase_intersect/TE_headers)
 for head in $TEheads
 do
-	name=$(echo "$head" | sed 's/\Retroposon\/SVA//g')
+	name=$(echo "$head" | sed 's/\#Retroposon\/SVA//g')
 	echo "$name"
 	perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$head") $RM_FASTA > $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/$name"".fasta
 done
