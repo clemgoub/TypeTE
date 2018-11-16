@@ -629,7 +629,6 @@ sub findcord_bothTSDs_approxhASH {
 	}
 	return (\%TEcor_bothtsd_approx,\%apptsdfound,\@likelynotsds);
 }
-
 sub revcom_seq {
 	my ($inputseq) = @_; 
 	my $seqobj = Bio::Seq->new(-seq => "$inputseq", #to obtain reverse compliment of tsd when the strand is minus as I am extracting the reverse compliment of the sequence 
