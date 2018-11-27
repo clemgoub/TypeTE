@@ -6,8 +6,20 @@
 # This is the main script of the pipeline #
 #                                         #
 # Author: Clement Goubert                 #
-# Date: 07/2018                           #
-# Version: 1.0                            #
+# Author: Clement Goubert                 #
+# Date: 11-26-2018                        #
+#                                         #
+# Version: 2.0                            #
+###########################################
+
+###########################################
+# Changelog:                              
+
+# Version: 2.0 # UPDATE: 
+#	  				     - processbam_forreadextract_v17.1.pl
+#						 - orienTE_extractTE_v11.0.pl: multi assembler (CAP3-SPADES-MINIA)
+# Version: 1.0 # original working version, CAP3 assembler
+
 ###########################################
 
 #load the user options, outdir path and dependencies paths
@@ -68,7 +80,7 @@ paste <(date | awk '{print $4}') <(echo "Extracting reads...")
 
 cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
 
-cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" 
+cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v17.1.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" 
 
 cd $whereamI #comes back to the working dir
 
@@ -131,7 +143,7 @@ paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 
 rm -r $OUTDIR/$PROJECT/Assembled_TEreads
-perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU
+perl 04_orientTE_extractTE_v11.0.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU
 
 #######################################
 # 6: Generate input for genotyping ####
@@ -140,8 +152,8 @@ perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJ
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...")
 
 rm $OUTDIR/$PROJECT/$PROJECT.allele
-FullLength="$OUTDIR/$PROJECT/Assembled_TEsequences.*.txt.full_len.fasta"
-./de_novo_create_input_v2.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.5.1.txt $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
+FullLength="$OUTDIR/$PROJECT/Assembled_TEsequences.11.0.txt.full_len.fasta.summary"
+./de_novo_create_input_v2.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.11.0.txt.summary $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...Done.")
 
