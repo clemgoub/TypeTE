@@ -61,6 +61,7 @@ my $changelog = "
 #				picking the longest one from the partial and full lengths
 #	- v11.0 = 13 November 2018
 #				introducing check for strand printing only if all predictions point to one strand
+#	-v11.0 = 27 changed the TEsequences are loaded back to previous version so to main compatability with the ClementRMoutput	
 \n";
 
 my $usage = "\nUsage [$version]: 
@@ -134,7 +135,7 @@ $TEdir = $1 if ($TEdir =~ /^(.*)\/$/);
 #-----------------------------------------------------------------------------
 #change to commandline
 #my $CAP3pro = "/home/jainy/software/CAP3";#vader server
-#my $BLASTpro = "/home/jainy/software/ncbi-blast-2.6.0+/bin";
+#my $BLASTpro = "/home/jainy/software/ncbi-blast-2.6.0+/bin"; #/home/jainy/software/ncbi-blast-2.7.1+/bin
 #my $miniapro = "/home/jainy/software/minia-v2.0.7-Source/build/bin";
 #my $SPAdepro = "/home/jainy/software/SPAdes-3.11.1-Linux/bin";#vaderserver,Yodaserver
 
@@ -949,7 +950,8 @@ sub load_file {
 			chomp $data; #storing the table values to the $data and removing the extraline
 			my @name = split(/\s+/,$data); # splitting the data based on tab and storing into the arrray
 			my $dirc = $name[0];#first column is genome location
-			$stefile{$dirc} = $name[1]; #name of the TE inserted is loaded 
+			#$stefile{$dirc} = $name[1]; #name of the TE inserted is loaded 
+			$stefile{$dirc} = $name[2];#compatibility with Clement's output
 		}
 	return (%stefile);
 	close $th;	
@@ -975,19 +977,30 @@ sub concatenatefiles {
 	}
 }
 sub find_TEseq {
-	my ($gloc) = @_;
-	my ($c,$starts,$ends) = split (/[:-]/,$gloc);
-	my $brkp = $starts +250;
-	my $gloca = $c."_".$brkp;
+my ($gloc) = @_;
 	#print STDERR "the sequence TE is $gloc";
 	my $TEseqfile;
-	if (exists ($TEinfo{$gloca}))  {
-		$TEseqfile = $TEinfo{$gloca};
+	if (exists ($TEinfo{$gloc}))  {
+		$TEseqfile = $TEinfo{$gloc};
 	}
 	else {
 		die  "Not able to get the TEseq file \n";
 	}
 	return ($TEseqfile);
+#when using standalone positionTEfile
+	# my ($gloc) = @_;
+# 	my ($c,$starts,$ends) = split (/[:-]/,$gloc);
+# 	my $brkp = $starts +250;
+# 	my $gloca = $c."_".$brkp;
+# 	#print STDERR "the sequence TE is $gloc";
+# 	my $TEseqfile;
+# 	if (exists ($TEinfo{$gloca}))  {
+# 		$TEseqfile = $TEinfo{$gloca};
+# 	}
+# 	else {
+# 		die  "Not able to get the TEseq file \n";
+# 	}
+# 	return ($TEseqfile);
 }
 sub renameseq_filename {
 	my ($contigfile,$fpath,$directory) = @_;
