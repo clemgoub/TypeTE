@@ -61,7 +61,11 @@ my $changelog = "
 #				picking the longest one from the partial and full lengths
 #	- v11.0 = 13 November 2018
 #				introducing check for strand printing only if all predictions point to one strand
-#	-v11.0 = 27 changed the TEsequences are loaded back to previous version so to main compatability with the ClementRMoutput	
+#	- v11.0 = 27 November 2018
+#				 changed the TEsequences are loaded back to previous version so to main compatability with the ClementRMoutput	
+#			= 29 November 2018
+#				fixed the bug, when tried to extract sequence at the end of the contig (go beyond the length of the contig)
+#				
 \n";
 
 my $usage = "\nUsage [$version]: 
@@ -338,6 +342,7 @@ if ($discsplidir) {
 		$newlocus = $locus.".".$start.".".$end.".".$strand if ($strand eq 'plus');
 		$newlocus = $locus.".".$end.".".$start.".".$strand if ($strand eq 'minus');
 		my $seq_obj = Bio::Seq->new( -display_id => $newlocus, -seq => $seq); # create object with seq
+		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
 			my $leftend = $start + 5;
@@ -378,6 +383,7 @@ if ($discsplidir) {
 		if (defined ($tsdinfo)) {
 			($testart,$teend,$tsdseq,$tsdsucc) = &findcord_bothtsds($tsdinfo);
 			#print "$locus output from findcordbothtsd is $testart, $teend\n";
+			$teend = $lengthseq if  ($teend > $lengthseq);
 			$teseq = $seq_obj->subseq($testart,$teend);
 			$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
 			#my $lenseq = ($teend-$testart) +1;
@@ -576,6 +582,7 @@ if ($discdir) {
 		$newlocus = $locus.".".$start.".".$end.".".$strand if ($strand eq 'plus');
 		$newlocus = $locus.".".$end.".".$start.".".$strand if ($strand eq 'minus');
 		my $seq_obj = Bio::Seq->new( -display_id => $newlocus, -seq => $seq); # create object with seq
+		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
 			my $leftend = $start + 5;
@@ -614,6 +621,7 @@ if ($discdir) {
 		if (defined ($tsdinfo)) {
 			($testart,$teend,$tsdseq,$tsdsucc) = &findcord_bothtsds($tsdinfo);
 			#print "$locus output from findcordbothtsd is $testart, $teend\n";
+			$teend = $lengthseq if  ($teend > $lengthseq);
 			$teseq = $seq_obj->subseq($testart,$teend);
 			$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
 			my $lenseq = length($teseq);
@@ -803,6 +811,7 @@ if ($rdir) {
 		$newlocus = $locus.".".$start.".".$end.".".$strand if ($strand eq 'plus');
 		$newlocus = $locus.".".$end.".".$start.".".$strand if ($strand eq 'minus');
 		my $seq_obj = Bio::Seq->new( -display_id => $newlocus, -seq => $seq); # create object with seq
+		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
 			my $leftend = $start + 5;
@@ -841,6 +850,7 @@ if ($rdir) {
 		if (defined ($tsdinfo)) {
 			($testart,$teend,$tsdseq,$tsdsucc) = &findcord_bothtsds($tsdinfo);
 			#print "$locus output from findcordbothtsd is $testart, $teend\n";
+			$teend = $lengthseq if  ($teend > $lengthseq);
 			$teseq = $seq_obj->subseq($testart,$teend);
 			$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
 			my $lenseq = length($teseq);
