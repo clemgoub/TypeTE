@@ -148,7 +148,7 @@ paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping..
 
 rm $OUTDIR/$PROJECT/$PROJECT.allele
 FullLength="$OUTDIR/$PROJECT/Assembled_TEsequences.11.0.txt.full_len.fasta.summary"
-./de_novo_create_input_v2.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.11.0.txt.summary $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
+de_novo_create_input_v2_SVA.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.11.0.txt.summary $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...Done.")
 
