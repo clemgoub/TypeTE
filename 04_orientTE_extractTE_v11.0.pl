@@ -709,7 +709,7 @@ if ($rdir) {
 			#Assemble only the mapped reads		   
 			system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -t $cpus -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
 			system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
-			system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 55 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3") == 0 or 
+			system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
 			system ("$CAP3dir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
 			if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
 				#Rename scaffolds.fasta 
@@ -718,10 +718,10 @@ if ($rdir) {
 				my $assembledfile = "$directory.allreads.scaffolds.fasta";
 				&renameseq_filename($assembledfile,$outpath,$directory);
 			}  elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta" ) {
-				system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 55 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3") == 0 or warn ("minia failed to assemble \n");
-				if (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa") { 
+				system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or warn ("minia failed to assemble \n");
+				if (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa") { 
 					
-					my $assembledfile = "$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa";
+					my $assembledfile = "$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa";
 					&renameseq_filename($assembledfile,$outpath,$directory);
 				} else {
 					copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.contigs.fasta") or die "Copy failed contigs.fasta $directory:$!";
@@ -732,8 +732,8 @@ if ($rdir) {
 				copy("$path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout/dipspades/consensus_contigs.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.consensus_contigs.fasta") or die "Copy failed consensus_contigs.fasta $directory:$!";
 				my $assembledfile = "$directory.allreads.consensus_contigs.fasta";
 				&renameseq_filename($assembledfile,$outpath,$directory);
-			} elsif (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa") { 
-				my $assembledfile = "$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa";
+			} elsif (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa") { 
+				my $assembledfile = "$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa";
 				&renameseq_filename($assembledfile,$outpath,$directory);
 			} elsif (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta.cap.contigs") {
 				my $assembledfile = "$directory.concatenated.allreads.fasta.cap.contigs";
