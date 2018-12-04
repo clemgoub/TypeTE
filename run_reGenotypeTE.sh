@@ -17,7 +17,7 @@
 
 # Version: 2.0 # UPDATE: 
 #	  				     - processbam_forreadextract_v17.1.pl
-#						 - orienTE_extractTE_v11.0.pl: multi assembler (CAP3-SPADES-MINIA)
+#					     - orienTE_extractTE_v11.0.pl: multi assembler (CAP3-SPADES-MINIA)
 # Version: 1.0 # original working version, CAP3 assembler
 
 ###########################################
@@ -37,7 +37,7 @@ echo "###########################"
 #locate working directoty
 whereamI=$(pwd)
 
-Creates the $OUTDIR
+#Creates the $OUTDIR
 
 {
 if [ $OUTDIR == "" ]; then
@@ -115,7 +115,6 @@ mkdir -p  $OUTDIR/$PROJECT/Repbase_intersect # creates the output folder if inex
 rm -r $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE # remove the output table for safety if one already exist
 ls $OUTDIR/$PROJECT/splitbylocus/*.part | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Repbase_intersect "./identify_mei_from_RM.sh {} $OUTDIR/$PROJECT/Repbase_intersect"
 
-# orienTE_extracTE.pl -d $OUTDIR/processbamout -t TE_directory_from_indetify_mei_from_RM.sh -l list_outout_from_indetify_mei_from_RM.sh -g ExtractGenomicSequences
 
 # Extract the TE sequence
 paste <(date | awk '{print $4}') <(echo "Extracting the TE sequences in fasta format...")
@@ -143,7 +142,7 @@ paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 
 rm -r $OUTDIR/$PROJECT/Assembled_TEreads
-perl 04_orientTE_extractTE_v11.0.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU
+perl 04_orientTE_extractTE_v11.0.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU -dc $OUTDIR/$PROJECT/Discoassembly -ds $OUTDIR/$PROJECT/Discosplitassembly
 
 #######################################
 # 6: Generate input for genotyping ####
@@ -162,6 +161,8 @@ paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping..
 #####################
 
 paste <(date | awk '{print $4}') <(echo "Genotyping...")
+
+rm -r $OUTDIR/$PROJECT/samples
 
 ### create alternatives alleles
 python insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
