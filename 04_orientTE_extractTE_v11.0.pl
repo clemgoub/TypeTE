@@ -61,6 +61,11 @@ my $changelog = "
 #				picking the longest one from the partial and full lengths
 #	- v11.0 = 13 November 2018
 #				introducing check for strand printing only if all predictions point to one strand
+#	- v11.0 = 27 November 2018
+#				 changed the TEsequences are loaded back to previous version so to main compatability with the ClementRMoutput	
+#			= 29 November 2018
+#				fixed the bug, when tried to extract sequence at the end of the contig (go beyond the length of the contig)
+#				
 \n";
 
 my $usage = "\nUsage [$version]: 
@@ -134,7 +139,7 @@ $TEdir = $1 if ($TEdir =~ /^(.*)\/$/);
 #-----------------------------------------------------------------------------
 #change to commandline
 #my $CAP3pro = "/home/jainy/software/CAP3";#vader server
-#my $BLASTpro = "/home/jainy/software/ncbi-blast-2.6.0+/bin";
+#my $BLASTpro = "/home/jainy/software/ncbi-blast-2.6.0+/bin"; #/home/jainy/software/ncbi-blast-2.7.1+/bin
 #my $miniapro = "/home/jainy/software/minia-v2.0.7-Source/build/bin";
 #my $SPAdepro = "/home/jainy/software/SPAdes-3.11.1-Linux/bin";#vaderserver,Yodaserver
 
@@ -337,6 +342,7 @@ if ($discsplidir) {
 		$newlocus = $locus.".".$start.".".$end.".".$strand if ($strand eq 'plus');
 		$newlocus = $locus.".".$end.".".$start.".".$strand if ($strand eq 'minus');
 		my $seq_obj = Bio::Seq->new( -display_id => $newlocus, -seq => $seq); # create object with seq
+		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
 			my $leftend = $start + 5;
@@ -377,6 +383,7 @@ if ($discsplidir) {
 		if (defined ($tsdinfo)) {
 			($testart,$teend,$tsdseq,$tsdsucc) = &findcord_bothtsds($tsdinfo);
 			#print "$locus output from findcordbothtsd is $testart, $teend\n";
+			$teend = $lengthseq if  ($teend > $lengthseq);
 			$teseq = $seq_obj->subseq($testart,$teend);
 			$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
 			#my $lenseq = ($teend-$testart) +1;
@@ -575,6 +582,7 @@ if ($discdir) {
 		$newlocus = $locus.".".$start.".".$end.".".$strand if ($strand eq 'plus');
 		$newlocus = $locus.".".$end.".".$start.".".$strand if ($strand eq 'minus');
 		my $seq_obj = Bio::Seq->new( -display_id => $newlocus, -seq => $seq); # create object with seq
+		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
 			my $leftend = $start + 5;
@@ -613,6 +621,7 @@ if ($discdir) {
 		if (defined ($tsdinfo)) {
 			($testart,$teend,$tsdseq,$tsdsucc) = &findcord_bothtsds($tsdinfo);
 			#print "$locus output from findcordbothtsd is $testart, $teend\n";
+			$teend = $lengthseq if  ($teend > $lengthseq);
 			$teseq = $seq_obj->subseq($testart,$teend);
 			$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
 			my $lenseq = length($teseq);
@@ -700,7 +709,7 @@ if ($rdir) {
 			#Assemble only the mapped reads		   
 			system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -t $cpus -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
 			system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
-			system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 55 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3") == 0 or 
+			system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
 			system ("$CAP3dir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
 			if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
 				#Rename scaffolds.fasta 
@@ -709,10 +718,10 @@ if ($rdir) {
 				my $assembledfile = "$directory.allreads.scaffolds.fasta";
 				&renameseq_filename($assembledfile,$outpath,$directory);
 			}  elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta" ) {
-				system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 55 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3") == 0 or warn ("minia failed to assemble \n");
-				if (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa") { 
+				system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or warn ("minia failed to assemble \n");
+				if (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa") { 
 					
-					my $assembledfile = "$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa";
+					my $assembledfile = "$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa";
 					&renameseq_filename($assembledfile,$outpath,$directory);
 				} else {
 					copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.contigs.fasta") or die "Copy failed contigs.fasta $directory:$!";
@@ -723,8 +732,8 @@ if ($rdir) {
 				copy("$path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout/dipspades/consensus_contigs.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.consensus_contigs.fasta") or die "Copy failed consensus_contigs.fasta $directory:$!";
 				my $assembledfile = "$directory.allreads.consensus_contigs.fasta";
 				&renameseq_filename($assembledfile,$outpath,$directory);
-			} elsif (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa") { 
-				my $assembledfile = "$directory.concatenated.allreads.fasta_k55_ma3.contigs.fa";
+			} elsif (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa") { 
+				my $assembledfile = "$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa";
 				&renameseq_filename($assembledfile,$outpath,$directory);
 			} elsif (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta.cap.contigs") {
 				my $assembledfile = "$directory.concatenated.allreads.fasta.cap.contigs";
@@ -802,6 +811,7 @@ if ($rdir) {
 		$newlocus = $locus.".".$start.".".$end.".".$strand if ($strand eq 'plus');
 		$newlocus = $locus.".".$end.".".$start.".".$strand if ($strand eq 'minus');
 		my $seq_obj = Bio::Seq->new( -display_id => $newlocus, -seq => $seq); # create object with seq
+		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
 			my $leftend = $start + 5;
@@ -840,6 +850,7 @@ if ($rdir) {
 		if (defined ($tsdinfo)) {
 			($testart,$teend,$tsdseq,$tsdsucc) = &findcord_bothtsds($tsdinfo);
 			#print "$locus output from findcordbothtsd is $testart, $teend\n";
+			$teend = $lengthseq if  ($teend > $lengthseq);
 			$teseq = $seq_obj->subseq($testart,$teend);
 			$teseq = &revcom_seq($teseq) if ($strand eq 'minus');
 			my $lenseq = length($teseq);
@@ -949,7 +960,8 @@ sub load_file {
 			chomp $data; #storing the table values to the $data and removing the extraline
 			my @name = split(/\s+/,$data); # splitting the data based on tab and storing into the arrray
 			my $dirc = $name[0];#first column is genome location
-			$stefile{$dirc} = $name[1]; #name of the TE inserted is loaded 
+			#$stefile{$dirc} = $name[1]; #name of the TE inserted is loaded 
+			$stefile{$dirc} = $name[2];#compatibility with Clement's output
 		}
 	return (%stefile);
 	close $th;	
@@ -975,19 +987,30 @@ sub concatenatefiles {
 	}
 }
 sub find_TEseq {
-	my ($gloc) = @_;
-	my ($c,$starts,$ends) = split (/[:-]/,$gloc);
-	my $brkp = $starts +250;
-	my $gloca = $c."_".$brkp;
+my ($gloc) = @_;
 	#print STDERR "the sequence TE is $gloc";
 	my $TEseqfile;
-	if (exists ($TEinfo{$gloca}))  {
-		$TEseqfile = $TEinfo{$gloca};
+	if (exists ($TEinfo{$gloc}))  {
+		$TEseqfile = $TEinfo{$gloc};
 	}
 	else {
 		die  "Not able to get the TEseq file \n";
 	}
 	return ($TEseqfile);
+#when using standalone positionTEfile
+	# my ($gloc) = @_;
+# 	my ($c,$starts,$ends) = split (/[:-]/,$gloc);
+# 	my $brkp = $starts +250;
+# 	my $gloca = $c."_".$brkp;
+# 	#print STDERR "the sequence TE is $gloc";
+# 	my $TEseqfile;
+# 	if (exists ($TEinfo{$gloca}))  {
+# 		$TEseqfile = $TEinfo{$gloca};
+# 	}
+# 	else {
+# 		die  "Not able to get the TEseq file \n";
+# 	}
+# 	return ($TEseqfile);
 }
 sub renameseq_filename {
 	my ($contigfile,$fpath,$directory) = @_;
