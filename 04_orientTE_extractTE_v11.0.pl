@@ -65,6 +65,9 @@ my $changelog = "
 #				 changed the TEsequences are loaded back to previous version so to main compatability with the ClementRMoutput	
 #			= 29 November 2018
 #				fixed the bug, when tried to extract sequence at the end of the contig (go beyond the length of the contig)
+#				also changed kmer to 55 to 45 for orientTE
+#			=17 December 2018 
+#				modified to not to redo the assembly, when have to restart the script. will have to delete the last folder it created as it may not have finished the assembly
 #				
 \n";
 
@@ -199,12 +202,17 @@ if ($discsplidir) {
 	my @discorspli = `ls $discsplidir`;
 
 	foreach $slgedcdir (@discorspli) {
+		my $present = 0;
 		chomp ($slgedcdir);
 		$alldirectory{$slgedcdir} =1;
-		make_path ("$path/Assembled_SPDCreads/$slgedcdir");
-		my @disremafiles = glob ("'$discsplidir/$slgedcdir/*disreadsmates.fasta'");
-		my $discout = "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta";
-		&concatenatefiles($discout,@disremafiles);
+		if (-e "$path/Assembled_SPDCreads/$slgedcdir") {
+			$present = 1;
+		} else {
+			make_path ("$path/Assembled_SPDCreads/$slgedcdir");
+			my @disremafiles = glob ("'$discsplidir/$slgedcdir/*disreadsmates.fasta'");
+			my $discout = "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta";
+			&concatenatefiles($discout,@disremafiles);
+		}
 		$dspath = "$path/Assembled_SPDCreads/$slgedcdir";
 		$dreadmatefile = "$slgedcdir.concate.disreadsmates.fasta";
 	
@@ -217,7 +225,10 @@ if ($discsplidir) {
 		#check rom here
 	
 			if (($readcount > 1) && ($readcount < 100)) {
-				system ("$CAP3dir/cap3 $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta > $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+				unless ($present == 1) {
+					system ("$CAP3dir/cap3 $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta > $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+				}
+				
 				if (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta.cap.contigs") {
 					my $assembledfile = "$slgedcdir.concate.disreadsmates.fasta.cap.contigs";
 					&renameseq_filename($assembledfile,$dspath,$slgedcdir);
@@ -239,10 +250,11 @@ if ($discsplidir) {
 				&compare_twoHOH($slgedcdir,$TEblast,$genomeblast);
 		
 			} elsif ($readcount >= 100) {
-				system ("$spadedir/spades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile --careful --only-assembler -t $cpus -o $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsSPAdeout") == 0 or 
-				system ("$spadedir/dipspades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsdipSPAdeout") == 0 or 
-				system ("$miniadir/minia -in $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3") == 0 or die ("unable to assemble disfasta $slgedcdir \n");
-# 			
+				unless ($present == 1) {
+					system ("$spadedir/spades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile --careful --only-assembler -t $cpus -o $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsSPAdeout") == 0 or 
+					system ("$spadedir/dipspades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsdipSPAdeout") == 0 or 
+					system ("$miniadir/minia -in $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3") == 0 or die ("unable to assemble disfasta $slgedcdir \n");
+				}
 				if (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsSPAdeout/scaffolds.fasta") {
 					#Rename scaffolds.fasta 
 					#print "checking of spadesscaffpld";
@@ -251,7 +263,9 @@ if ($discsplidir) {
 					my $assembledfile = "$slgedcdir.disreads.scaffolds.fasta";
 					&renameseq_filename($assembledfile,$dspath,$slgedcdir);
 				} elsif (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsSPAdeout/contigs.fasta" ) {
-					system ("$miniadir/minia -in $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3") == 0 or warn ("unable to assemble using minia $slgedcdir \n");
+					unless ($present == 1) {
+						system ("$miniadir/minia -in $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3") == 0 or warn ("unable to assemble using minia $slgedcdir \n");
+					}
 					#print "checking of spadescontig";
 					if (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3.contigs.fa") { 
 						my $assembledfile = "$slgedcdir.disreads.fasta_k45_ma3.contigs.fa";
@@ -442,12 +456,17 @@ if ($discdir) {
 	%alldirectory=();
 
 	foreach $gedcdir (@discor) {
+		my $present = 0;
 		chomp ($gedcdir);
 		$alldirectory{$gedcdir} =1;
-		make_path ("$path/Assembled_DCreads/$gedcdir");
-		my @disremafiles = glob ("'$discdir/$gedcdir/*disreadsmates.fasta'");
-		my $discout = "$path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta";
-		&concatenatefiles($discout,@disremafiles);
+		if (-e "$path/Assembled_DCreads/$gedcdir") {
+			$present = 1;
+		} else {
+			make_path ("$path/Assembled_DCreads/$gedcdir");
+			my @disremafiles = glob ("'$discdir/$gedcdir/*disreadsmates.fasta'");
+			my $discout = "$path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta";
+			&concatenatefiles($discout,@disremafiles);
+		}
 		$dpath = "$path/Assembled_DCreads/$gedcdir";
 		$dreadmatefile = "$gedcdir.concate.disreadsmates.fasta";
 	
@@ -457,7 +476,9 @@ if ($discdir) {
 		my $readcount = &splitdismatetopairs($dpath,$dreadmatefile);
 	
 			if (($readcount > 1) && ($readcount < 100)) {
-				system ("$CAP3dir/cap3 $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta > $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+				unless ($present ==1) {
+					system ("$CAP3dir/cap3 $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta > $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+				}
 				if (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta.cap.contigs") {
 					my $assembledfile = "$gedcdir.concate.disreadsmates.fasta.cap.contigs";
 					&renameseq_filename($assembledfile,$dpath,$gedcdir);
@@ -480,10 +501,11 @@ if ($discdir) {
 				&compare_twoHOH($gedcdir,$TEblast,$genomeblast);
 		
 			} elsif ($readcount >= 100) {
-				system ("$spadedir/spades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile --careful --only-assembler -t $cpus -o $path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsSPAdeout") == 0 or 
-				system ("$spadedir/dipspades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsdipSPAdeout") == 0 or 
-				system ("$miniadir/minia -in $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3") == 0 or die ("unable to assemble disfasta $gedcdir \n");
-			
+				unless ($present ==1) {
+					system ("$spadedir/spades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile --careful --only-assembler -t $cpus -o $path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsSPAdeout") == 0 or 
+					system ("$spadedir/dipspades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsdipSPAdeout") == 0 or 
+					system ("$miniadir/minia -in $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3") == 0 or die ("unable to assemble disfasta $gedcdir \n");
+				}
 				if (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsSPAdeout/scaffolds.fasta") {
 					#Rename scaffolds.fasta 
 					#print "checking of spadesscaffpld";
@@ -493,7 +515,9 @@ if ($discdir) {
 					&renameseq_filename($assembledfile,$dpath,$gedcdir);
 				} elsif (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsSPAdeout/contigs.fasta" ) {
 					#print "checking of spadescontig";
-					system ("$miniadir/minia -in $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3") == 0 or warn ("unable to perform minia $gedcdir \n");
+					unless ($present ==1) {
+						system ("$miniadir/minia -in $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3") == 0 or warn ("unable to perform minia $gedcdir \n");
+					}
 					if (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3.contigs.fa") {
 						my $assembledfile = "$gedcdir.disreads.fasta_k45_ma3.contigs.fa";
 						&renameseq_filename($assembledfile,$dpath,$gedcdir);
@@ -678,11 +702,15 @@ if ($rdir) {
 
 	my @dir =`ls $rdir`;
 	foreach $directory (@dir) {
+		my $present = 0;
 		chomp ($directory);
 		$alldirectory{$directory} =1;
 		print STDERR "the directory now analysing is $directory\n";
-	
-		make_path ("$path/Assembled_TEreads/$directory") ;
+		if (-e "$path/Assembled_TEreads/$directory") {
+			present = 1;
+		} else {
+			make_path ("$path/Assembled_TEreads/$directory") ;
+		}
 		$outpath = "$path/Assembled_TEreads/$directory";
 		#my @files = `ls $rdir/$directory`;
 		my @R1files = glob ("'$rdir/$directory/*R1.fasta'");
@@ -694,11 +722,12 @@ if ($rdir) {
 		my $R2out = "$path/Assembled_TEreads/$directory/$directory.concatenated.R2.fasta";
 		my $Upout = "$path/Assembled_TEreads/$directory/$directory.concatenated.Up.fasta";
 		#my $renamepath = "$path/Assembled_TEreads/$directory";
-		&concatenatefiles($R1out,@R1files);
-		&concatenatefiles($R2out,@R2files);
-		&concatenatefiles($Upout,@UPfiles);
-		system ("cat $path/Assembled_TEreads/$directory/$directory.concatenated.R1.fasta $path/Assembled_TEreads/$directory/$directory.concatenated.R2.fasta $path/Assembled_TEreads/$directory/$directory.concatenated.Up.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta") == 0 or die ("unable to concatenate discordantsplitreads $directory \n");
-
+		unless (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta") {
+			&concatenatefiles($R1out,@R1files);
+			&concatenatefiles($R2out,@R2files);
+			&concatenatefiles($Upout,@UPfiles);
+			system ("cat $path/Assembled_TEreads/$directory/$directory.concatenated.R1.fasta $path/Assembled_TEreads/$directory/$directory.concatenated.R2.fasta $path/Assembled_TEreads/$directory/$directory.concatenated.Up.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta") == 0 or die ("unable to concatenate discordantsplitreads $directory \n");
+		}
 		my $R1filesize = (-s "$R1out");
 		my $R2filesize = (-s "$R2out");
 	
@@ -706,11 +735,13 @@ if ($rdir) {
 	
 		# print STDERR "assemble the concatenated sequence\n";
 		if (($R1filesize > 0) || ($R1filesize > 0)) {
-			#Assemble only the mapped reads		   
-			system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -t $cpus -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
-			system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
-			system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
-			system ("$CAP3dir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+			#Assemble only the mapped reads		
+			unless ($present == 1) {   
+				system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -t $cpus -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
+				system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
+				system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
+				system ("$CAP3dir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
+			}
 			if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
 				#Rename scaffolds.fasta 
 				copy("$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta", "$path/Assembled_TEreads/$directory/$directory.allreads.scaffolds.fasta") or die "Copy failed scaffolds.fasta $directory:$!";
@@ -718,7 +749,9 @@ if ($rdir) {
 				my $assembledfile = "$directory.allreads.scaffolds.fasta";
 				&renameseq_filename($assembledfile,$outpath,$directory);
 			}  elsif (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/contigs.fasta" ) {
-				system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or warn ("minia failed to assemble \n");
+				unless ($present == 1) {
+					system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or warn ("minia failed to assemble \n");
+				}
 				if (-e "$path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa") { 
 					
 					my $assembledfile = "$directory.concatenated.allreads.fasta_k45_ma3.contigs.fa";
