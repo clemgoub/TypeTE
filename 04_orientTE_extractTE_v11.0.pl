@@ -707,7 +707,7 @@ if ($rdir) {
 		$alldirectory{$directory} =1;
 		print STDERR "the directory now analysing is $directory\n";
 		if (-e "$path/Assembled_TEreads/$directory") {
-			present = 1;
+			$present = 1;
 		} else {
 			make_path ("$path/Assembled_TEreads/$directory") ;
 		}
