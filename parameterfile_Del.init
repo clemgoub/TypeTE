@@ -13,24 +13,24 @@
 ### MAIN PARAMETERS
 ## input
 # user data
-VCF="/ybod/cgoubert/CorrectHet/Del_445_08-30-18/42inds_Del_Lindsay_loci.recode.vcf" #Path to MELT vcf (.vcf or .vcf.gz)
+VCF="/ybod/cgoubert/CorrectHet/Del_445_08-30-18/445.Del_Alu.1KGP.recode.vcf" #Path to MELT vcf (.vcf or .vcf.gz)
 BAMPATH="/vbod2/cgoubert/Correct_Genotypes/1KGP_bams/445_EUR_YRI_Geuvadis" # Path to the bams folder
-BAMFILE="/ybod/cgoubert/CorrectHet/Del_445_08-30-18/42_bam_list" # indiv_name bam_name (table 2 fields)
+BAMFILE="/home/cgoubert/CorrectHet/445_EURO_YRI/445_bamlist.txt" # indiv_name bam_name (table 2 fields)
 # genome data
 RM_TRACK="/home/cgoubert/CorrectHet/reGenotypeTE_del/reGenotypeTE/Ressources/RepeatMasker_Alu_hg19.bed"
 RM_FASTA="/home/cgoubert/bin/RepeatMasker/Libraries/dc20170127-rb20170127/homo_sapiens/refinelib"
 # output
-OUTDIR="/ybod/cgoubert/CorrectHet/Del_445_08-30-18" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
-PROJECT="TEST_Del_42inds_44loc_Lindsay" # Name of the project (name of the folder)
+OUTDIR="/ybod/cgoubert/CorrectHet/" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
+PROJECT="445_Del_V2_01.03.19" # Name of the project (name of the folder)
 
 ### OPTIONS
 ## mendatory parameters
 #individual_nb="20" # number of individual per job (try to minimize that number)
-#CPU="10" # number of CPU (try to maximize that number)
+CPU="40" # number of CPU (try to maximize that number)
 # CPU x individual_nb = total # of individuals
 GENOME="/vbod2/cgoubert/Correct_Genotypes/Ref_Genome/genome/hg19.fa" # Path the the reference genome sequence
 ## non-mendatory parameters
-MAP="NO" #OR NO
+MAP="YES" #OR NO
 
 ### DEPENDENCIES PATH
 PARALLEL="/usr/bin/parallel" #Path to the GNU Parallel program
