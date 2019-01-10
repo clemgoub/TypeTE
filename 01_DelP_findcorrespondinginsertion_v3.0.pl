@@ -25,6 +25,8 @@ my $changelog = "
 #				-not done that-> check the breakpoint with the end of the RM cordinate as in addition to the start
 #				only output is with unique locus name
 # 				the script is modified to find only Alu
+#	- v3.1 = 10 January 2019
+#				introduced another round of finding RM cordinates for which breakpoints were more 100 bp far, the new cut off is 220bp.
 #				 
 #	
 #				
@@ -78,14 +80,15 @@ my $logfile = "$path/fileRMfailed.log";
 #my $bamlocation = "/vbod2/cgoubert/Correct_Genotypes/1KGP_bams";#vader server
 
 my %repeatmaskerfile = ();
-my $chro;
-my $brkpont;
+#my $chro;
+#my $brkpont;
 #my $individual;
 my @valuestoprint;
 my @logvalues;
 my @valueswithbrkpnt;
 my $found;
 my $rip;
+
 make_path("$path") if ($path);
 print STDERR "loading the Repeatmasker data....\n";
 %repeatmaskerfile = load_file ($table);
@@ -96,20 +99,35 @@ open (my $fh, "<", $file) or confess "\n ERROR (main): could not open to read $f
 		chomp (my $line = $_);
 		my @col = split(/\s+/,$line);
 		#$individual = $col[0];
-		$chro = $col[1] ;
-		$brkpont = $col[2];
+		my $chro = $col[1] ;
+		my $brkpont = $col[2];
 		$rip = $col[0];
-		$found = $rip;
-		push (@logvalues,$found);
-		&find_element;
+		#$found = $rip;
+		push (@logvalues,$rip);
+		my $num = 50;
+		&find_element($num,$chro,$brkpont,$rip);
 	}
 #&print_array($rawout,@valuestoprint);
-&print_array($rawout,@valueswithbrkpnt);
-if (@logvalues) {
-	print STDERR "Please check logfile for values for which Reference element not identified...\n";
-	&print_array($logfile,@logvalues);
-}
 
+if (@logvalues) {
+	my (@remvalues) = @logvalues ;
+	my @final_log;
+	my $lastindex = $#remvalues;
+	#print STDERR "$lastindex is the last index\n";
+	print STDERR "now checking the ones that are failed in the first round\n";
+	for(my $i = $lastindex; $i >= 0 ; $i--)  {
+		#print "the element is $remvalues[$i]\n";
+		my $element =$remvalues[$i];
+		my ($chromo,$breakp) = split(/\_/,$element);
+		#print "$chromo,$breakp chromo and breakpoint from logvalues\n";
+		my $num = 110;
+		my $present = &find_element($num,$chromo,$breakp,$element);
+		push (@final_log, $element) unless ($present == 2);
+	}
+	print STDERR "Please check logfile for values for which Reference element not identified...\n";
+	&print_array($logfile,@final_log);
+}
+&print_array($rawout,@valueswithbrkpnt);
 exit;
 #-----------------------------------------------------------------------------
 #----------------------------------- SUB -------------------------------------
@@ -129,6 +147,9 @@ sub load_file {
 }
 
 sub find_element {
+	my ($number,$chrom,$brekpont,$marker) = @_;
+	#print "$number,$chrom,$brekpont are number chromo and brekpoint\n";
+	my $found = 1;
 	foreach my $chromosome (sort keys %repeatmaskerfile) {
 		my $chromo;
 		my $start;
@@ -136,27 +157,30 @@ sub find_element {
 		my $startplus;
 		my $te;
 		
-		if ($chro eq $chromosome) {
+		
+		if ($chrom eq $chromosome) {
 			foreach my $whline (sort keys %{ $repeatmaskerfile{$chromosome}}) {#sort the next level of keys
 				#print "$whline\n";
 				$chromo = $repeatmaskerfile{$chromosome}{$whline}->[0];
 				$start = $repeatmaskerfile{$chromosome}{$whline}->[1];
 				$te = $repeatmaskerfile{$chromosome}{$whline}->[2];
-				$startminus = ($start - 50);
-				$startplus = ($start + 50);
-				if (($brkpont >= $startminus) && ($brkpont <= $startplus) && ($te =~ /Alu.*/)) {
-					print STDERR "$found!\n";
+				$startminus = ($start - $number);
+				$startplus = ($start + $number);
+				if (($brekpont >= $startminus) && ($brekpont <= $startplus) && ($te =~ /Alu.*/)) {
+					print STDERR "$marker found!\n";
 					#print STDERR "$whline\n";
-					my $withbrkp = "$found\t$whline"; 
+					my $withbrkp = "$marker\t$whline"; 
 					#push (@valuestoprint,$whline);
 					push (@valueswithbrkpnt,$withbrkp);				
 					pop (@logvalues);
+					$found = 2;
 				} 
 			}
 		} else {
 			next;
 		}
 	}
+	return ($found);
 }
 
 sub print_array {
