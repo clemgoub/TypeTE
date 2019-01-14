@@ -21,7 +21,7 @@ use List::MoreUtils qw(uniq);
 use feature 'fc';
 
 
-my $version = "11.0";
+my $version = "11.3";
 my $scriptname = "orientTE_extractTE.pl";
 my $changelog = "
 #   - v1.0 = 3 November 2017 
@@ -68,7 +68,10 @@ my $changelog = "
 #				also changed kmer to 55 to 45 for orientTE
 #			=17 December 2018 
 #				modified to not to redo the assembly, when have to restart the script. will have to delete the last folder it created as it may not have finished the assembly
-#				
+#			=22 December 2018
+#					assembly features are turned on but only if the directory is absent
+#					minimum TSD is changed to 7
+#					and sequence extracted within TE is limited to 4		
 \n";
 
 my $usage = "\nUsage [$version]: 
@@ -205,11 +208,15 @@ if ($discsplidir) {
 		my $present = 0;
 		chomp ($slgedcdir);
 		$alldirectory{$slgedcdir} =1;
-		if (-e "$path/Assembled_SPDCreads/$slgedcdir") {
+		if (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.scaffolds.fasta") {
 			$present = 1;
 		} else {
 			make_path ("$path/Assembled_SPDCreads/$slgedcdir");
 			my @disremafiles = glob ("'$discsplidir/$slgedcdir/*disreadsmates.fasta'");
+			unlink glob "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3.*" if (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3.contigs.fa");
+			unlink glob "$path/Assembled_SPDCreads/$slgedcdir/Renamed_Assembledseq/*.fasta.*" if (-e "$path/Assembled_SPDCreads/$slgedcdir/Renamed_Assembledseq/$slgedcdir.rename.fasta");
+			unlink("$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.extract.seq.fa.tabular.blast.out") if (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.extract.seq.fa.tabular.blast.out");
+
 			my $discout = "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta";
 			&concatenatefiles($discout,@disremafiles);
 		}
@@ -359,9 +366,9 @@ if ($discsplidir) {
 		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
-			my $leftend = $start + 5;
+			my $leftend = $start + 4;
 			my $rightend = $end + 40;
-			my $rightstart = $end - 5;
+			my $rightstart = $end - 4;
 			#print "for a plus $leftstart\t$leftend\t$rightstart\t$rightend\n";
 			$leftstart = 1 if ($leftstart <= 0);
 			$rightend = $contlen if ($rightend > $contlen);
@@ -369,9 +376,9 @@ if ($discsplidir) {
 			$rightflankseq = $seq_obj->subseq($rightstart,$rightend);
 		} elsif ($strand eq "minus") {
 			my $leftstart = $end - 40;
-			my $leftend = $end + 5;
+			my $leftend = $end + 4;
 			my $rightend = $start + 40;
-			my $rightstart = $start - 5;
+			my $rightstart = $start - 4;
 			$rightend = $contlen if ($rightend > $contlen);
 			#print "for a minus $leftstart\t$leftend\t$rightstart\t$rightend\n";
 			#print STDERR"contig length is $contlen \n";
@@ -459,11 +466,15 @@ if ($discdir) {
 		my $present = 0;
 		chomp ($gedcdir);
 		$alldirectory{$gedcdir} =1;
-		if (-e "$path/Assembled_DCreads/$gedcdir") {
+		if (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.scaffolds.fasta") {
 			$present = 1;
 		} else {
 			make_path ("$path/Assembled_DCreads/$gedcdir");
 			my @disremafiles = glob ("'$discdir/$gedcdir/*disreadsmates.fasta'");
+			unlink glob "$path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3.*" if (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3.contigs.fa");
+			unlink glob "$path/Assembled_DCreads/$gedcdir/Renamed_Assembledseq/*.fasta.*" if (-e "$path/Assembled_DCreads/$gedcdir/Renamed_Assembledseq/$gedcdir.rename.fasta");
+			unlink("$path/Assembled_DCreads/$gedcdir/$gedcdir.extract.seq.fa.tabular.blast.out") if (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.extract.seq.fa.tabular.blast.out");
+
 			my $discout = "$path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta";
 			&concatenatefiles($discout,@disremafiles);
 		}
@@ -473,7 +484,7 @@ if ($discdir) {
 		$DUpfile = "$path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.Up.fasta";
 		$DmatefileR1 = "$path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.R1.fasta";
 		$DmatefileR2 = "$path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.R2.fasta"; 
-		my $readcount = &splitdismatetopairs($dpath,$dreadmatefile);
+		my $readcount = &splitsoftdismatetopairs($dpath,$dreadmatefile);
 	
 			if (($readcount > 1) && ($readcount < 100)) {
 				unless ($present ==1) {
@@ -609,9 +620,9 @@ if ($discdir) {
 		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
-			my $leftend = $start + 5;
+			my $leftend = $start + 4;
 			my $rightend = $end + 40;
-			my $rightstart = $end - 5;
+			my $rightstart = $end - 4;
 			#print "for a plus $leftstart\t$leftend\t$rightstart\t$rightend\n";
 			$leftstart = 1 if ($leftstart <= 0);
 			$rightend = $contlen if ($rightend > $contlen);
@@ -619,9 +630,9 @@ if ($discdir) {
 			$rightflankseq = $seq_obj->subseq($rightstart,$rightend);
 		} elsif ($strand eq "minus") {
 			my $leftstart = $end - 40;
-			my $leftend = $end + 5;
+			my $leftend = $end + 4;
 			my $rightend = $start + 40;
-			my $rightstart = $start - 5;
+			my $rightstart = $start - 4;
 		
 			#print "for a minus $leftstart\t$leftend\t$rightstart\t$rightend\n";
 			$leftstart = 1 if ($leftstart <= 0);
@@ -847,9 +858,9 @@ if ($rdir) {
 		my $lengthseq = $seq_obj->length;#length of the contig
 		if ($strand eq "plus") {# here I am extracting flanking sequence of the TE
 			my $leftstart = $start - 40;
-			my $leftend = $start + 5;
+			my $leftend = $start + 4;
 			my $rightend = $end + 40;
-			my $rightstart = $end - 5;
+			my $rightstart = $end - 4;
 			#print "for a plus $leftstart\t$leftend\t$rightstart\t$rightend\n";
 			$leftstart = 1 if ($leftstart <= 0);
 			$rightend = $contlen if ($rightend > $contlen);
@@ -857,9 +868,9 @@ if ($rdir) {
 			$rightflankseq = $seq_obj->subseq($rightstart,$rightend);
 		} elsif ($strand eq "minus") {
 			my $leftstart = $end - 40;
-			my $leftend = $end + 5;
+			my $leftend = $end + 4;
 			my $rightend = $start + 40;
-			my $rightstart = $start - 5;
+			my $rightstart = $start - 4;
 		
 			#print "for a minus $leftstart\t$leftend\t$rightstart\t$rightend\n";
 			$leftstart = 1 if ($leftstart <= 0);
@@ -1252,7 +1263,7 @@ sub comparethreehashes {
 			my $strand3;
 			#checking hash1 alread
 			if (($hash1{$mate}{'fulllengTE'} eq "yes") && (($hash1{$mate}{'strand'} eq "+") ||($hash1{$mate}{'strand'} eq "-")) ) {
-				print "checking in hash1\n";
+				#print "checking in hash1\n";
 				$info = $hash1{$mate}{'seq_id'};
 				@features = split (/\./, $info);
 				$tsdfeat = $features[1];
@@ -1269,13 +1280,13 @@ sub comparethreehashes {
 				my @nameinfo = split (/\./, $hash1seqid);
 				$hash1length =  $nameinfo[-1];
 				$strand1 = $hash1strand if ($hash1strand ne '?');
-				print "going to check in hash2 and hash3\n";
+				#print "going to check in hash2 and hash3\n";
 				#$hash1tsd = $tsdfeat if ($hash1fte eq "yes");
 				#if (exists $hash2{$mate}) {
 			}
 			#checking hash2 discread
 			if (($hash2{$mate}{'fulllengTE'} eq "yes") && (($hash2{$mate}{'strand'} eq "+") ||($hash2{$mate}{'strand'} eq "-"))) {
-				print "checking in hash2\n";
+				#print "checking in hash2\n";
 				$info = $hash2{$mate}{'seq_id'};
 				@features = split (/\./, $info);
 				$tsdfeat = $features[1];
@@ -1287,14 +1298,14 @@ sub comparethreehashes {
 					$identifier = 2 ;
 					$telength = $telength2;
 					$hash_seqid = $hash2{$mate}{'seq_id'};
-					print "checking in hash2 gt hash1\n";
-				} elsif (($telength) && ($telength2 <= $telength)) {
+					#print "checking in hash2 gt hash1\n";
+				#} elsif (($telength) && ($telength2 <= $telength)) {
 					#next;
-					print "checking in hash2 ltoreq hash1\n";
+					#print "checking in hash2 ltoreq hash1\n";
 					#$details = "$hash1{$mate}{'fulllengTE'}\t$hash1{$mate}{'strand'}\t$hash1{$mate}{'seq_id'}\t$tsdfeat\n";
 					#$identifier = 1 ;
 				} elsif (! defined $telength) {
-					print "checking in hash1 notdefined hash1\n";
+					#print "checking in hash1 notdefined hash1\n";
 					$details = "$hash2{$mate}{'fulllengTE'}\t$hash2{$mate}{'strand'}\t$hash2{$mate}{'seq_id'}\t$tsdfeat\n";
 					$identifier =2;
 					$telength = $telength2;
@@ -1308,12 +1319,12 @@ sub comparethreehashes {
 				$strand2 = $hash2strand if ($hash2strand ne '?');
 				my @nameinfo = split (/\./, $hash2seqid);
 				$hash2length =  $nameinfo[-1];
-				print " notdefined in hash2\n";
+				#print " notdefined in hash2\n";
 				#$hash2tsd = $tsdfeat if ($hash2fte eq "yes");
 			}
-			print "going to check in  hash3\n";
+			#print "going to check in  hash3\n";
 			if (($hash3{$mate}{'fulllengTE'} eq "yes") && (($hash3{$mate}{'strand'} eq "+") ||($hash3{$mate}{'strand'} eq "-"))) {
-				print "checking in hash3\n";
+				#print "checking in hash3\n";
 				$info = $hash3{$mate}{'seq_id'};
 				@features = split (/\./, $info);
 				$tsdfeat = $features[1];
@@ -1325,9 +1336,9 @@ sub comparethreehashes {
 					$identifier =3;
 					$telength = $telength3;
 					$hash_seqid = $hash3{$mate}{'seq_id'};
-					print "checking in hash3 gt hash2\n";
-				} elsif (($telength) && ($telength3 <= $telength)) {
-					$details = $details;
+					#print "checking in hash3 gt hash2\n";
+				#} elsif (($telength) && ($telength3 <= $telength)) {
+					#$details = $details;
 					#next;
 					#$details = "$hash2{$mate}{'fulllengTE'}\t$hash2{$mate}{'strand'}\t$hash2{$mate}{'seq_id'}\t$tsdfeat\n";
 					#$identifier =2;
@@ -1372,7 +1383,7 @@ sub comparethreehashes {
 				
 			}	
 		
-			print "$details after first round of check\n";
+			#print "$details after first round of check\n";
 			unless ($details) {
 				if ((($hash1fte eq "yes") || ($hash2fte eq "yes") || ($hash3fte eq "yes")) && (($hash1strand ne "?") || ($hash2strand ne "?" ) || ($hash3strand ne "?"))) {
 					if ($hash1fte eq "yes") {
@@ -1385,9 +1396,9 @@ sub comparethreehashes {
 							$hashseqid = $hash2seqid ;
 							$hashlength = $hash2length;
 							$identifier =2;
-						} elsif (($hashlength) && ($hash2length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash2length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 						} elsif (!defined $hashlength) {
 							$hashseqid = $hash2seqid ;
 							$hashlength = $hash2length;
@@ -1399,9 +1410,9 @@ sub comparethreehashes {
 							$hashseqid = $hash3seqid ;
 							$hashlength = $hash3length;
 							$identifier = 3;
-						} elsif (($hashlength) && ($hash3length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash3length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 						} elsif (!defined $hashlength) {
 							$hashseqid = $hash3seqid ;
 							$hashlength = $hash3length;
@@ -1428,7 +1439,7 @@ sub comparethreehashes {
 					
 					$detailspart1 = "yes\t$hashstrand\t$hashseqid\t$tsdf\n";
 					$fleng = "yes\t$hashstrand\t$hashseqid\t$tsdf\n";
-					print "$detailspart1 not found first round\n";
+					#print "$detailspart1 not found first round\n";
 					if ($hashseqid) {
 						$fullTEdiscsplit{$hashseqid} = 1 if ($identifier ==3);
 						$fullTEdisc{$hashseqid} = 1 if ($identifier ==2);
@@ -1447,9 +1458,9 @@ sub comparethreehashes {
 							$hashseqid = $hash2seqid;
 							$hashlength = $hash2length;
 							$identifier = 2;
-						} elsif (($hashlength) && ($hash2length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash2length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 						} elsif (!defined$hashlength) {
 							$hashseqid = $hash2seqid;
 							$hashlength = $hash2length;
@@ -1462,9 +1473,9 @@ sub comparethreehashes {
 							$hashseqid = $hash3seqid ;
 							$hashlength = $hash3length;
 							$identifier = 3;
-						} elsif (($hashlength) && ($hash3length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash3length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 						} elsif (!defined$hashlength) {
 							$hashseqid = $hash3seqid;
 							$hashlength = $hash3length;
@@ -1476,7 +1487,7 @@ sub comparethreehashes {
 					my $tsdf = $feat[1];
 					$detailspart1 = "yes\t?\t$hashseqid\t$tsdf\n";
 				
-					print "$detailspart1 detailspart1\n";
+					#print "$detailspart1 detailspart1\n";
 					$fleng = "yes\t$hashstrand\t$hashseqid\t$tsdf\n";
 					if ($hashseqid) {
 						$fullTEdiscsplit{$hashseqid} = 1 if ($identifier ==3);
@@ -1495,9 +1506,9 @@ sub comparethreehashes {
 							$hashseqid = $hash2seqid;
 							$hashlength = $hash2length;
 							$identifier = 2;
-						} elsif (($hashlength) && ($hash2length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash2length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 				
 						} elsif (!defined$hashlength) {
 							$hashseqid = $hash2seqid;
@@ -1510,9 +1521,9 @@ sub comparethreehashes {
 							$hashseqid = $hash3seqid ;
 							$hashlength = $hash3length;
 							$identifier = 3;
-						} elsif (($hashlength) && ($hash3length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash3length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 						} elsif (!defined $hashlength) {
 							$hashseqid = $hash3seqid;
 							$hashlength = $hash3length;
@@ -1548,7 +1559,7 @@ sub comparethreehashes {
 					
 					$detailspart1 = "no\t$hashstrand\t$hashseqid\n";
 				
-					print "$detailspart1 detailspart1 ne?\n";
+					#print "$detailspart1 detailspart1 ne?\n";
 					$partle = "no\t$hashstrand\t$hashseqid\n";
 					if ($hashseqid) {
 						$partTEdiscsplit{$hashseqid} = 1 if ($identifier ==3);
@@ -1570,9 +1581,9 @@ sub comparethreehashes {
 							$hashseqid = $hash2seqid;
 							$hashlength = $hash2length;
 							$identifier = 2;
-						} elsif (($hashlength) && ($hash2length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash2length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 				
 						} elsif (!defined $hashlength) {
 							$hashseqid = $hash2seqid;
@@ -1585,9 +1596,9 @@ sub comparethreehashes {
 							$hashseqid = $hash3seqid ;
 							$hashlength = $hash3length;
 							$identifier = 3;
-						} elsif (($hashlength) && ($hash3length <= $hashlength)) {
+						#} elsif (($hashlength) && ($hash3length <= $hashlength)) {
 							#next;
-							print "do nothing\n";
+							#print "do nothing\n";
 						} elsif (!defined $hashlength) {
 							$hashseqid = $hash3seqid;
 							$hashlength = $hash3length;
@@ -1595,7 +1606,7 @@ sub comparethreehashes {
 						}
 					}
 					$detailspart1 = "no\t?\t$hashseqid\n";
-					print "$detailspart1 detailspart1 allq\n";
+					#print "$detailspart1 detailspart1 allq\n";
 					$partle = "no\t?\t$hashseqid\n";
 					if ($hashseqid) {
 						$partTEdiscsplit{$hashseqid} = 1 if ($identifier ==3);
