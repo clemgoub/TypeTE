@@ -1823,7 +1823,7 @@ sub splitsoftdismatetopairs {
 		#chomp $seq;
 		my $header = $seq->display_id;
 		if (defined ($header =~ /^(.*)\/(\d)/)) {
-			if ($2 == 1) {
+			if ((defined $2) && ($2 == 1)) {
 				if (exists $dmlistR1{$1}) {#trying to remove duplicate reads because merging with soft clipped reads can create duplicate reads
 					$duplicateR1 +=1; 
 					next;
@@ -1831,7 +1831,7 @@ sub splitsoftdismatetopairs {
 					$dmlistR1{$1}=1;
 					push (@seqArrayR1,$seq) if (defined $seq);
 				}
-			} elsif ($2 == 2) {
+			} elsif ((defined $2) && ($2 == 2)) {
 				if (exists $dmlistR2{$1}) {
 					$duplicateR2 +=1; 
 					next;
@@ -1839,6 +1839,8 @@ sub splitsoftdismatetopairs {
 					$dmlistR2{$1}=1;
 					push (@seqArrayR2,$seq) if (defined $seq);
 				}
+			} elsif (! defined $2) {
+				push (@seqArrayUp,$seq);
 			}
 		} 
 	}
