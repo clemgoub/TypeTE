@@ -260,7 +260,8 @@ if ($discsplidir) {
 				unless ($present == 1) {
 					system ("$spadedir/spades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile --careful --only-assembler -t $cpus -o $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsSPAdeout") == 0 or 
 					system ("$spadedir/dipspades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsdipSPAdeout") == 0 or 
-					system ("$miniadir/minia -in $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3") == 0 or die ("unable to assemble disfasta $slgedcdir \n");
+					system ("$miniadir/minia -in $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreads.fasta_k45_ma3") == 0 or 
+					system ("$spadedir/spades.py --s1 $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.concate.disreadsmates.fasta --careful --only-assembler -t $cpus -o $path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsSPAdeout") == 0 or die ("unable to assemble disfasta $slgedcdir \n");
 				}
 				if (-e "$path/Assembled_SPDCreads/$slgedcdir/$slgedcdir.disreadsSPAdeout/scaffolds.fasta") {
 					#Rename scaffolds.fasta 
@@ -515,7 +516,8 @@ if ($discdir) {
 				unless ($present ==1) {
 					system ("$spadedir/spades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile --careful --only-assembler -t $cpus -o $path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsSPAdeout") == 0 or 
 					system ("$spadedir/dipspades.py -1 $DmatefileR1 -2 $DmatefileR2 -s $DUpfile -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsdipSPAdeout") == 0 or 
-					system ("$miniadir/minia -in $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3") == 0 or die ("unable to assemble disfasta $gedcdir \n");
+					system ("$miniadir/minia -in $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_DCreads/$gedcdir/$gedcdir.disreads.fasta_k45_ma3") == 0 or 
+					system ("$spadedir/spades.py --s1 $path/Assembled_DCreads/$gedcdir/$gedcdir.concate.disreadsmates.fasta --careful --only-assembler -t $cpus -o $path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsSPAdeout") == 0 or die ("unable to assemble disfasta $gedcdir \n");
 				}
 				if (-e "$path/Assembled_DCreads/$gedcdir/$gedcdir.disreadsSPAdeout/scaffolds.fasta") {
 					#Rename scaffolds.fasta 
@@ -751,6 +753,7 @@ if ($rdir) {
 				system ("$spadedir/spades.py -1 $R1out -2 $R2out -s $Upout --careful --only-assembler -t $cpus -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
 				system ("$spadedir/dipspades.py -1 $R1out -2 $R2out -s $Upout -t $cpus --only-assembler --expect-rearrangements -o $path/Assembled_TEreads/$directory/$directory.allreadsdipSPAdeout") == 0 or 
 				system ("$miniadir/minia -in $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta -kmer-size 45 -abundance-min 3 -out $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta_k45_ma3") == 0 or 
+				system ("$spadedir/spades.py --s1 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta --careful --only-assembler -t $cpus -o $path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout") == 0 or 
 				system ("$CAP3dir/cap3 $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.fasta > $path/Assembled_TEreads/$directory/$directory.concatenated.allreads.asmbl.fasta") == 0 or die ("unable to assemble fasta $directory \n");
 			}
 			if (-e "$path/Assembled_TEreads/$directory/$directory.allreadsSPAdeout/scaffolds.fasta") {
