@@ -501,6 +501,83 @@ sub renameseq_filename {
 	close $bh;
 	close $bhout;
 }
+# sub splitdismatetopairs {
+# 	my ($dmpath,$dmfile) = @_;
+# 	my %dmlistR1 = ();
+# 	my %dmlistR2 = ();
+# 	my %upaddlist = ();
+# 	my @seqArrayR1 = ();
+# 	my @seqArrayR2 = ();
+# 	my @seqArrayUp = ();
+# 	my $readio_obj = Bio::SeqIO->new(-file 	 => "$dmpath/$dmfile", 
+# 									 -format => 'fasta') 
+# 								 or die "\t    ERROR - Failed to create SeqIO FH object from $dmfile $!\n";  
+# 	while (my $seq = $readio_obj->next_seq() ){#loading the reads in the discordant reads into a hash and also into separate arrays
+# 		my $header = $seq->display_id;
+# 		if ($header =~ /^(.*)\/(\d)/) {
+# 			if ($2 == 1) {
+# 				$dmlistR1{$1}=1;
+# 				push (@seqArrayR1,$seq);
+# 			} elsif ($2 == 2) {
+# 				$dmlistR2{$1}=1;
+# 				push (@seqArrayR2,$seq);
+# 			}
+# 		} 
+# 	}
+# 	my $DUpfile = "$uniqueid.onlymappedreadIDs.namesorted.D.Up.fasta";
+# 	my $Upreadio_obj = Bio::SeqIO->new(-file 	 => "$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fasta", 
+# 									 -format => 'fasta') 
+# 								 or die "\t    ERROR - Failed to create SeqIO FH object from $dmfile $!\n";  
+# 	while (my $seq = $Upreadio_obj->next_seq() ){
+# 		my $header = $seq->display_id;
+# 		if (exists ($dmlistR1{$header})) {#check if the read in unpaired file is present in the discordant read1 list has remove it discordant list
+# 			delete ($dmlistR1{$header});
+# 			$seq->display_id("$header/2");#modify display_id add /1 or /2
+# 			push (@seqArrayR2,$seq);
+# 		} elsif (exists ($dmlistR2{$header})) {
+# 			delete ($dmlistR2{$header});
+# 			$seq->display_id("$header/1");
+# 			push (@seqArrayR1,$seq);
+# 		} else {
+# 			push (@seqArrayUp, $seq);
+# 			next;
+# 		}
+# 	}
+# 	
+# 	 
+# 	if (%dmlistR1) {# puttting the rest of the rest of the sequences in the discordant mate file to unpaired sequences
+# 		foreach my $read (keys %dmlistR1){
+# 			my $ind = firstidx { $_->display_id eq "$read/1" } @seqArrayR1;
+# 			
+# 			my $upseq = splice (@seqArrayR1,$ind,1);
+# 			
+# 			$read = substr $read, 0,-2;
+# 			$upseq->display_id("$read");
+# 			push (@seqArrayUp, $upseq);
+# 		}
+# 	} 
+# 	
+# 	if (%dmlistR2) {
+# 		foreach my $read (keys %dmlistR2){
+# 			my $ind = firstidx { $_->display_id eq "$read/2" } @seqArrayR2;
+# 			
+# 			my $upseq = splice (@seqArrayR2,$ind,1);
+# 			
+# 			$read = substr $read, 0,-2;
+# 			$upseq->display_id("$read");
+# 			
+# 			push (@seqArrayUp, $upseq);
+# 		}
+# 	
+# 	}
+# 	
+# 	
+# 	&sortfasta_header($dmpath,"$dmfile.r1",@seqArrayR1);
+# 	&sortfasta_header($dmpath,"$dmfile.r2",@seqArrayR2);
+# 	&sortfasta_header($dmpath,"$DUpfile",@seqArrayUp);
+# 	#print STDERR "$DUpfile printed in $dmpath \n";
+# }
+
 sub splitdismatetopairs {
 	my ($dmpath,$dmfile) = @_;
 	my %dmlistR1 = ();
@@ -509,6 +586,42 @@ sub splitdismatetopairs {
 	my @seqArrayR1 = ();
 	my @seqArrayR2 = ();
 	my @seqArrayUp = ();
+	my %listR1 = ();
+	my %listR2 = ();
+	my %dup =();
+	
+	my $rdioobj1 = Bio::SeqIO->new(-file 	 => "$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fasta", 
+									 -format => 'fasta') 
+								 or die "\t    ERROR - Failed to create SeqIO FH object from $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R1.fasta $!\n";  
+	while (my $seq = $rdioobj1->next_seq() ){#loading the reads in the discordant reads into a hash and also into separate arrays
+		my $header = $seq->display_id;
+		if ($header =~ /^(.*)\/(\d)/) {
+			if ($2 == 1) {
+				$listR1{$1}=1;
+				#push (@seqArrayR1,$seq);
+			} elsif ($2 == 2) {
+				$listR2{$1}=1;
+				#push (@seqArrayR2,$seq);
+			}
+		} 
+	}	
+	
+	my $rdioobj2 = Bio::SeqIO->new(-file 	 => "$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fasta", 
+									 -format => 'fasta') 
+								 or die "\t    ERROR - Failed to create SeqIO FH object from $path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.R2.fasta $!\n";  
+	while (my $seq = $rdioobj2->next_seq() ){#loading the reads in the discordant reads into a hash and also into separate arrays
+		my $header = $seq->display_id;
+		if ($header =~ /^(.*)\/(\d)/) {
+			if ($2 == 1) {
+				$listR1{$1}=1;
+				#push (@seqArrayR1,$seq);
+			} elsif ($2 == 2) {
+				$listR2{$1}=1;
+				#push (@seqArrayR2,$seq);
+			}
+		} 
+	}									 
+								 
 	my $readio_obj = Bio::SeqIO->new(-file 	 => "$dmpath/$dmfile", 
 									 -format => 'fasta') 
 								 or die "\t    ERROR - Failed to create SeqIO FH object from $dmfile $!\n";  
@@ -516,20 +629,46 @@ sub splitdismatetopairs {
 		my $header = $seq->display_id;
 		if ($header =~ /^(.*)\/(\d)/) {
 			if ($2 == 1) {
-				$dmlistR1{$1}=1;
-				push (@seqArrayR1,$seq);
+				if (exists ($listR1{$1})) {
+					next;
+				} elsif (exists ($dmlistR1{$1})) {
+					delete ($dmlistR1{$1});
+					$dup{$1} =1;
+					next;
+					
+				} else {
+					$dmlistR1{$1}=1;
+					push (@seqArrayR1,$seq);
+				}
+				
 			} elsif ($2 == 2) {
-				$dmlistR2{$1}=1;
-				push (@seqArrayR2,$seq);
+				if (exists ($listR2{$1})) {
+					next;
+				} elsif (exists ($dmlistR2{$1})) {
+					delete ($dmlistR2{$1});
+					$dup{$1} =1;
+					next;
+					
+				} else {
+					$dmlistR2{$1}=1;
+					push (@seqArrayR2,$seq);
+				}
+				
 			}
 		} 
 	}
+	
+	
 	my $DUpfile = "$uniqueid.onlymappedreadIDs.namesorted.D.Up.fasta";
 	my $Upreadio_obj = Bio::SeqIO->new(-file 	 => "$path/ExtractedReads/$genomeloc/$uniqueid.onlymappedreadIDs.namesorted.Up.fasta", 
 									 -format => 'fasta') 
 								 or die "\t    ERROR - Failed to create SeqIO FH object from $dmfile $!\n";  
 	while (my $seq = $Upreadio_obj->next_seq() ){
 		my $header = $seq->display_id;
+		if (exists $dup{$header}) {
+			push (@seqArrayUp, $seq);
+			next;
+		}
 		if (exists ($dmlistR1{$header})) {#check if the read in unpaired file is present in the discordant read1 list has remove it discordant list
 			delete ($dmlistR1{$header});
 			$seq->display_id("$header/2");#modify display_id add /1 or /2
@@ -545,31 +684,97 @@ sub splitdismatetopairs {
 	}
 	
 	 
-	if (%dmlistR1) {# puttting the rest of the rest of the sequences in the discordant mate file to unpaired sequences
-		foreach my $read (keys %dmlistR1){
-			my $ind = firstidx { $_->display_id eq "$read/1" } @seqArrayR1;
-			
-			my $upseq = splice (@seqArrayR1,$ind,1);
-			
-			$read = substr $read, 0,-2;
-			$upseq->display_id("$read");
-			push (@seqArrayUp, $upseq);
-		}
-	} 
+	if (%dmlistR1) {
+		for (my $i = 0; $i <= ($#seqArrayR1); $i++) {
+			#print "last index is $#seqArrayR1\n";
+			my $readname = $seqArrayR1[$i]->display_id;
+			#print "$readname is the index is $i\n";
+			$readname =~ /^(.*)\/(\d)/;
+			if (exists $dmlistR1{$1}){
+				#print $seqArrayR1[$i]->display_id,"is the read name with index $i\n";
+				my $upseq = splice (@seqArrayR1,$i,1);
+				#print "the index is $i\n";
+				#$read = substr $read, 0,-2;
+				$upseq->display_id("$1");
+				#print $upseq->display_id,"\n";
+				push (@seqArrayUp, $upseq);
+				#$i= -1;
+				$i = $i-1;
+			} else {
+				next;
+			}
+		}	
+	}
 	
 	if (%dmlistR2) {
-		foreach my $read (keys %dmlistR2){
-			my $ind = firstidx { $_->display_id eq "$read/2" } @seqArrayR2;
-			
-			my $upseq = splice (@seqArrayR2,$ind,1);
-			
-			$read = substr $read, 0,-2;
-			$upseq->display_id("$read");
-			
-			push (@seqArrayUp, $upseq);
-		}
-	
+		for (my $i = 0; $i <= $#seqArrayR2; $i++) {
+			#print "last index is $#seqArrayR2\n";
+			my $readname = $seqArrayR2[$i]->display_id;
+			#print "$readname is the index is $i\n";
+			$readname =~ /^(.*)\/(\d)/;
+			if (exists $dmlistR2{$1}){
+				#print $seqArrayR2[$i]->display_id,"\n";
+				#print "the index is $i\n";
+				$readname = substr $readname, 0,-2;
+				my $upseq = splice (@seqArrayR2,$i,1);
+				$upseq->display_id("$readname");
+				#print $upseq->display_id,"\n";
+				push (@seqArrayUp, $upseq);
+				#$i=-1;
+				$i = $i-1;
+			} else {
+				next;
+			}
+			#print $seqArrayR1[$i]->seq;
+		}	
 	}
+	
+	if (%dup){
+		for (my $i = 0; $i <= $#seqArrayR1; $i++) {
+			#print "last index is $#seqArrayR2\n";
+			my $readname = $seqArrayR1[$i]->display_id;
+			#print "$readname is the index is $i\n";
+			$readname =~ /^(.*)\/(\d)/;
+			if (exists $dup{$1}){
+				#print $seqArrayR2[$i]->display_id,"\n";
+				#print "the index is $i\n";
+				$readname = substr $readname, 0,-2;
+				my $upseq = splice (@seqArrayR1,$i,1);
+				$upseq->display_id("$readname");
+				#print $upseq->display_id,"\n";
+				push (@seqArrayUp, $upseq);
+				#$i=-1;
+				$i = $i-1;
+			} else {
+				next;
+			}
+			#print $seqArrayR1[$i]->seq;
+		}	
+	}
+	if (%dup) {
+		for (my $i = 0; $i <= $#seqArrayR2; $i++) {
+			#print "last index is $#seqArrayR2\n";
+			my $readname = $seqArrayR2[$i]->display_id;
+			#print "$readname is the index is $i\n";
+			$readname =~ /^(.*)\/(\d)/;
+			if (exists $dup{$1}){
+				#print $seqArrayR2[$i]->display_id,"\n";
+				#print "the index is $i\n";
+				$readname = substr $readname, 0,-2;
+				my $upseq = splice (@seqArrayR2,$i,1);
+				$upseq->display_id("$readname");
+				#print $upseq->display_id,"\n";
+				push (@seqArrayUp, $upseq);
+				#$i=-1;
+				$i = $i-1;
+			} else {
+				next;
+			}
+			#print $seqArrayR1[$i]->seq;
+		}	
+	}
+	
+	#instead of writing a new file open the R1 file and check if its already present or not and then write a new file all the R1 reads, R2 reads, then remove concatenation step.
 	
 	
 	&sortfasta_header($dmpath,"$dmfile.r1",@seqArrayR1);
