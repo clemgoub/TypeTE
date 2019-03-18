@@ -6,6 +6,8 @@ Elaborated with the collaboration of Jeffrey M. Kidd (University of Michigan)
 
 TypeTE is a pipeline dedicated to genotype segregating Mobile Element Insertion (MEI) previously scored with a MEI detection tool such as MELT (Mobile Element Locator Tool, Gardner et al., 2017). TypeTE extracts reads from each detected polymorphic MEI and reconstruct acurately both presence and absence alleles. Eventually, remapping of the reads at the infividual level allow to score the genotype of the MEI using a modified version of Li's et al. genotype likelihood. This method drammatically improves the quality of the genotypes of reported MEI and can be directly used after a MELT run on both non-reference and reference insertions.
 
+![picture alt](https://raw.githubusercontent.com/clemgoub/reGenotypeTE/master/Artboard%201.png "TypeTE overview")
+
 TypeTE is divided in two modules: "Non-reference" to genotype insertions absent from the regerence genome and "Reference" to genotype TE copies present in the reference genomes.
 
 Currently TypeTE is working only with Alu insertions in the human genome but will be soon available for L1, SVA as well as virtualy any retrotransposon in any organism with a reference genome.
@@ -31,8 +33,6 @@ Perl executable must be in the user path
 * BGZIP http://www.htslib.org/doc/bgzip.html
 * TABIX http://www.htslib.org/doc/tabix.html
 
-- - - -
-
 ### Download and install
 
 Clone from git repository:
@@ -40,7 +40,10 @@ Clone from git repository:
 ```sh
 git clone https://github.com/clemgoub/TypeTE
 cd TypeTE
+
 ```
+
+- - - -
 
 ## Files preparation
 
@@ -103,6 +106,8 @@ TABIX="/usr/local/bin/tabix" #Path to tabix
 # /!\ PERL MUST BE IN PATH /!\
 ```
 
+- - - -
+
 ## Running TypeTE
 
 1. Fill the appropriated ```parameterfile_[No]Ref.init``` according to your local paths and files
@@ -113,6 +118,8 @@ nohup ./run_TypeTE_[N]R.sh &> TypeTE.log &
 ```
 
 Use ```./run_TypeTE_R.sh``` for reference insertions and ```./run_TypeTE_NR.sh``` for non-reference insertions.
+
+- - - -
 
 ## Test runs
 
