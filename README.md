@@ -6,7 +6,7 @@ Elaborated with the collaboration of Jeffrey M. Kidd (University of Michigan)
 
 TypeTE is a pipeline dedicated to genotype segregating Mobile Element Insertion (MEI) previously scored with a MEI detection tool such as MELT (Mobile Element Locator Tool, Gardner et al., 2017). TypeTE extracts reads from each detected polymorphic MEI and reconstruct acurately both presence and absence alleles. Eventually, remapping of the reads at the infividual level allow to score the genotype of the MEI using a modified version of Li's et al. genotype likelihood. This method drammatically improves the quality of the genotypes of reported MEI and can be directly used after a MELT run on both non-reference and reference insertions.
 
-TypeTE is divided in two modules: "Non-reference" to genotype insertions absent from the regerence genome and "Reference" to genotypes TE copies present in the reference genomes.
+TypeTE is divided in two modules: "Non-reference" to genotype insertions absent from the regerence genome and "Reference" to genotype TE copies present in the reference genomes.
 
 Currently TypeTE is working only with Alu insertions in the human genome but will be soon available for L1, SVA as well as virtualy any retrotransposon in any organism with a reference genome.
 
@@ -105,7 +105,7 @@ TABIX="/usr/local/bin/tabix" #Path to tabix
 
 ## Running TypeTE
 
-1. Fill the appropriated parameterfile_[No]Ref.init according to your local paths and files
+1. Fill the appropriated ```parameterfile_[No]Ref.init``` according to your local paths and files
 2. Run the following command in the TypeTE folder:
 
 ```sh
@@ -153,7 +153,7 @@ nohup ./run_TypeTE_NR.sh &> TypeTE_TESTRUN.log &
 
 5. Expected results
 
-The genotype from the original vcf (<>/TypeTE/test_data/testDiscoveryAlu.vcf) are the following
+The genotype from the original vcf (<>/TypeTE/test_data/test_data_nonref.vcf) are the following
 
 |         | 1_72639020 | 10_69994906 |
 |---------|------------|-------------|
@@ -199,7 +199,7 @@ cd ../
 ```sh
 nohup ./run_TypeTE_R.sh &> TypeTE_TESTRUN_ref.log &
 ```
-5. Expected results
+4. Expected results
 
 The genotype from the original vcf (<>/TypeTE/test_data/test_data_ref.vcf) are the following
 
