@@ -1,7 +1,0 @@
-*.pyc
-*.c
-*.so
-logs/
-build/
-.ipynb_checkpoints/
-*.cmds

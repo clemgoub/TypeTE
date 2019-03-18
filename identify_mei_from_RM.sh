@@ -18,7 +18,7 @@
 
 ### USAGE: ./identify_mei_from_RM.sh loci_bam_folder output_folder #folders must be in full path (no relative) without final "/"
 
-source parameterfile.init
+source parameterfile_NoRef.init
 
 # Pick up the discordant mates from the bam files, generates .bed per individual / locus
 paste <(date | awk '{print $4}') <(echo "generates individual .bed file per locus...")
