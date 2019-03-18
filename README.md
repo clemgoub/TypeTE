@@ -2,6 +2,9 @@
 This pipeline is developped by Jainy Thomas (University of Utah) and Clement Goubert (Cornell University).
 Elaborated with the collaboration of Jeffrey M. Kidd (University of Michigan)
 
+Please adress all you questions and comments using the "issue" tab of the repository. This allows the community to search and find directly answers to their issues.
+If help is not comming, you can email your questions at goubert.clement[at]gmail.com
+
 ## Purpose
 
 TypeTE is a pipeline dedicated to genotype segregating Mobile Element Insertion (MEI) previously scored with a MEI detection tool such as MELT (Mobile Element Locator Tool, Gardner et al., 2017). TypeTE extracts reads from each detected polymorphic MEI and reconstruct acurately both presence and absence alleles. Eventually, remapping of the reads at the infividual level allow to score the genotype of the MEI using a modified version of Li's et al. genotype likelihood. This method drammatically improves the quality of the genotypes of reported MEI and can be directly used after a MELT run on both non-reference and reference insertions.
@@ -16,7 +19,7 @@ Currently TypeTE is working only with Alu insertions in the human genome but wil
 
 ### Dependencies
 
-Type TE rely on popular genomic tools often already in the toolbox of computational biologists! The following programs need to be installed and their path reported in the file "parameterfile_[Ref/NoRef].init"
+TypeTE rely on popular softwares often already in the toolbox of computational biologists! The following programs need to be installed and their path reported in the file ```"parameterfile_[No]Ref.init"```
 Perl executable must be in the user path
 
 * PERL https://www.perl.org/
@@ -35,13 +38,16 @@ Perl executable must be in the user path
 
 ### Download and install
 
-Clone from git repository:
+1. Clone from git repository:
 
 ```sh
 git clone https://github.com/clemgoub/TypeTE
 cd TypeTE
-
 ```
+
+2. Complete the fields associated to the path of each dependent program in the files ```"parameterfile_Ref.init"``` and ```"parameterfile_NoRef.init"```
+
+3. And that's it!
 
 - - - -
 
@@ -143,7 +149,7 @@ wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA12144/alignment/NA12
 ```
 The corresponding bam/bam.bai files will be downladed into <yourpath>/TypeTE/test_data
   
-2. Copy the parameterfile_NoRef.init present in <yourpath>/TypeTE/test_data to the main folder
+2. Copy the parameterfile_NoRef.init template present in <yourpath>/TypeTE/test_data to the main folder
   
 ```sh
 cp parameterfile_NoRef.init ../
