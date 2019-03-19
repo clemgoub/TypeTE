@@ -61,9 +61,9 @@ You will need:
 
 note: these fields are not necessary for the Reference module where these will be extracted from the reference genome
 
-2. __bam files (BAMFILE)__ for each individual found in the vcf file
+2. __bam files__ for each individual found in the vcf file
 
-3. a two column __tab separated table with the sample name and corresponding bam name__:
+3. a two column __tab separated table with the sample name and corresponding bam name (BAMFILE)__:
 
 ```
 sample1 sample1-xxx-file.bam
