@@ -59,6 +59,15 @@ You will need:
 * MEINFO= with predicted subfamily (Repbase name) and orientation of the TE (ex: MEINFO=AluYa5,.,.,+ | if the subfamily is unknown: MEINFO=AluUndef;.,.,+)
 * TSD= to indicate the predicted TSD (ex: TSD=AATAGAATTAGCAATTTTG | if no TSD detected TSD=null)
 
+example:
+`
+##fileformat=VCFv4.1
+##<HEADER OF THE VCF FILE>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	NA07056	NA11830	NA12144
+1	72639020	ALU_umary_ALU_244	C	<INS:ME:ALU>	.	.	MEINFO=AluUndef,4,281,-;SVTYPE=ALU;TSD=AGCAATCTTATTTTC	GT	0|1	0|0	0|1
+10 69994906 ALU_umary_ALU_8067 G <INS:ME:ALU> . . MEINFO=AluUndef,8,280,+;SVTYPE=ALU;TSD=AATAGAATTAGCAATTTTG GT 0|0 0|1 0|1
+`
+
 note: these fields are not necessary for the Reference module where these will be extracted from the reference genome
 
 2. __bam files__ for each individual found in the vcf file
