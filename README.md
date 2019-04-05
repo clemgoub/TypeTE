@@ -191,11 +191,7 @@ The genotype from the original vcf (<>/TypeTE/test_data/test_data_nonref.vcf) ar
 | NA11830 | 0/0          | 0/1           |
 | NA12144 | 0/1          | 0/1           |
 
-After running the test, you can convert your output vcf.gz into a 012 table using:
 
-```sh
-vcftools --gzvcf TEST_dataALU.TypeTE.vcf.gz --012
-```
 
 The new genotype should be 
 
@@ -239,11 +235,7 @@ The genotype from the original vcf (<>/TypeTE/test_data/test_data_ref.vcf) are t
 | NA11830 | 0/1          | 1/1           |
 | NA12144 | 0/1          | 0/1           |
 
-After running the test, you can convert your output vcf.gz into a 012 table using:
 
-```sh
-vcftools --gzvcf TEST_dataALU.TypeTE.vcf.gz --012
-```
 
 The new genotype should be 
 
