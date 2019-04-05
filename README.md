@@ -23,6 +23,8 @@ TypeTE rely on popular softwares often already in the toolbox of computational b
 Perl executable must be in the user path
 
 * PERL https://www.perl.org/
+* PYTHON 2.7 https://www.python.org/download/releases/2.7/ (Not compatible with Python 3)
+    * pysam https://github.com/pysam-developers/pysam
 * PARALLEL https://www.gnu.org/software/parallel/
 * PICARD https://broadinstitute.github.io/picard/
 * BEDTOOLS http://bedtools.readthedocs.io/en/latest/
