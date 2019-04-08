@@ -23,6 +23,9 @@ TypeTE rely on popular softwares often already in the toolbox of computational b
 Perl executable must be in the user path
 
 * PERL https://www.perl.org/
+    * BioPerl https://bioperl.org/INSTALL.html
+* PYTHON 2.7 https://www.python.org/download/releases/2.7/ (Not compatible with Python 3)
+    * pysam https://github.com/pysam-developers/pysam
 * PARALLEL https://www.gnu.org/software/parallel/
 * PICARD https://broadinstitute.github.io/picard/
 * BEDTOOLS http://bedtools.readthedocs.io/en/latest/
@@ -184,23 +187,19 @@ The genotype from the original vcf (<>/TypeTE/test_data/test_data_nonref.vcf) ar
 
 |         | 1_72639020 | 10_69994906 |
 |---------|------------|-------------|
-| NA07056 | 1          | 0           |
-| NA11830 | 0          | 1           |
-| NA12144 | 1          | 1           |
+| NA07056 | 0/1          | 0/0           |
+| NA11830 | 0/0          | 0/1           |
+| NA12144 | 0/1          | 0/1           |
 
-After running the test, you can convert your output vcf.gz into a 012 table using:
 
-```sh
-vcftools --gzvcf TEST_dataALU.TypeTE.vcf.gz --012
-```
 
 The new genotype should be 
 
 |         | 1_72639020 | 10_69994906 |
 |---------|------------|-------------|
-| NA07056 | 2          | 0           |
-| NA11830 | 0          | 2           |
-| NA12144 | 2          | 1           |
+| NA07056 | 1/1          | 0/0           |
+| NA11830 | 0/1          | .           |
+| NA12144 | 1/1          | 0/0          |
 
 ```diff
 - The results of this test run are not expected to reflect the true genotypes -
@@ -215,11 +214,11 @@ We will here genotype two reference loci in the same three individuals:
 1. Copy the parameterfile_Ref.init present in <yourpath>/TypeTE/test_data to the main folder
   
 ```sh
-cp parameterfile_NoRef.init ../
+cp parameterfile_Ref.init ../
 cd ../
 ```
 
-2. Edit the parameterfile_NoRef.init according to your dependancies and local path (but do not change anything else!)
+2. Edit the parameterfile_Ref.init according to your dependancies and local path (but do not change anything else!)
 
 3. Run TypeTE
 
@@ -232,23 +231,19 @@ The genotype from the original vcf (<>/TypeTE/test_data/test_data_ref.vcf) are t
 
 |         | 5_88043138 | 6_7717367 |
 |---------|------------|-------------|
-| NA07056 | 1          | 1           |
-| NA11830 | 1          | 2           |
-| NA12144 | 1          | 1           |
+| NA07056 | 0/1          | 0/1           |
+| NA11830 | 0/1          | 1/1           |
+| NA12144 | 0/1          | 0/1           |
 
-After running the test, you can convert your output vcf.gz into a 012 table using:
 
-```sh
-vcftools --gzvcf TEST_dataALU.TypeTE.vcf.gz --012
-```
 
 The new genotype should be 
 
 |         | 5_88043138 | 6_7717367 |
 |---------|------------|-------------|
-| NA07056 | 0          | 0           |
-| NA11830 | 1          | 1           |
-| NA12144 | 1          | 1           |
+| NA07056 | 0/0          | 0/0           |
+| NA11830 | 0/1          | 0/1           |
+| NA12144 | 0/1          | 0/1           |
 
 ```diff
 - The results of this test run are not expected to reflect the true genotypes -
