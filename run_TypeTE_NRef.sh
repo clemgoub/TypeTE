@@ -15,9 +15,9 @@
 source parameterfile_NoRef.init
 
 #START
-echo "###########################"
+echo "#####################"
 echo "#      TypeTE       #"
-echo "###########################"
+echo "#####################"
 
 ################################################
 # 0: Setup and create input from MELT files ####
@@ -26,7 +26,7 @@ echo "###########################"
 #locate working directoty
 whereamI=$(pwd)
 
-Creates the $OUTDIR
+#Creates the $OUTDIR
 
 {
 if [ $OUTDIR == "" ]; then
@@ -153,10 +153,10 @@ paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping..
 paste <(date | awk '{print $4}') <(echo "Genotyping...")
 
 ### create alternatives alleles
-python insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
+python2.7 insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
 
 ### genotype per individual
-cat $BAMFILE | parallel -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
+cat $BAMFILE | $PARALLEL -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python2.7 insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
 
 
 paste <(date | awk '{print $4}') <(echo "Genotyping... Done")

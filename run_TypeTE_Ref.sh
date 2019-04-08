@@ -98,10 +98,12 @@ rm -r $OUTDIR/$PROJECT/locusAlleles
 rm -r $OUTDIR/$PROJECT/samples
 
 ### create alternatives alleles
-python insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
+python2.7 insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
 
 ### genotype per individual
-cat $BAMFILE | parallel -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
+cat $BAMFILE | $PARALLEL -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python2.7 insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
+
+wait
 
 paste <(date | awk '{print $4}') <(echo "Genotyping... Done")
 paste <(date | awk '{print $4}') <(echo "Generating outputs...")
@@ -118,12 +120,12 @@ $TABIX -p vcf $fol/$fol.vcf.gz
 done
 
 ### merging final VCF
-vcf-merge ./*/*.vcf.gz | $BGZIP -c > $OUTDIR/$PROJECT/$PROJECT.reGenotypeTE.vcf.gz
+vcf-merge ./*/*.vcf.gz | $BGZIP -c > $OUTDIR/$PROJECT/$PROJECT.TypeTE.vcf.gz
 
 cd $whereamI
 
 paste <(date | awk '{print $4}') <(echo "Generating outputs... Done")
 
-paste <(date | awk '{print $4}') <(echo "reGenotypeTE completed!!!")
+paste <(date | awk '{print $4}') <(echo "TypeTE completed!!!")
 
 
