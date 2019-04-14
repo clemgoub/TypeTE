@@ -258,12 +258,12 @@ sub compare_kmers {
 	my %tsdlist;
 	my @potentialtsdlist;
 	for my $loc (keys %lefthash) {
-		for my $klen ( sort { $a <=> $b } keys $lefthash{$loc} ) {#sort keys numerically
+		for my $klen ( sort { $a <=> $b } keys %{$lefthash{$loc}} ) {#sort keys numerically
 			#print "$klen is the first level key\n"; 
 			if (exists ($righthash{$loc}{$klen})) {
-				for my $lindex (sort keys $lefthash{$loc}{$klen}) {
+				for my $lindex (sort keys %{$lefthash{$loc}{$klen}}) {
 					#print "$lindex is the second level key for secondhash\n"; 
-					for my $rindex (sort keys $righthash{$loc}{$klen}) {
+					for my $rindex (sort keys %{$righthash{$loc}{$klen}}) {
 					     my $lefttsd = $lefthash{$loc}{$klen}{$lindex};
 					     my $righttsd = $righthash{$loc}{$klen}{$rindex};
 						 #if ( $lefthash{$loc}{$klen}{$lindex} eq $righthash{$loc}{$klen}{$rindex} ) {
@@ -466,12 +466,12 @@ sub compare_kmers_approx {
 	my @listapprox=();
 		print "the locus is $loc\n";
 		$approxtsdhash{$loc}=[@listapprox];
-		for my $klen ( sort { $b <=> $a } keys $lefthash{$loc} ) {#sort keys numerically in the descending order
+		for my $klen ( sort { $b <=> $a } keys %{$lefthash{$loc}} ) {#sort keys numerically in the descending order
 			#print "$klen is the first level key\n"; 
 			if (exists ($righthash{$loc}{$klen})) {
-				for my $lindex (sort keys $lefthash{$loc}{$klen}) {
+				for my $lindex (sort keys %{$lefthash{$loc}{$klen}}) {
 					#print "$lindex is the second level key for secondhash\n"; 
-					for my $rindex (sort keys $righthash{$loc}{$klen}) {
+					for my $rindex (sort keys %{$righthash{$loc}{$klen}}) {
 					     my $lefttsd = $lefthash{$loc}{$klen}{$lindex};
 					     my $righttsd = $righthash{$loc}{$klen}{$rindex};
 						 #if ( $lefthash{$loc}{$klen}{$lindex} eq $righthash{$loc}{$klen}{$rindex} ) {
