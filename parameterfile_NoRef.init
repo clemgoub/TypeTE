@@ -15,24 +15,24 @@
 ## input /!\ USE FULL PATHS HERE /!\
 
 # user data
-VCF="/workdir/cg629/bin/TypeTE/test_data/test_data_nonref.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
-BAMPATH="/workdir/cg629/bin/TypeTE/test_data" # Path to the bams folder
-BAMFILE="/workdir/cg629/bin/TypeTE/test_data/test_data_bams.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
+VCF="/workdir/shared/HipSci_TE_vcf/ALU.final_comp.PASS.vcf.gz" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
+BAMPATH="/workdir/shared/HipSci_merged_bams" # Path to the bams folder
+BAMFILE="/workdir/cg629/Projects/HipSci/HipSci_bamlist.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
 
 # genome data
 RM_TRACK="/workdir/cg629/bin/TypeTE/Ressources/RepeatMasker_Alu_hg19.bed" # set by default for hg19
 RM_FASTA="/workdir/cg629/bin/TypeTE/Ressources/refinelib" # set by default to be compatible with the Repeat Masker track included in the package
 
 ## output
-OUTDIR="/workdir/cg629/Projects/testTypeTE" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
-PROJECT="TEST_dataALU" # Name of the project (name of the folder)
+OUTDIR="/workdir/cg629/Projects/HipSci" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
+PROJECT="HipSci_Alu_NRef" # Name of the project (name of the folder)
 
 ### OPTIONS
 
 ## mendatory parameters
 
-individual_nb="1" # number of individual per job (try to minimize that number)
-CPU="3" # number of CPU (try to maximize that number) # CPU x individual_nb >= total # of individuals
+individual_nb="7" # number of individual per job (try to minimize that number)
+CPU="50" # number of CPU (try to maximize that number) # CPU x individual_nb >= total # of individuals
 GENOME="/workdir/cg629/Projects/HipSci/refgenome/hs37d5.fa" # Path the the reference genome sequence
 
 ## non-mendatory parameters
