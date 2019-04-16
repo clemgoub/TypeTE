@@ -144,6 +144,17 @@ Use ```./run_TypeTE_R.sh``` for reference insertions and ```./run_TypeTE_NR.sh``
 
 - - - -
 
+## Output
+
+TypeTE outputs a vcf.gz file containing all individual genotypes with genotypes likelihoods. 
+
+The notations are **identical for both Non-reference and Reference insertions** such as:
+- **0/0** : homozygote **ABSENCE**
+- **0/1** : heterozygote
+- **1/1** : homozygote **PRESENCE**
+
+*note that several pMEI callers such as MELT report genotypes relative to the allele present in the reference genome, and thus reports Reference insertions as 0/0 (homozygotes) or (0/1). To match TypeTE calls, simply reverse the calls. 
+
 ## Test runs
 
 ### Non-reference insertions
