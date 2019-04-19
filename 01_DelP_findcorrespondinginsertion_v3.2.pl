@@ -27,8 +27,8 @@ my $changelog = "
 # 				the script is modified to find only Alu
 #	- v3.1 = 10 January 2019
 #				introduced another round of finding RM cordinates for which breakpoints were more 100 bp far, the new cut off is 220bp.
-#	-v3.2-SVA = 19 April 2019			 
-#				modified for SVA only
+#				 
+#	
 #				
 #
 \n";
@@ -172,7 +172,7 @@ sub find_element {
 				$len = $end-$start;
 				$startminus = ($start - $number);
 				$startplus = ($start + $number);
-				if (($brekpont >= $startminus) && ($brekpont <= $startplus) && ($te =~ /SVA.*/)) {
+				if (($brekpont >= $startminus) && ($brekpont <= $startplus) && ($te =~ /Alu.*/)) {
 					print STDERR "$marker found!\n";
 					#print STDERR "$whline\n";
 					my $withbrkp = "$marker\t$whline"; 

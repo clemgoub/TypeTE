@@ -7,9 +7,16 @@
 # This script genotype the reference SVA  #
 # insertions                              #
 # Author: Clement Goubert                 #
-# Date: 04/15/2019                        #
-# Version: 1.0                            #
+# Date: 04/17/2019                        #
+# Version: 1.1                            #
 ###########################################
+
+#***changelog***
+#	-v1: 04/15/19: first working version
+#	-v1.1: -4/17/19: pulled new find coordinates script; option SVA/LINE1
+
+# USAGE: ./run_TypeTE_Del-SVA <SVA/LINE1>
+
 
 #load the user options, outdir path and dependencies paths
 source parameterfile_Ref.init # load the parameterfile as argument
@@ -54,11 +61,23 @@ paste <(date) <(echo "Finding corresponding Repeat Masker insertions on referenc
 
 # if 'chr' in the vcf keep like that, otherwise, remove the 'chr' from the RM track for the bedtool intersct!
 
-if grep "chr" $OUTDIR/$PROJECT/$PROJECT.input > /dev/null
-then
-    perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t $RM_TRACK -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
-else
-    perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
+if [ $1 == "SVA" ]; then
+
+	if grep "chr" $OUTDIR/$PROJECT/$PROJECT.input > /dev/null
+	then
+    		perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t $RM_TRACK -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
+	else
+    		perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
+	fi
+
+elif [ $1 == "LINE1" ]; then
+
+	        if grep "chr" $OUTDIR/$PROJECT/$PROJECT.input > /dev/null
+       	then
+               	perl 01_DelP_findcorrespondinginsertion_v3.2-LINE1.pl -t $RM_TRACK -f $OUTDIR/$PR$
+       	else
+               	perl 01_DelP_findcorrespondinginsertion_v3.2-LINE1.pl -t <(sed 's/chr//g' $RM_TRA$
+       	fi
 fi
 
 #########################################
