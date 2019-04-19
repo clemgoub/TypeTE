@@ -56,9 +56,9 @@ paste <(date) <(echo "Finding corresponding Repeat Masker insertions on referenc
 
 if grep "chr" $OUTDIR/$PROJECT/$PROJECT.input > /dev/null
 then
-    perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t $RM_TRACK -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
+    perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t $RM_TRACK -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
 else
-    perl 01_DelP_findcorrespondinginsertion_v3.0.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
+    perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
 fi
 
 #########################################
