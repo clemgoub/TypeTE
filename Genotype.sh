@@ -2,6 +2,11 @@
 
 # TEST-SCRIPT only performing genotyping
 # Author Clement Goubert
+<<<<<<< HEAD
+=======
+#
+# Usage: ./Genotype.sh <allelefile> <allelebase> <parameterfile>
+>>>>>>> abcf6df667a22f6477f6c2a1aab3302cc14f1a1b
 
 source $3
 
