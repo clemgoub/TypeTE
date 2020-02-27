@@ -61,24 +61,20 @@ paste <(date) <(echo "Finding corresponding Repeat Masker insertions on referenc
 
 # if 'chr' in the vcf keep like that, otherwise, remove the 'chr' from the RM track for the bedtool intersct!
 
-if [ $1 == "SVA" ]; then
+echo "$OUTDIR/$PROJECT/$PROJECT.input"
+if grep -q "chr" $OUTDIR/$PROJECT/$PROJECT.input
+then
 
-	if grep "chr" $OUTDIR/$PROJECT/$PROJECT.input > /dev/null
-	then
-    		perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t $RM_TRACK -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
-	else
-    		perl 01_DelP_findcorrespondinginsertion_v3.2-SVA.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out
-	fi
+perl 01_DelP_findcorrespondinginsertion_v3.3.pl -t $RM_TRACK -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out -te $1
+#echo "chr present"
 
-elif [ $1 == "LINE1" ]; then
+else
 
-	        if grep "chr" $OUTDIR/$PROJECT/$PROJECT.input > /dev/null
-       	then
-               	perl 01_DelP_findcorrespondinginsertion_v3.2-LINE1.pl -t $RM_TRACK -f $OUTDIR/$PR$
-       	else
-               	perl 01_DelP_findcorrespondinginsertion_v3.2-LINE1.pl -t <(sed 's/chr//g' $RM_TRA$
-       	fi
+perl 01_DelP_findcorrespondinginsertion_v3.3.pl -t <(sed 's/chr//g' $RM_TRACK) -f $OUTDIR/$PROJECT/$PROJECT.input -p $OUTDIR/$PROJECT/RM_intervals.out -te $1
+#echo "chr absent"
+
 fi
+
 
 #########################################
 # 2:  #### Find TSD and TE coordinates  #
