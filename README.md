@@ -5,6 +5,8 @@ Elaborated with the collaboration of Jeffrey M. Kidd (University of Michigan)
 Please adress all you questions and comments using the "issue" tab of the repository. This allows the community to search and find directly answers to their issues.
 If help is not comming, you can email your questions at goubert.clement[at]gmail.com
 
+[see the TypeTE paper in NAR (2020)](https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkaa074/5739778 "TypeTE paper")
+
 ## Purpose
 
 TypeTE is a pipeline dedicated to genotype segregating Mobile Element Insertion (MEI) previously scored with a MEI detection tool such as MELT (Mobile Element Locator Tool, Gardner et al., 2017). TypeTE extracts reads from each detected polymorphic MEI and reconstruct acurately both presence and absence alleles. Eventually, remapping of the reads at the infividual level allow to score the genotype of the MEI using a modified version of Li's et al. genotype likelihood. This method drammatically improves the quality of the genotypes of reported MEI and can be directly used after a MELT run on both non-reference and reference insertions.
