@@ -19,6 +19,8 @@ Currently TypeTE is working only with Alu insertions in the human genome but wil
 
 ### Dependencies
 
+> A docker container is coming for TypeTE! Stay tuned to get the latest version as soon as it comes out!
+
 TypeTE rely on popular softwares often already in the toolbox of computational biologists! The following programs need to be installed and their path reported in the file ```"parameterfile_[No]Ref.init"```
 Perl executable must be in the user path
 
@@ -44,7 +46,7 @@ Perl executable must be in the user path
 1. Clone from git repository:
 
 ```sh
-git clone https://github.com/clemgoub/TypeTE
+git clone --recurse-submodules https://github.com/clemgoub/TypeTE.git
 cd TypeTE
 ```
 
