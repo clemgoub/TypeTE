@@ -1,22 +1,27 @@
 #! /bin/bash
 
 ###########################################
-# TypeTE - run_TypeTE_Del-SVA             #
+# TypeTE - run_TypeTE_REF                 #
 #                                         #
 # This is the main script of the pipeline #
 # This script genotype the reference SVA  #
 # insertions                              #
 # Author: Clement Goubert                 #
-# Date: 04/17/2019                        #
-# Version: 1.1                            #
+# Created: 04/17/2019 (OG)                #
+# Updated: 04/23/2020 (Docker vers. 0.1d  #
+# Version: 0.1d                            #
 ###########################################
 
 #***changelog***
-#	-v1: 04/15/19: first working version
-#	-v1.1: -4/17/19: pulled new find coordinates script; option SVA/LINE1
-
+# 04/23/20 (latest)  v1 -> v0.1d
+# first working version of run_TypeTE_REF for docker
 # USAGE: ./run_TypeTE_Del-SVA <SVA/LINE1>
 
+# to do:
+# -----
+# add cd to TypeTE workdir at opening
+# Rename to run_TypeTE_REF.sh
+# Make it run all TE at one
 
 #load the user options, outdir path and dependencies paths
 source parameterfile_Ref.init # load the parameterfile as argument
@@ -31,7 +36,7 @@ echo "#####################"
 ################################################
 
 #locate working directoty
-whereamI=$(pwd)
+whereamI="/home/TypeTE/softwares/TypeTE/"
 
 #Creates the $OUTDIR
 
