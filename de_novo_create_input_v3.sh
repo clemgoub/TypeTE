@@ -53,8 +53,12 @@ echo "$header"
 $BEDTOOLS/bedtools getfasta -fi $GENOME -bed $OUTDIR/$PROJECT/region.bed > $OUTDIR/$PROJECT/region''$pos''.fasta
 makeblastdb -in $OUTDIR/$PROJECT/region''$pos''.fasta -out $OUTDIR/$PROJECT/region''$pos''.fasta -dbtype 'nucl'
 blastn -query <(echo "$TSD") -db $OUTDIR/$PROJECT/region''$pos''.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | awk '{if ($9 < $10) {print $2"\t"$9"\t"$10} else {print $2"\t"$10"\t"$9}}' > $OUTDIR/$PROJECT/blast''$pos''.TSD.bed
-awk '{print $1"\t1\t"$2}' > $OUTDIR/$PROJECT/left.bed
-awk '{print $1"\t3\t1000"}' > $OUTDIR/$PROJECT/right.bed
+######### ADD IF LOOP HERE
+#### IF blast empty
+#### do split at middle
+#### else if blast not empty
+awk '{print $1"\t1\t"$2}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
+awk '{print $1"\t3\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
 
 #awk '{print $1"\t1\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/fullregion''$pos''.bed
 #$BEDTOOLS/bedtools substract -a $OUTDIR/$PROJECT/fullregion''$pos''.bed -b $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/leftright_''$pos''.bed
