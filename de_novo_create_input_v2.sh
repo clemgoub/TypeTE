@@ -50,7 +50,7 @@ echo "$TSD"
 echo "$direction"
 echo "$header"
 
-if [[ $assembled == "yes" ]] ### For assembled
+if [[ $assembled == "yes" ]] ### For assembled Alu
 then
 
 	#echo "left"
@@ -61,7 +61,9 @@ then
 	if [[ $direction == "-" ]]
 	then
 		# if reverse paste TE RC | TSD RC
-		paste -d, <(perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | sed "s/$TSD//g" | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg") <(echo "$TSD" | rev | tr "ATGCatgc" "TACGtacg") | sed 's/,//g;s/null//g' > $pos"".TE.seq
+		paste -d, <(echo "$TSD" | rev | tr "ATGCatgc" "TACGtacg") <(perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | sed "s/$TSD//g" | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg") | sed 's/,//g;s/null//g' > $pos"".TE.seq
+		paste -d, <(echo "$TSD") <(perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg" ) | sed 's/,//g;s/null//g' > $pos"".TE.seq
+	
 	else
 		# esle if + paste TE in + | TSD
 		paste -d, <(perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | sed "s/$TSD//g" | cut -f 2) <(echo "$TSD") | sed 's/,//g;s/null//g' > $pos"".TE.seq
