@@ -4,7 +4,7 @@
 #
 # USAGE: ./input_from_melt_Del.sh genotypes.vcf(.gz) inputname
 
-source parameterfile_Ref.init
+source ./parameterfile_Ref.init
 
 testfile=$(file $1 | awk '{print $2}')
 if [[ $testfile == "gzip" ]]

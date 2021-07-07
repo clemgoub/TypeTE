@@ -2,7 +2,7 @@
 
 # usage deletion_create_input.sh RM_insertions_TSD_strands
 
-source parameterfile_Ref.init
+source ./parameterfile_Ref.init
 # source ~/CorrectHet/reGenotypeTE_del/reGenotypeTE/parameterfile_Ref.init
 # find the 1000 bp up and downstream of the TE
 

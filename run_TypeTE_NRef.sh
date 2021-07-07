@@ -12,7 +12,7 @@
 ###########################################
 
 #load the user options, outdir path and dependencies paths
-source parameterfile_NoRef.init
+source ./parameterfile_NoRef.init
 
 #START
 echo "#####################"

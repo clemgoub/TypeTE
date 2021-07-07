@@ -12,11 +12,11 @@
 ###########################################
 
 #load the user options, outdir path and dependencies paths
-source parameterfile_Ref.init # load the parameterfile as argument
+source ./parameterfile_Ref.init # load the parameterfile as argument
 
 #START
 echo "###########################"
-echo "#      reGenotypeTE       #"
+echo "#   TypeTE - Reference    #"
 echo "###########################"
 
 ################################################
