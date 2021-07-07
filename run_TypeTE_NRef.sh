@@ -69,7 +69,7 @@ paste <(date | awk '{print $4}') <(echo "Extracting reads...")
 
 cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
 
-cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" 
+cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" &> $OUTDIR/$PROJECT/extractreads.log
 
 cd $whereamI #comes back to the working dir
 
@@ -121,7 +121,7 @@ do
 done
 
 cat $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/*.fasta > $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/RM_consensus.fa
-rm $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
+rm $OUTDIR/$PROJECT/Repbase_intersect/TE_headers &>/dev/null
 
 paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 
@@ -131,8 +131,8 @@ paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 
 paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 
-rm -r $OUTDIR/$PROJECT/Assembled_TEreads
-perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU
+rm -r $OUTDIR/$PROJECT/Assembled_TEreads &>/dev/null
+perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU &> $OUTDIR/$PROJECT/assembly.log
 
 #######################################
 # 6: Generate input for genotyping ####

@@ -17,9 +17,9 @@ source ./parameterfile_NoRef.init
 
 ## Add line to process Jainy's output
 join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <( paste <(sed 's/ /\t/g' $1 | cut -f 1 | sed 's/_/\t/g') <(sed 's/ /\t/g' $1| cut -f 2-) | awk '{print $1":"($2-250)"-"($2+250),$3,$4,$5,$6,$7}' | sort -k1,1 ) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
-| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}' > pre_input
+| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}' > $OUTPUT/$PROJECT/pre_input
 
-input=$(cat pre_input) # change it so $1 is the output of previous line
+input=$(cat $OUTPUT/$PROJECT/pre_input) # change it so $1 is the output of previous line
 
 #input=$(join -a1 -11 -21 <(sort -k1,1 <(join -11 -21 -o 1.1,1.2,1.3,1.4,1.5,1.6,2.2,2.3,2.4,2.5 <(sort -k1,1 $1) <(sort -k1,1 $2))) <(sort -k1,1 $3/position_and_TE) \
 #| awk '{if (NF == 10) {print $1,$2,$3,$4,$5,$6,$7,$8,$10"#SINE/Alu",$6} else {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10}}')
@@ -71,10 +71,10 @@ $BEDTOOLS/bedtools getfasta -fi $GENOME -bed $OUTPUT/$PROJECT/right.bed | awk '/
  	if [[ $direction == "-" ]]
  	then
  		# if - get assemble TE, Reverse and Complement 
-		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg") > $OUTPUT/$PROJECT/$pos"".TE.seq
+		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg" > $OUTPUT/$PROJECT/$pos"".TE.seq
  	else
  		# esle if + paste TE in + 
-		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2) | sed 's/,//g;s/null//g' > $OUTPUT/$PROJECT/$pos"".TE.seq
+		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2 | sed 's/,//g;s/null//g' > $OUTPUT/$PROJECT/$pos"".TE.seq
 	fi
 
  	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(sed 's/,//g' $OUTPUT/$PROJECT/region''$pos''.fasta)  <(paste -d, $OUTPUT/$PROJECT/$pos"".left.seq $OUTPUT/$PROJECT/$pos"".TE.seq $OUTPUT/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
@@ -86,17 +86,17 @@ else ### For non-assembled
 
 
 #echo "left"
-$BEDTOOLS/bedtools getfasta -fi $GENOME -bed left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".left.seq
+$BEDTOOLS/bedtools getfasta -fi $GENOME -bed $OUTPUT/$PROJECT/left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTPUT/$PROJECT/$pos"".left.seq
 #echo "right"
-$BEDTOOLS/bedtools getfasta -fi $GENOME -bed right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".right.seq
+$BEDTOOLS/bedtools getfasta -fi $GENOME -bed $OUTPUT/$PROJECT/right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTPUT/$PROJECT/$pos"".right.seq
 
  	if [[ $direction == "-" ]]
  	then
  		# if - get assemble TE, Reverse and Complement 
-		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg") > $OUTPUT/$PROJECT/$pos"".TE.seq
+		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg" > $OUTPUT/$PROJECT/$pos"".TE.seq
  	else
  		# esle if + paste TE in + 
-		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2) | sed 's/,//g;s/null//g' > $OUTPUT/$PROJECT/$pos"".TE.seq
+		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2 | sed 's/,//g;s/null//g' > $OUTPUT/$PROJECT/$pos"".TE.seq
 	fi
 
  	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(sed 's/,//g' $OUTPUT/$PROJECT/region''$pos''.fasta)  <(paste -d, $OUTPUT/$PROJECT/$pos"".left.seq <(echo "$TSD") $OUTPUT/$PROJECT/$pos"".TE.seq <(echo "$TSD") $OUTPUT/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
@@ -110,7 +110,7 @@ fi
 
 done
 
-#rm pre_input
+#rm $OUTPUT/$PROJECT/pre_input
 
 # return delimiter to previous value
 IFS=$IFSq_BAK
