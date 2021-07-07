@@ -85,9 +85,9 @@ else ### For non-assembled
 #The TE taken from repbase don't have TSD, so the TSD is to add.
 
 
- 	#echo "left"
+#echo "left"
 $BEDTOOLS/bedtools getfasta -fi $GENOME -bed left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".left.seq
- 	#echo "right"
+#echo "right"
 $BEDTOOLS/bedtools getfasta -fi $GENOME -bed right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $pos"".right.seq
 
  	if [[ $direction == "-" ]]
@@ -101,7 +101,7 @@ $BEDTOOLS/bedtools getfasta -fi $GENOME -bed right.bed | awk '/^>/ {printf("%s%s
 
  	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(sed 's/,//g' $OUTPUT/$PROJECT/region''$pos''.fasta)  <(paste -d, $OUTPUT/$PROJECT/$pos"".left.seq <(echo "$TSD") $OUTPUT/$PROJECT/$pos"".TE.seq <(echo "$TSD") $OUTPUT/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
 
-# fi
+fi
 
 # ### cleaning
 # rm left.bed
