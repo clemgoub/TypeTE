@@ -50,11 +50,11 @@ echo "$TSD"
 echo "$direction"
 echo "$header"
 
-$BEDTOOLS/bedtools getfasta -fi $GENOME -bed region.bed > region.fasta
-makeblastdb -in region.fasta -out region.fasta -dbtype 'nucl'
-blastn -query "$TSD" -db region.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | awk '{print $4"\t"$5"\t"$6}'> blast.TSD.bed
-awk '{print $1"\t1\t1000"}' blast.TSD.bed > fullregion.bed
-$BEDTOOLS/bedtools substract -a fullregion.bed -b blast.TSD.bed > leftright_''$pos''_.bed
+$BEDTOOLS/bedtools getfasta -fi $GENOME -bed region.bed > region''$pos''.fasta
+makeblastdb -in region''$pos''.fasta -out region''$pos''.fasta -dbtype 'nucl'
+blastn -query <(echo "$TSD") -db region''$pos''.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | awk '{print $4"\t"$5"\t"$6}'> blast''$pos''.TSD.bed
+awk '{print $1"\t1\t1000"}' blast''$pos''.TSD.bed > fullregion''$pos''.bed
+$BEDTOOLS/bedtools substract -a fullregion''$pos''.bed -b blast''$pos''.TSD.bed > leftright_''$pos''.bed
 
 # if [[ $assembled == "yes" ]] ### For assembled Alu
 # then
