@@ -54,7 +54,7 @@ echo "$header"
 
 $BEDTOOLS/bedtools getfasta -fi $GENOME -bed $OUTDIR/$PROJECT/region.bed > $OUTDIR/$PROJECT/region''$pos''.fasta
 makeblastdb -in $OUTDIR/$PROJECT/region''$pos''.fasta -out $OUTDIR/$PROJECT/region''$pos''.fasta -dbtype 'nucl'
-blastn -query <(echo "$TSD") -db $OUTDIR/$PROJECT/region''$pos''.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | awk '{if ($9 < $10) {print $2"\t"$9"\t"$10} else {print $2"\t"$10"\t"$9}}' > $OUTDIR/$PROJECT/blast''$pos''.TSD.bed
+blastn -query <(echo "$TSD") -db $OUTDIR/$PROJECT/region''$pos''.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | head -n 1 | awk '{if ($9 < $10) {print $2"\t"$9"\t"$10} else {print $2"\t"$10"\t"$9}}' > $OUTDIR/$PROJECT/blast''$pos''.TSD.bed
 ######### ADD IF LOOP HERE
 #### IF blast empty
 #### do split at middle
@@ -83,7 +83,7 @@ $BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTD
 		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2 | sed 's/,//g;s/null//g' > $OUTDIR/$PROJECT/$pos"".TE.seq
 	fi
 
- 	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(sed 's/,//g' $OUTDIR/$PROJECT/region''$pos''.fasta)  <(paste -d, $OUTDIR/$PROJECT/$pos"".left.seq $OUTDIR/$PROJECT/$pos"".TE.seq $OUTDIR/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
+ 	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}'  $OUTDIR/$PROJECT/region''$pos''.fasta | cut -f 2)  <(paste -d, $OUTDIR/$PROJECT/$pos"".left.seq $OUTDIR/$PROJECT/$pos"".TE.seq $OUTDIR/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
 
 
 
