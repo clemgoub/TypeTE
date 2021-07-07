@@ -60,7 +60,7 @@ blastn -query <(echo "$TSD") -db $OUTDIR/$PROJECT/region''$pos''.fasta -word_siz
 #### do split at middle
 #### else if blast not empty
 awk '{print $1"\t1\t"$2}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
-awk '{print $1"\t3\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
+awk '{print $1"\t"$3"\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
 
 #awk '{print $1"\t1\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/fullregion''$pos''.bed
 #$BEDTOOLS/bedtools substract -a $OUTDIR/$PROJECT/fullregion''$pos''.bed -b $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/leftright_''$pos''.bed
