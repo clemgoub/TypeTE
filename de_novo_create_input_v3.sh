@@ -105,7 +105,7 @@ $BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTD
 		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2 | sed 's/,//g;s/null//g' > $OUTDIR/$PROJECT/$pos"".TE.seq
 	fi
 
- 	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(sed 's/,//g' $OUTDIR/$PROJECT/region''$pos''.fasta)  <(paste -d, $OUTDIR/$PROJECT/$pos"".left.seq <(echo "$TSD") $OUTDIR/$PROJECT/$pos"".TE.seq <(echo "$TSD") $OUTDIR/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
+ 	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}'  $OUTDIR/$PROJECT/region''$pos''.fasta | cut -f 2)  <(paste -d, $OUTDIR/$PROJECT/$pos"".left.seq <(echo "$TSD") $OUTDIR/$PROJECT/$pos"".TE.seq <(echo "$TSD") $OUTDIR/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
 
 fi
 
