@@ -42,8 +42,6 @@ header=$(printf '%s\n' "$list" | awk '{print $9}')
 
 # create bed files -500bp ---- BP (left)  BP ---- +500bp (right)
 sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print $1"\t"($2-250)"\t"($3+250)"\t"$4"\t"$5"-"$6}' > $OUTDIR/$PROJECT/region.bed
-# sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print $1"\t"($2-250)"\t"($3-250)"\t"$4"\t"$5"-"$6}'  > left.bed # -250 from left boundary that is already -250 = BP-250bp; -250 from right boundary = BP
-# sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print $1"\t"($2+250)"\t"($3+250)"\t"$4"\t"$5"-"$6}'  > right.bed # +250 from right boundary that is already +250 = BP+250bp; +250 from left boundary = BP
 
 echo ""
 echo "$pos"
@@ -57,13 +55,13 @@ makeblastdb -in $OUTDIR/$PROJECT/region''$pos''.fasta -out $OUTDIR/$PROJECT/regi
 blastn -query <(echo "$TSD") -db $OUTDIR/$PROJECT/region''$pos''.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | head -n 1 | awk '{if ($9 < $10) {print $2"\t"$9"\t"$10} else {print $2"\t"$10"\t"$9}}' > $OUTDIR/$PROJECT/blast''$pos''.TSD.bed
 
 # Check if we found the expected TSD
-if [ -s "$OUTDIR/$PROJECT/blast''$pos''.TSD.bed" ] 
+if [[ -s "$OUTDIR/$PROJECT/blast''$pos''.TSD.bed" ]]
 then # left = 0-TSD_start right = TSD_end-1000
-	awk '{print $1"\t1\t"$2}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
-	awk '{print $1"\t"$3"\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
-else # cut at the middle!
 	awk '{print $1"\t1\t500"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
 	awk '{print $1"\t501\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
+else # cut at the middle!
+	awk '{print $1"\t1\t"$2}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
+	awk '{print $1"\t"$3"\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
 fi
 
 # Check if Alu is fully assembled
