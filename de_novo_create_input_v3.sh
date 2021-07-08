@@ -55,56 +55,54 @@ echo "$header"
 $BEDTOOLS/bedtools getfasta -fi $GENOME -bed $OUTDIR/$PROJECT/region.bed > $OUTDIR/$PROJECT/region''$pos''.fasta
 makeblastdb -in $OUTDIR/$PROJECT/region''$pos''.fasta -out $OUTDIR/$PROJECT/region''$pos''.fasta -dbtype 'nucl'
 blastn -query <(echo "$TSD") -db $OUTDIR/$PROJECT/region''$pos''.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | head -n 1 | awk '{if ($9 < $10) {print $2"\t"$9"\t"$10} else {print $2"\t"$10"\t"$9}}' > $OUTDIR/$PROJECT/blast''$pos''.TSD.bed
-######### ADD IF LOOP HERE
-#### IF blast empty
-#### do split at middle
-#### else if blast not empty
-awk '{print $1"\t1\t"$2}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
-awk '{print $1"\t"$3"\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
 
-#awk '{print $1"\t1\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/fullregion''$pos''.bed
-#$BEDTOOLS/bedtools substract -a $OUTDIR/$PROJECT/fullregion''$pos''.bed -b $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/leftright_''$pos''.bed
+# Check if we found the expected TSD
+if [ -s "$OUTDIR/$PROJECT/blast''$pos''.TSD.bed" ] 
+then # left = 0-TSD_start right = TSD_end-1000
+	awk '{print $1"\t1\t"$2}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
+	awk '{print $1"\t"$3"\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
+else # cut at the middle!
+	awk '{print $1"\t1\t500"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/left.bed
+	awk '{print $1"\t501\t1000"}' $OUTDIR/$PROJECT/blast''$pos''.TSD.bed > $OUTDIR/$PROJECT/right.bed
+fi
 
+# Check if Alu is fully assembled
 if [[ $assembled == "yes" ]] ### For assembled Alu
-#fully assembled TE have TSD in 5' and 3' (or it is assumed)
-then
+then #fully assembled TE have TSDs in 5' and 3' within the assembled sequence
 
-#echo "left"
+#extract the 5' flank up to TSD
 $BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".left.seq
-#echo "right"
+#extract the 3' flank after TSD
 $BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".right.seq
 
- 	if [[ $direction == "-" ]]
+ 	if [[ $direction == "-" ]] # if the TE is reverse...
  	then
- 		# if - get assemble TE, Reverse and Complement 
+ 		# ...get assemble TE, Reverse and Complement 
 		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg" > $OUTDIR/$PROJECT/$pos"".TE.seq
  	else
- 		# esle if + paste TE in + 
+ 		# ...esle if + paste TE as assembled
 		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $4 | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2 | sed 's/,//g;s/null//g' > $OUTDIR/$PROJECT/$pos"".TE.seq
 	fi
-
- 	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}'  $OUTDIR/$PROJECT/region''$pos''.fasta | cut -f 2)  <(paste -d, $OUTDIR/$PROJECT/$pos"".left.seq $OUTDIR/$PROJECT/$pos"".TE.seq $OUTDIR/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
-
-
+	# write the .allele file line for this locus
+	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}'  $OUTDIR/$PROJECT/region''$pos''.fasta | cut -f 2)  <(paste -d, $OUTDIR/$PROJECT/$pos"".left.seq $OUTDIR/$PROJECT/$pos"".TE.seq $OUTDIR/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
 
 else ### For non-assembled
 #The TE taken from repbase don't have TSD, so the TSD is to add.
 
-
-#echo "left"
+#extract the 5' flank up to TSD
 $BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".left.seq
-#echo "right"
+#extract the 3' flank after TSD
 $BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".right.seq
 
  	if [[ $direction == "-" ]]
  	then
- 		# if - get assemble TE, Reverse and Complement 
+ 		# ...get reference TE, Reverse and Complement  
 		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2 | rev | tr "ATGCatgc" "TACGtacg" > $OUTDIR/$PROJECT/$pos"".TE.seq
  	else
- 		# esle if + paste TE in + 
+ 		# ...esle if + get reference TE as in repbase (+)
 		perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' <(echo "$header") $RM_FASTA | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' |  cut -f 2 | sed 's/,//g;s/null//g' > $OUTDIR/$PROJECT/$pos"".TE.seq
 	fi
-
+	# write the .allele file line for this locus
  	paste <(echo "$pos") <(sed 's/:/\t/g' <(echo "$pos") | cut -f 1) <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($3-250)}') <(echo ".") <(sed 's/:/\t/g;s/-/\t/g' <(echo "$pos") | awk '{print ($2-250)"\t"($3+250)}') <(awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}'  $OUTDIR/$PROJECT/region''$pos''.fasta | cut -f 2)  <(paste -d, $OUTDIR/$PROJECT/$pos"".left.seq <(echo "$TSD") $OUTDIR/$PROJECT/$pos"".TE.seq <(echo "$TSD") $OUTDIR/$PROJECT/$pos"".right.seq | sed 's/,//g') >> $5
 
 fi
@@ -121,8 +119,3 @@ done
 # return delimiter to previous value
 IFS=$IFSq_BAK
 IFS_BAK=
-
-
-#### NEED TO FIX --> turn RC the assembled TSD if on neg strand to print a user-friendly table
-#awk '{if ($7 == "yes" && $8 == "-") {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10; printf system("echo " $10 " | rev | tr \"ATGCatgc\" \"TACGtacg\"")} else {if ($7 == "yes" && $8 == "?" && $5 == "-") {print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10, printf system("echo " $10 " | rev | tr \"ATGCatgc\" \"TACGtacg\"")} else {print $0}}}' pre_input
-
