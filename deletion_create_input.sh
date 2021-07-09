@@ -45,7 +45,7 @@ if [[ $TSD == "noTSDs" ]]
 	TE=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
 
 	# generate the table
-	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
+	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$TE") <(echo "$noTE") 
 
 elif [[ $TSD == *.* ]] # if TSDs have mismatches, will keep the 5' one for the non TE
 
@@ -85,7 +85,7 @@ elif [[ $TSD == *.* ]] # if TSDs have mismatches, will keep the 5' one for the n
 	TE=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
 
 	# generate the table
-	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
+	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$TE") <(echo "$noTE")
 
 
 else
@@ -108,7 +108,7 @@ else
 	#echo "$TE"
 	#echo "$noTE"
 	# generate the table
-	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
+	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$TE") <(echo "$noTE") 
 
 
 fi

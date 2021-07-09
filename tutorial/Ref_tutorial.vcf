@@ -1,0 +1,59 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##fileDate=Aug 1, 2017 10:40:20 AM
+##source=MELTv2.0.2
+##reference=human_g1k_v37_decoy.fasta
+##coordinates=hg38 (liftOver hg19)
+##ALT=<ID=INS:ME:ALU,Description="Insertion of ALU element">
+##contig=<ID=1,length=249250621>
+##contig=<ID=2,length=243199373>
+##contig=<ID=3,length=198022430>
+##contig=<ID=4,length=191154276>
+##contig=<ID=5,length=180915260>
+##contig=<ID=6,length=171115067>
+##contig=<ID=7,length=159138663>
+##contig=<ID=8,length=146364022>
+##contig=<ID=9,length=141213431>
+##contig=<ID=10,length=135534747>
+##contig=<ID=11,length=135006516>
+##contig=<ID=12,length=133851895>
+##contig=<ID=13,length=115169878>
+##contig=<ID=14,length=107349540>
+##contig=<ID=15,length=102531392>
+##contig=<ID=16,length=90354753>
+##contig=<ID=17,length=81195210>
+##contig=<ID=18,length=78077248>
+##contig=<ID=19,length=59128983>
+##contig=<ID=20,length=63025520>
+##contig=<ID=21,length=48129895>
+##contig=<ID=22,length=51304566>
+##contig=<ID=GL000225.1,length=211173>
+##contig=<ID=X,length=155270560>
+##contig=<ID=Y,length=59373566>
+##contig=<ID=hs37d5,length=35477943>
+##INFO=<ID=ASSESS,Number=1,Type=Integer,Description="Provides information on evidence availible to decide insertion site.0 = No overlapping reads at site;1 = Imprecise breakpoint due to greater than expected di
+##INFO=<ID=TSD,Number=1,Type=String,Description="Precise Target Site Duplication for bases, if unknown, value will be NULL">
+##INFO=<ID=INTERNAL,Number=2,Type=String,Description="If insertion internal or close to a gene, listed here followed by a discriptor of the location in the gene (either INTRON, EXON_#, 5_UTR, 3_UTR, PROMOTER, o
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Difference in length between REF and ALT alleles; If unknown, will be -1">
+##INFO=<ID=MEINFO,Number=4,Type=String,Description="Mobile element info of the form NAME,START,END,POLARITY; If START or END is unknown, will be -1; If POLARITY is unknown, will be 'null'">
+##INFO=<ID=DIFF,Number=.,Type=String,Description="Coverage and Differences in relation to the ALU reference. Form is %2XCoverage:Differences, with differences delimited by ','">
+##INFO=<ID=LP,Number=1,Type=Integer,Description="Total number of discordant pairs supporting the left side of the breakpont">
+##INFO=<ID=RP,Number=1,Type=Integer,Description="Total number of discordant pairs supporting the right side of the breakpont">
+##INFO=<ID=RA,Number=1,Type=Float,Description="Ratio between LP and RP, reported as log2(LP / RP)">
+##INFO=<ID=PRIOR,Number=1,Type=String,Description="True if this site was not discovered in this dataset, but was included on a provided priors list.">
+##FILTER=<ID=s25,Description="Greater than 25.0% of samples do not have data">
+##FILTER=<ID=rSD,Description="Ratio of LP to RP is greater than 2.0 standard deviations">
+##FILTER=<ID=hDP,Description="More than the expected number of discordant pairs at this site are also split.">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=GL,Number=3,Type=Float,Description="Genotype likelihood">
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes">
+##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles in called genotypes">
+##bcftools_viewVersion=1.4.1+htslib-1.4.1
+##bcftools_viewCommand=view -Ov -c 1 ALU.final_comp_CEPH_ALL.vcf; Date=Tue Aug 15 14:01:31 2017
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	NA12348	NA12413	NA12716
+chr10	61983855	.	T	<CN:0>	.	.	SVTYPE=AluYb8;END=63743793;SVLEN=165;ADJLEFT=63743628;ADJRIGHT=63743793	GT:GL	0/0:-0.6,-6.02,-97	0/0:-0,-4.82,-79.8	0/0:-0.6,-2.41,-36.6
+chr11	14326764	.	G	<CN:0>	.	.	SVTYPE=AluYa5;END=14348627;SVLEN=302;ADJLEFT=14348325;ADJRIGHT=14348627	GT:GL	0/1:-29,-6.62,-72.01	0/1:-46.4,-7.83,-60.01	0/1:-29,-9.63,-132.01
+chr2	222616971	.	T	<CN:0>	.	.	SVTYPE=AluYb8;END=223481980;SVLEN=274;ADJLEFT=223481706;ADJRIGHT=0	GT:GL	0/1:-29,-6.02,-60.01	0/1:-44,-11.44,-132.03	0/1:-29,-4.21,-24.01
+chr3	49456843	.	T	<CN:0>	.	.	SVTYPE=AluYa5;END=49494606;SVLEN=316;ADJLEFT=49494290;ADJRIGHT=49494606	GT:GL	0/1:-17.4,-3.01,-24	1/1:-40.6,-4.21,-0.01	0/1:-23.2,-3.61,-24
+chr8	115475989	.	T	<CN:0>	.	.	SVTYPE=AluYa5;END=116488546;SVLEN=305;ADJLEFT=116488241;ADJRIGHT=116488546	GT:GL	0/0:-0.6,-3.01,-42.4	0/1:-23.2,-5.42,-44.4	0/0:-0,-4.21,-72.4
