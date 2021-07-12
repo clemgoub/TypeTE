@@ -1,49 +1,44 @@
-#! /bin/bash
+#!/bin/bash
+###############################################
+# TypeTE - parameterfile_Ref.init             #
+#                                             #
+# configuration file for the TypeTE tutorial  #
+#                                             #
+# Author: Clement Goubert                     #
+# Date: 07/06/2021                            #
+###############################################
 
-###########################################
-# TypeTE - parameterfile_Ref.init         #
-#                                         #
-# configuration file for the pipeline     #
-#                                         #
-# Author: Clement Goubert                 #
-# Date: 03/18/2019                        #
-# Version: 2.0.0 (docker)                 #
-###########################################
+### MAIN PARAMETERS
 
-# Chagelog v1 -> v2 adat to docker integration (04/20) 
+# user data
+VCF="/workdir/cg629/bin/TypeTE/tutorial/Ref_tutorial.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
+BAMPATH="/workdir/cg629/Projects/TypeTE_tutorial/bams" # Path to the bams folder
+BAMFILE="/workdir/cg629/Projects/TypeTE_tutorial/bams/bamlist.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
 
-## input /!\ USE FULL PATHS HERE /!\
+# genome data
+GENOME="/workdir/cg629/Projects/TypeTE_tutorial/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna" # Path the the reference genome sequence
+RM_TRACK="/workdir/cg629/bin/TypeTE/Ressources/RepeatMasker_Alu_hg38.bed" # set by default for hg19
+RM_FASTA="/workdir/cg629/bin/TypeTE/Ressources/refinelib" # set by default to be compatible with the Repeat Masker track included in the package
 
-### USER DATA
-VCF="/home/TypeTE/softwares/TypeTE/test_data/test_data_ref.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
-BAMPATH="/workdir/Ressources/1000GP/bams" # Path to the bams folder
-BAMFILE="/workdir/Ressources/1000GP/bams/test_data_bams.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
+# output
+OUTDIR="/workdir/cg629/Projects/TypeTE_tutorial" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
+PROJECT="OUTPUTS_Ref" # Name of the project (name of the folder)
 
-### REFERENCE GENOME AND TE TRACK
-RM_TRACK="/home/TypeTE/softwares/TypeTE/Ressources/RepeatMasker_Alu_hg19.bed" # set by default for hg19
-RM_FASTA="/home/TypeTE/softwares/TypeTE/Ressources/refinelib" # set by default to be compatible with the Repeat Masker track included in the package
-
-### OUTPUT
-OUTDIR="/workdir/Projects/testTypeTE" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
-PROJECT="docker.test.1" # Name of the project (name of the folder)
-
-### OPTIONS
-
+# multi-threading
 individual_nb="1" # number of individual per job (try to minimize that number)
 CPU="3" # number of CPU (try to maximize that number) # CPU x individual_nb >= total # of individuals
-GENOME="/workdir/Projects/HipSci/refgenome/hs37d5.fa" # Path the the reference genome sequence
 
 ### DEPENDENCIES PATH
-PARALLEL="parallel" # in path, need exe name
-PICARD="/home/TypeTE/softwares/picard" #Path to Picard Tools
-BEDTOOLS="bedtools" # Bedtool is in path, need folder name
-SEQTK="seqtk" # in path, need exe name
-BAMUTILS="/home/TypeTE/softwares/bamUtil"
-SPADES="" # in path, need folder name
-MINIA="" # in path, need folder name
-CAP3="" # in path, need folder name
-BLAST="" # in path, need folder name
-BWA="bwa" # in path, need exe name
-BGZIP="bgzip" #Path to bgzip
-TABIX="tabix" #Path to tabix
 # /!\ PERL MUST BE IN PATH /!\
+PARALLEL="/programs/parallel/bin/parallel" #Path to the GNU Parallel program
+PICARD="/programs/picard-tools-2.9.0" #Path to Picard Tools
+BEDTOOLS="/programs/bedtools-2.27.1/bin/bedtools" #Path to bedtools executable
+SEQTK="/programs/seqtk" #Path to seqtk executable
+BAMUTILS="/programs/bamUtil" #Path to bamUtil
+SPADES="/programs/spades/bin" #Path to spades bin directory (to locate spades.py and dispades.py)
+MINIA="/workdir/cg629/bin/minia-v2.0.7-bin-Linux/bin" #Path to minia bin directory
+CAP3="/programs/CAP3" #Path to CAP3 directory
+BLAST="/programs/ncbi-blast-2.7.1+/bin" #Path to blast bin directory
+BWA="/programs/bwa-0.5.9/bwa" #Path to bwa executable
+BGZIP="bgzip" #Path to bgzip executable
+TABIX="tabix" #Path to tabix executable

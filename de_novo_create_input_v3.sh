@@ -50,7 +50,7 @@ echo "$TSD"
 echo "$direction"
 echo "$header"
 
-$BEDTOOLS/bedtools getfasta -fi $GENOME -bed $OUTDIR/$PROJECT/region.bed > $OUTDIR/$PROJECT/region''$pos''.fasta
+$BEDTOOLS getfasta -fi $GENOME -bed $OUTDIR/$PROJECT/region.bed > $OUTDIR/$PROJECT/region''$pos''.fasta
 makeblastdb -in $OUTDIR/$PROJECT/region''$pos''.fasta -out $OUTDIR/$PROJECT/region''$pos''.fasta -dbtype 'nucl'
 blastn -query <(echo "$TSD") -db $OUTDIR/$PROJECT/region''$pos''.fasta -word_size 6 -outfmt 6 | sort -k12,12nr -k1,1 | head -n 1 | awk '{if ($9 < $10) {print $2"\t"$9"\t"$10} else {print $2"\t"$10"\t"$9}}' > $OUTDIR/$PROJECT/blast''$pos''.TSD.bed
 
@@ -69,9 +69,9 @@ if [[ $assembled == "yes" ]] ### For assembled Alu
 then #fully assembled TE have TSDs in 5' and 3' within the assembled sequence
 
 #extract the 5' flank up to TSD
-$BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".left.seq
+$BEDTOOLS getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".left.seq
 #extract the 3' flank after TSD
-$BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".right.seq
+$BEDTOOLS getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".right.seq
 
  	if [[ $direction == "-" ]] # if the TE is reverse...
  	then
@@ -88,9 +88,9 @@ else ### For non-assembled
 #The TE taken from repbase don't have TSD, so the TSD is to add.
 
 #extract the 5' flank up to TSD
-$BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".left.seq
+$BEDTOOLS getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/left.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".left.seq
 #extract the 3' flank after TSD
-$BEDTOOLS/bedtools getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".right.seq
+$BEDTOOLS getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJECT/right.bed | awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' | cut -f 2  > $OUTDIR/$PROJECT/$pos"".right.seq
 
  	if [[ $direction == "-" ]]
  	then

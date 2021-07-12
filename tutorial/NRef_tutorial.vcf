@@ -1,0 +1,63 @@
+##fileformat=VCFv4.2
+##fileDate=Dec 8, 2017 11:22:14 AM
+##source=MELTv2.1.4
+##reference=human_g1k_v37_decoy_phiX.fasta
+##coordinates=hg38 (liftOver from hg19)
+##ALT=<ID=INS:ME:ALU,Description="Insertion of ALU element">
+##contig=<ID=1,length=249250621>
+##contig=<ID=2,length=243199373>
+##contig=<ID=3,length=198022430>
+##contig=<ID=4,length=191154276>
+##contig=<ID=5,length=180915260>
+##contig=<ID=6,length=171115067>
+##contig=<ID=7,length=159138663>
+##contig=<ID=8,length=146364022>
+##contig=<ID=9,length=141213431>
+##contig=<ID=10,length=135534747>
+##contig=<ID=11,length=135006516>
+##contig=<ID=12,length=133851895>
+##contig=<ID=13,length=115169878>
+##contig=<ID=14,length=107349540>
+##contig=<ID=15,length=102531392>
+##contig=<ID=16,length=90354753>
+##contig=<ID=17,length=81195210>
+##contig=<ID=18,length=78077248>
+##contig=<ID=19,length=59128983>
+##contig=<ID=20,length=63025520>
+##contig=<ID=21,length=48129895>
+##contig=<ID=22,length=51304566>
+##contig=<ID=X,length=155270560>
+##contig=<ID=Y,length=59373566>
+##INFO=<ID=ASSESS,Number=1,Type=Integer,Description="Provides information on evidence availible to decide insertion site.0 = No overlapping reads at site;1 = Imprecise breakpoint due to greater than expected distance between evidence;2 = discordant pair evidence only -- No split read information;3 = left side TSD evidence only;4 = right side TSD evidence only;5 = TSD decided with split reads, highest possible quality.">
+##INFO=<ID=TSD,Number=1,Type=String,Description="Precise Target Site Duplication for bases, if unknown, value will be NULL">
+##INFO=<ID=INTERNAL,Number=2,Type=String,Description="If insertion internal or close to a gene, listed here followed by a discriptor of the location in the gene (either INTRON, EXON_#, 5_UTR, 3_UTR, PROMOTER, or TERMINATOR)">
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Difference in length between REF and ALT alleles; If unknown, will be -1">
+##INFO=<ID=MEINFO,Number=4,Type=String,Description="Mobile element info of the form NAME,START,END,POLARITY; If START or END is unknown, will be -1; If POLARITY is unknown, will be 'null'">
+##INFO=<ID=DIFF,Number=.,Type=String,Description="Coverage and Differences in relation to the ALU reference. Form is %2XCoverage:Differences, with differences delimited by ','">
+##INFO=<ID=LP,Number=1,Type=Integer,Description="Total number of discordant pairs supporting the left side of the breakpont">
+##INFO=<ID=RP,Number=1,Type=Integer,Description="Total number of discordant pairs supporting the right side of the breakpont">
+##INFO=<ID=RA,Number=1,Type=Float,Description="Ratio between LP and RP, reported as log2(LP / RP)">
+##INFO=<ID=PRIOR,Number=1,Type=String,Description="True if this site was not discovered in this dataset, but was included on a provided priors list.">
+##INFO=<ID=SR,Number=1,Type=Integer,Description="Total number of SRs at the estimated breakpoint for this site. Recomended to filter sites with <= 2 SRs">
+##FILTER=<ID=s25,Description="Greater than 25.0% of samples do not have data">
+##FILTER=<ID=rSD,Description="Ratio of LP to RP is greater than 2.0 standard deviations">
+##FILTER=<ID=hDP,Description="More than the expected number of discordant pairs at this site are also split.">
+##FILTER=<ID=ac0,Description="No individuals in this VCF file were identified with this insertion.">
+##FILTER=<ID=lc,Description="MEI is embeded in a low complexity region.">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=GL,Number=3,Type=Float,Description="Genotype likelihood">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	NA12348.mapped.ILLUMINA.bwa.CEU.low_coverage.20130415	NA12413.mapped.ILLUMINA.bwa.CEU.low_coverage.20130415	NA12716.mapped.ILLUMINA.bwa.CEU.low_coverage.20130422
+chr1	72173322	.	C	<INS:ME:ALU>	.	PASS	TSD=AGCAATCTTATTTTC;ASSESS=5;INTERNAL=NM_173808,INTRONIC;SVTYPE=ALU;SVLEN=272;MEINFO=AluYa5,9,281,-;DIFF=0.95:t89c,c96a,g145a,c174t,g237c;LP=131;RP=228;RA=-0.799;PRIOR=false;SR=74	GT:GL	0/1:-23.2,-8.43,-71.3	0/0:-0,-3.01,-60	0/1:-38.6,-6.02,-30.8
+chr2	159302500	.	C	<INS:ME:ALU>	.	lc	TSD=AAGATCTACTCTC;ASSESS=5;INTERNAL=NM_013450,TERMINATOR;SVTYPE=ALU;SVLEN=281;MEINFO=AluYa4_2,0,281,+;DIFF=1:t89c,c96a,t111c,g145a,g237c;LP=678;RP=573;RA=0.243;PRIOR=false;SR=306	GT:GL	0/1:-28.9,-12.64,-197.8	1/1:-60.3,-5.42,-0.6	0/0:-0,-7.22,-144
+chr2	231415103	.	T	<INS:ME:ALU>	.	PASS	TSD=AAAAGCAGAGAGCTT;ASSESS=5;INTERNAL=NM_145236,TERMINATOR;SVTYPE=ALU;SVLEN=265;MEINFO=AluYb8,16,281,+;DIFF=0.9:c57t,c64t,g72a,c98a,t144c,g211a,c236t,i252gcagtcc,c248g,a252g;LP=638;RP=694;RA=-0.121;PRIOR=false;SR=230	GT:GL	0/0:-1.21,-9.03,-144.8	0/0:-1.21,-9.63,-131	0/0:-1.22,-7.22,-102.1
+chr3	87471333	.	G	<INS:ME:ALU>	.	PASS	TSD=AAGAGATAAAGTTGG;ASSESS=5;INTERNAL=NM_001122757,PROMOTER;SVTYPE=ALU;SVLEN=243;MEINFO=AluYa,38,281,+;DIFF=0.86:g45a,t89c,c96a,g110a,g145a,c174t,g237c,c238t;LP=818;RP=544;RA=0.588;PRIOR=false;SR=355	GT:GL	0/1:-48.2,-10.24,-120	1/1:-88.3,-7.83,-0.61	1/1:-81,-6.62,-0
+chr6	43927750	.	T	<INS:ME:ALU>	.	PASS	TSD=CCAGACAATCTTT;ASSESS=5;INTERNAL=NR_024478,INTRONIC;SVTYPE=ALU;SVLEN=281;MEINFO=AluYa5,0,281,-;DIFF=0.95:t89c,c96a,i119a,g145a,c174t,g237c,t256c,c268a;LP=809;RP=1278;RA=-0.66;PRIOR=false;SR=589	GT:GL	0/1:-55.9,-10.84,-120	1/1:-116.2,-10.24,-0.61	0/1:-59.7,-9.63,-96
+chr6	44830895	.	T	<INS:ME:ALU>	.	PASS	TSD=GCCACAGCCATATTTT;ASSESS=5;INTERNAL=NM_181356,INTRONIC;SVTYPE=ALU;SVLEN=280;MEINFO=AluYb8,1,281,-;DIFF=0.99:c57t,c64t,c98a,t144c,g211a,c236t,c248g,i252gcagtcc,g253a,a252g;LP=8;RP=17;RA=-1.087;PRIOR=false;SR=8	GT:GL	0/0:-0,-6.62,-133	0/0:-0,-6.62,-132	0/0:-0,-5.42,-102.8
+chr6	118304999	.	T	<INS:ME:ALU>	.	PASS	TSD=AGTCAAAGATCTTT;ASSESS=5;INTERNAL=NM_001029858,INTRONIC;SVTYPE=ALU;SVLEN=255;MEINFO=AluYa,26,281,-;DIFF=0.91:c98a,g145a,c174t,g237c;LP=676;RP=524;RA=0.367;PRIOR=false;SR=329	GT:GL	0/1:-44.3,-5.42,-36	0/1:-58.2,-6.62,-41.8	1/1:-86.7,-7.22,-0
+chr7	33155717	.	T	<INS:ME:ALU>	.	PASS	TSD=AGAAATATTTTT;ASSESS=5;INTERNAL=NM_001033605,INTRONIC;SVTYPE=ALU;SVLEN=280;MEINFO=AluYb8,1,281,-;DIFF=1:c57t,c64t,c98a,i127aaa,t144c,g151a,g211a,c236t,i252gcagtcc,c248g,a252g;LP=224;RP=328;RA=-0.55;PRIOR=false;SR=148	GT:GL	0/1:-54,-9.03,-77.8	0/1:-34.7,-7.22,-84	0/0:-0,-10.84,-216
+chr8	89657677	.	T	<INS:ME:ALU>	.	PASS	TSD=GGCATTTATT;ASSESS=5;INTERNAL=NM_003821,PROMOTER;SVTYPE=ALU;SVLEN=280;MEINFO=AluYb5,1,281,-;DIFF=1:c57t,c64t,c98a,t144c,c236t,c248g,a252g;LP=382;RP=983;RA=-1.364;PRIOR=false;SR=457	GT:GL	1/1:-144.5,-12.04,-0.01	0/1:-44.3,-9.03,-108	0/1:-36.6,-6.02,-60
+chr8	127344421	.	T	<INS:ME:ALU>	.	PASS	TSD=AAAAATTGCCTGGCT;ASSESS=5;INTERNAL=NM_001159542,PROMOTER;SVTYPE=ALU;SVLEN=107;MEINFO=AluYb,174,281,+;DIFF=0.38:g211a,c236t,i252gcagtcc,c248g,a252g;LP=258;RP=156;RA=0.726;PRIOR=false;SR=347	GT:GL	0/1:-28.9,-9.63,-131.6	0/1:-38.6,-7.83,-84	0/1:-30.9,-5.42,-41.8
+chr10	68235149	.	G	<INS:ME:ALU>	.	PASS	TSD=AATAGAATTAGCAATTTTG;ASSESS=5;INTERNAL=NM_145178,PROMOTER;SVTYPE=ALU;SVLEN=280;MEINFO=AluYb7_2,1,281,+;DIFF=0.96:c57t,c64t,c98a,g211a,c236t,c248g,i252gcagtcc,g253a,a252g;LP=1025;RP=1372;RA=-0.421;PRIOR=false;SR=328	GT:GL	0/1:-52.1,-12.04,-135.41	0/1:-48.2,-6.62,-30.8	0/1:-30.8,-4.21,-23.1
+chr11	14478481	.	T	<INS:ME:ALU>	.	lc	TSD=CAGGAATGTATTATTTT;ASSESS=5;INTERNAL=NM_001144061,INTRONIC;SVTYPE=ALU;SVLEN=280;MEINFO=AluYa5,1,281,-;DIFF=0.94:g73c,t89c,c96a,i127aaa,g145a,c174t,g237c;LP=287;RP=423;RA=-0.56;PRIOR=false;SR=202	GT:GL	0/1:-32.8,-5.42,-29.9	0/0:-0,-3.61,-72	0/0:-0.6,-3.61,-56.3
+chr20	1565582	.	G	<INS:ME:ALU>	.	PASS	TSD=AAGAAATGTTTCCTG;ASSESS=5;INTERNAL=NM_006065,INTRONIC;SVTYPE=ALU;SVLEN=281;MEINFO=AluYa4_2,0,281,+;DIFF=1:t89c,c96a,g145a,g237c;LP=494;RP=338;RA=0.547;PRIOR=false;SR=191	GT:GL	0/1:-30.9,-7.22,-77.8	0/0:-0,-3.61,-72	0/1:-83.3,-8.43,-36
