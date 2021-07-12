@@ -112,11 +112,11 @@ fi
 
 done
 
-rm $OUTDIR/$PROJECT/pre_input
-rm $OUTDIR/$PROJECT/right.bed
-rm $OUTDIR/$PROJECT/*.seq
-rm $OUTDIR/$PROJECT/region*
-rm $OUTDIR/$PROJECT/blast*.bed
+rm $OUTDIR/$PROJECT/pre_input &> /dev/null
+rm $OUTDIR/$PROJECT/right.bed &> /dev/null
+rm $OUTDIR/$PROJECT/*.seq &> /dev/null
+rm $OUTDIR/$PROJECT/region* &> /dev/null
+rm $OUTDIR/$PROJECT/blast*.bed &> /dev/null
 
 # return delimiter to previous value
 IFS=$IFSq_BAK

@@ -35,8 +35,8 @@ whereamI=$(pwd)
  fi
  }
 
- mkdir -p $OUTDIR/$PROJECT
- rm -r $OUTDIR/$PROJECT/* #cleanup previous failed run
+ mkdir -p $OUTDIR/$PROJECT 
+ rm -r $OUTDIR/$PROJECT/* &>/dev/null #cleanup previous failed run
 
 #Creates the <project>.input in $OUTDIR/$PROJECT
 
@@ -94,14 +94,14 @@ paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_b
 paste <(date | awk '{print $4}') <(echo "Genotyping...")
 
 # remove older files in case of re-run
-rm -r $OUTDIR/$PROJECT/locusAlleles
-rm -r $OUTDIR/$PROJECT/samples
+rm -r $OUTDIR/$PROJECT/locusAlleles &>/dev/null
+rm -r $OUTDIR/$PROJECT/samples &>/dev/null
 
 ### create alternatives alleles
 python2.7 insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
 
 ### genotype per individual
-cat $BAMFILE | $PARALLEL -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python2.7 insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
+cat $BAMFILE | $PARALLEL -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python2.7 insertion-genotype/process-sample-del.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
 
 wait
 

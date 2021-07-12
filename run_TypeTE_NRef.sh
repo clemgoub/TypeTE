@@ -15,9 +15,9 @@
 source ./parameterfile_NoRef.init
 
 #START
-echo "#####################"
-echo "#      TypeTE       #"
-echo "#####################"
+echo "###########################"
+echo "# TypeTE - Non-Reference  #"
+echo "###########################"
 
 ################################################
 # 0: Setup and create input from MELT files ####
