@@ -112,7 +112,11 @@ fi
 
 done
 
-#rm $OUTDIR/$PROJECT/pre_input
+rm $OUTDIR/$PROJECT/pre_input
+rm $OUTDIR/$PROJECT/right.bed
+rm $OUTDIR/$PROJECT/*.seq
+rm $OUTDIR/$PROJECT/region*
+rm $OUTDIR/$PROJECT/blast*.bed
 
 # return delimiter to previous value
 IFS=$IFSq_BAK
