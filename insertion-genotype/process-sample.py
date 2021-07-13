@@ -444,7 +444,7 @@ outVCF.write('##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read Depth (onl
 outVCF.write('##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">\n')
 outVCF.write('##FORMAT=<ID=GQ,Number=1,Type=Float,Description="Genotype Quality">\n')
 outVCF.write('##FORMAT=<ID=PL,Number=3,Type=Float,Description="Normalized, Phred-scaled likelihoods for AA,AB,BB genotypes where A=ref and B=alt">\n')
-outVCF.write('##REF=<ID=CN:0, Description="Copy Number is 0 for the Alu insertion">\n')
+outVCF.write('##REF=<ID=CN:0,Description="Copy Number is 0 for the Alu insertion">\n')
 outVCF.write('##ALT=<ID=INS:ME:ALU,Description="Insertion of Alu element">\n')
 outVCF.write('##INFO=<ID=DP,Number=1,Type=Integer,Description="Filtered Depth">\n')
 header = ['#CHROM','POS','ID','REF','ALT','QUAL','FILTER','INFO','FORMAT']
