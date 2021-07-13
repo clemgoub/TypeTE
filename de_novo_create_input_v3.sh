@@ -13,7 +13,7 @@
 # usage: ./de_novo_create_input.sh <input>.input <orientTE_extractTE.pl>.outputtable <indentify_mei_from_RM.sh>.outfolder <Assembled.TE> <output.file>
 
 # SET PATH FOR FILES AND PROGRAMS
-source ./parameterfile_NoRef.init
+source ./parameterfile_NRef.init
 rm -r $5 &> /dev/null
 
 ## Add line to process Jainy's output

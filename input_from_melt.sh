@@ -6,7 +6,7 @@
 #
 # USAGE: ./input_from_melt.sh genotypes.vcf(.gz) inputname
 
-source ./parameterfile_NoRef.init
+source ./parameterfile_NRef.init
 
 testfile=$(file $1 | awk '{print $2}')
 if [[ $testfile == "gzip" ]]

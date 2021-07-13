@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ###########################################
-# TypeTE - run_TypeTE_NoRef               #
+# TypeTE - run_TypeTE_NRef                #
 #                                         #
 # This is the main script of the pipeline #
 # to genotype Non-Reference insertions    #
@@ -12,7 +12,7 @@
 ###########################################
 
 #load the user options, outdir path and dependencies paths
-source ./parameterfile_NoRef.init
+source ./parameterfile_NRef.init
 
 #START
 echo "###########################"
@@ -103,7 +103,7 @@ ls $OUTDIR/$PROJECT/splitbylocus/locus_* > $OUTDIR/$PROJECT/splitbylocus/List_of
 # Run in parallel find TE from Repbase
 
 mkdir -p  $OUTDIR/$PROJECT/Repbase_intersect # creates the output folder if inexistent
-rm -r $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE # remove the output table for safety if one already exist
+rm -r $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE &>/dev/null # remove the output table for safety if one already exist
 ls $OUTDIR/$PROJECT/splitbylocus/*.part | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Repbase_intersect "./identify_mei_from_RM.sh {} $OUTDIR/$PROJECT/Repbase_intersect"
 
 # Extract the TE sequence
@@ -140,7 +140,7 @@ perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJ
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...")
 
-rm $OUTDIR/$PROJECT/$PROJECT.allele
+rm $OUTDIR/$PROJECT/$PROJECT.allele &>/dev/null
 FullLength="$OUTDIR/$PROJECT/Assembled_TEsequences.*.txt.full_len.fasta"
 ./de_novo_create_input_v3.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.5.1.txt $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
 
