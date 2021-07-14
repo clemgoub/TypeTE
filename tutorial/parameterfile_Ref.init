@@ -22,7 +22,7 @@ RM_FASTA="/workdir/cg629/bin/TypeTE/Ressources/refinelib" # set by default to be
 
 # output
 OUTDIR="/workdir/cg629/Projects/TypeTE_tutorial" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
-PROJECT="OUTPUTS_Ref" # Name of the project (name of the folder)
+PROJECT="OUTPUTS_Ref_mini" # Name of the project (name of the folder)
 
 # multi-threading
 individual_nb="1" # number of individual per job (try to minimize that number)

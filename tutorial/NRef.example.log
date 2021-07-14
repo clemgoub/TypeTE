@@ -1,0 +1,1099 @@
+nohup: ignoring input
+###########################
+# TypeTE - Non-Reference  #
+###########################
+12:08:01	preparing input from MELT vcf...
+12:08:01	DONE.
+Joining individuals and MEI coordinates...
+12:08:02	DONE.
+12:08:02	Splitting individuals for paralellization of read extraction...
+Starting to split based on 1 individuals ....
+DONE..
+12:08:02	Extracting reads...
+12:43:15	Finding Repbase consensus for each MEI...
+12:43:15	generates individual .bed file per locus...
+chr11:14478231-14478731...
+12:43:15	concatenate individual discordant reads .bed per locus...
+chr11:14478231-14478731...
+12:43:15	intersect concatenated locus .bed with RepeatMasker track...
+chr11:14478231-14478731...
+     99 AluYa5
+12:43:15	generates individual .bed file per locus...
+chr1:56537438-56537938...
+12:43:15	concatenate individual discordant reads .bed per locus...
+chr1:56537438-56537938...
+12:43:15	intersect concatenated locus .bed with RepeatMasker track...
+chr1:56537438-56537938...
+
+12:43:15	generates individual .bed file per locus...
+chr2:21158058-21158558...
+12:43:15	concatenate individual discordant reads .bed per locus...
+chr2:21158058-21158558...
+12:43:15	intersect concatenated locus .bed with RepeatMasker track...
+chr2:21158058-21158558...
+     83 AluYb8
+12:43:17	generates individual .bed file per locus...
+chr5:34112915-34113415...
+12:43:17	concatenate individual discordant reads .bed per locus...
+chr5:34112915-34113415...
+12:43:17	intersect concatenated locus .bed with RepeatMasker track...
+chr5:34112915-34113415...
+    111 AluYa5
+12:43:17	generates individual .bed file per locus...
+chr6:118304749-118305249...
+12:43:17	concatenate individual discordant reads .bed per locus...
+chr6:118304749-118305249...
+12:43:17	intersect concatenated locus .bed with RepeatMasker track...
+chr6:118304749-118305249...
+     56 AluYa5
+12:43:18	Extracting the TE sequences in fasta format...
+
+AluYa5
+AluYb8
+12:43:19	Done! Results in 
+12:43:19	Assembling MEI, retreiving orientation and TSDs...
+12:43:51	Generating input table for genotyping...
+
+chr11:14478231-14478731
+yes
+AAAATAATACATTCCTG
+-
+chr11:14478231-14478731.AAAATAATACATTCCTG.AluYa5#SINE/Alu
+
+
+Building a new DB, current time: 07/14/2021 12:43:53
+New DB name:   /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr11:14478231-14478731.fasta
+New DB title:  /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr11:14478231-14478731.fasta
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 1 sequences in 0.00595593 seconds.
+index file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr11:14478231-14478731.fasta.fai not found, generating...
+
+chr1:56537438-56537938
+no
+?
++
+
+
+
+Building a new DB, current time: 07/14/2021 12:43:54
+New DB name:   /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr1:56537438-56537938.fasta
+New DB title:  /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr1:56537438-56537938.fasta
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 1 sequences in 0.000593901 seconds.
+BLAST query error: CFastaReader: Near line 1, there's a line that doesn't look like plausible data, but it's not marked as defline or comment.
+index file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr1:56537438-56537938.fasta.fai not found, generating...
+
+chr2:21158058-21158558
+yes
+AAAAATTACATGTAT
++
+chr2:21158058-21158558.AAAAATTACATGTAT.AluYb8#SINE/Alu
+
+
+Building a new DB, current time: 07/14/2021 12:43:55
+New DB name:   /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr2:21158058-21158558.fasta
+New DB title:  /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr2:21158058-21158558.fasta
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 1 sequences in 0.000499964 seconds.
+index file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr2:21158058-21158558.fasta.fai not found, generating...
+
+chr5:34112915-34113415
+yes
+AAAATATTTAAAGTTTCTG
++
+chr5:34112915-34113415.AAAATATTTAAAGTTTCTG.AluYa5#SINE/Alu
+
+
+Building a new DB, current time: 07/14/2021 12:43:55
+New DB name:   /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr5:34112915-34113415.fasta
+New DB title:  /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr5:34112915-34113415.fasta
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 1 sequences in 0.000401974 seconds.
+index file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr5:34112915-34113415.fasta.fai not found, generating...
+
+chr6:118304749-118305249
+yes
+AAAGATCTTTGACT
+-
+chr6:118304749-118305249.AAAGATCTTTGACT.AluYa5#SINE/Alu
+
+
+Building a new DB, current time: 07/14/2021 12:43:55
+New DB name:   /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr6:118304749-118305249.fasta
+New DB title:  /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr6:118304749-118305249.fasta
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 1 sequences in 0.000499964 seconds.
+index file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/regionchr6:118304749-118305249.fasta.fai not found, generating...
+12:43:55	Generating input table for genotyping...Done.
+12:43:55	Genotyping...
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Reverse the packed sequence... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Construct BWT for the reverse packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Update reverse BWT... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[bwa_index] Construct SA from reverse BWT and Occ... 0.00 sec
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Reverse the packed sequence... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Construct BWT for the reverse packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Update reverse BWT... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[bwa_index] Construct SA from reverse BWT and Occ... 0.00 sec
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Reverse the packed sequence... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Construct BWT for the reverse packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Update reverse BWT... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[bwa_index] Construct SA from reverse BWT and Occ... 0.00 sec
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Reverse the packed sequence... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Construct BWT for the reverse packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Update reverse BWT... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[bwa_index] Construct SA from reverse BWT and Occ... 0.00 sec
+[bwa_index] Pack FASTA... 0.00 sec
+[bwa_index] Reverse the packed sequence... 0.00 sec
+[bwa_index] Construct BWT for the packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Construct BWT for the reverse packed sequence...
+[bwa_index] 0.00 seconds elapse.
+[bwa_index] Update BWT... 0.00 sec
+[bwa_index] Update reverse BWT... 0.00 sec
+[bwa_index] Construct SA from BWT and Occ... 0.00 sec
+[bwa_index] Construct SA from reverse BWT and Occ... 0.00 sec
+chr11:14478231-14478731 8
+chr1:56537438-56537938 8
+chr2:21158058-21158558 8
+chr5:34112915-34113415 8
+chr6:118304749-118305249 8
+Read in sequences for 5 sites from /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/OUTPUTS_NRef_tutorial.allele
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial exists, continuing!
+mkdir -p /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles
+/programs/bwa-0.5.9/bwa index /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa
+/programs/bwa-0.5.9/bwa index /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa
+/programs/bwa-0.5.9/bwa index /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa
+/programs/bwa-0.5.9/bwa index /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa
+/programs/bwa-0.5.9/bwa index /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa
+Found 5 siteIntervals
+No exclusion regions to check
+Will do sample name NA12413
+Bam file: /workdir/cg629/Projects/TypeTE_tutorial/bams/NA12413.final.sorted.bam
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413
+Have 5 intervals to process
+chr1:56537188-56538188
+Reads considered: 207, found: 91
+Found 91 rp to do
+initial sam dict contains 207 reads
+After first pass, we have 22 reads to find
+Wrote out 182
+Ready for pass 3 -- have 0 to do
+Wrote out 182
+chr2:21157808-21158808
+Reads considered: 278, found: 120
+Found 120 rp to do
+initial sam dict contains 278 reads
+After first pass, we have 42 reads to find
+Wrote out 240
+Ready for pass 3 -- have 0 to do
+Wrote out 240
+chr5:34112665-34113665
+Reads considered: 220, found: 80
+Found 80 rp to do
+initial sam dict contains 220 reads
+After first pass, we have 36 reads to find
+Wrote out 160
+Ready for pass 3 -- have 0 to do
+Wrote out 160
+chr6:118304499-118305499
+Reads considered: 251, found: 114
+Found 114 rp to do
+initial sam dict contains 251 reads
+After first pass, we have 35 reads to find
+Wrote out 228
+Ready for pass 3 -- have 0 to do
+Wrote out 228
+chr11:14477981-14478981
+Reads considered: 226, found: 103
+Found 103 rp to do
+initial sam dict contains 226 reads
+After first pass, we have 27 reads to find
+Wrote out 206
+Ready for pass 3 -- have 0 to do
+Wrote out 206
+Have extracted all reads for the sample!
+Begin map to alt alleles steps!
+Have 5 intervals to process
+made seq file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/NA12413.intervalreads.seq
+Read in matching info for 5 intervals
+read in 1016 sequences
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping
+['chr1:56537438-56537938', ['chr1', 56537188, 56538188, 56537688]]
+Have 91 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr1:56537438-56537938/mapped.sam.filter.bam
+['chr2:21158058-21158558', ['chr2', 21157808, 21158808, 21158308]]
+Have 120 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr2:21158058-21158558/mapped.sam.filter.bam
+['chr5:34112915-34113415', ['chr5', 34112665, 34113665, 34113165]]
+Have 80 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr5:34112915-34113415/mapped.sam.filter.bam
+['chr6:118304749-118305249', ['chr6', 118304499, 118305499, 118304999]]
+Have 114 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr6:118304749-118305249/mapped.sam.filter.bam
+['chr11:14478231-14478731', ['chr11', 14477981, 14478981, 14478481]]
+Have 103 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/mapping/chr11:14478231-14478731/mapped.sam.filter.bam
+*****
+All Mapping Done
+******
+
+Calculating genotype likelihoods
+
+Summary output file name is /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/NA12413.lksummary
+0.999957000903 1.13686837722e-13 1e-200
+chr1:56537438-56537938	NA12413	43	43	0	0.999957000903	1.13686837722e-13	1e-200	0,129,2000
+
+6.19978174643e-71 2.32830643654e-10 3.94314639915e-45
+chr2:21158058-21158558	NA12413	32	14	18	6.19978174643e-71	2.32830643654e-10	3.94314639915e-45	606,0,348
+
+4.84117061469e-53 1.90734863281e-06 4.91791880779e-08
+chr5:34112915-34113415	NA12413	19	3	16	4.84117061469e-53	1.90734863281e-06	4.91791880779e-08	466,0,16
+
+2.49360776588e-29 1.52587890625e-05 1.25480905257e-29
+chr6:118304749-118305249	NA12413	16	9	7	2.49360776588e-29	1.52587890625e-05	1.25480905257e-29	238,0,241
+
+0.978789230595 4.76837158203e-07 6.3095734448e-68
+chr11:14478231-14478731	NA12413	21	21	0	0.978789230595	4.76837158203e-07	6.3095734448e-68	0,63,672
+
+DONE!
+VCF written to /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12413/NA12413.vcf
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 91 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 91 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] (25, 50, 75) percentile: (364, 401, 475)
+[infer_isize] low and high boundaries: 150 and 697 for estimating avg and std
+[infer_isize] inferred external isize from 43 pairs: 414.093 +/- 93.852
+[infer_isize] skewness: 0.478; kurtosis: -0.286; ap_prior: 1.00e-05
+[infer_isize] inferred maximum insert size: 819 (4.31 sigma)
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 0 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 91 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 120 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 120 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 12 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 120 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 80 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 80 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 12 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 80 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 114 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 114 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 7 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 114 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 103 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 103 sequences have been processed.
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 10 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 103 sequences have been processed.
+Found 5 siteIntervals
+No exclusion regions to check
+Will do sample name NA12348
+Bam file: /workdir/cg629/Projects/TypeTE_tutorial/bams/NA12348.final.sorted.bam
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348
+Have 5 intervals to process
+chr1:56537188-56538188
+Reads considered: 310, found: 132
+Found 132 rp to do
+initial sam dict contains 310 reads
+After first pass, we have 28 reads to find
+Wrote out 264
+Ready for pass 3 -- have 0 to do
+Wrote out 264
+chr2:21157808-21158808
+Reads considered: 273, found: 121
+Found 121 rp to do
+initial sam dict contains 273 reads
+After first pass, we have 29 reads to find
+Wrote out 242
+Ready for pass 3 -- have 0 to do
+Wrote out 242
+chr5:34112665-34113665
+Reads considered: 252, found: 95
+Found 95 rp to do
+initial sam dict contains 252 reads
+After first pass, we have 38 reads to find
+Wrote out 190
+Ready for pass 3 -- have 0 to do
+Wrote out 190
+chr6:118304499-118305499
+Reads considered: 234, found: 92
+Found 92 rp to do
+initial sam dict contains 234 reads
+After first pass, we have 29 reads to find
+Wrote out 184
+Ready for pass 3 -- have 0 to do
+Wrote out 184
+chr11:14477981-14478981
+Reads considered: 331, found: 139
+Found 139 rp to do
+initial sam dict contains 331 reads
+After first pass, we have 63 reads to find
+Wrote out 278
+Ready for pass 3 -- have 0 to do
+Wrote out 278
+Have extracted all reads for the sample!
+Begin map to alt alleles steps!
+Have 5 intervals to process
+made seq file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/NA12348.intervalreads.seq
+Read in matching info for 5 intervals
+read in 1158 sequences
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping
+['chr1:56537438-56537938', ['chr1', 56537188, 56538188, 56537688]]
+Have 132 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr1:56537438-56537938/mapped.sam.filter.bam
+['chr2:21158058-21158558', ['chr2', 21157808, 21158808, 21158308]]
+Have 121 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr2:21158058-21158558/mapped.sam.filter.bam
+['chr5:34112915-34113415', ['chr5', 34112665, 34113665, 34113165]]
+Have 95 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr5:34112915-34113415/mapped.sam.filter.bam
+['chr6:118304749-118305249', ['chr6', 118304499, 118305499, 118304999]]
+Have 92 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr6:118304749-118305249/mapped.sam.filter.bam
+['chr11:14478231-14478731', ['chr11', 14477981, 14478981, 14478481]]
+Have 139 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/mapping/chr11:14478231-14478731/mapped.sam.filter.bam
+*****
+All Mapping Done
+******
+
+Calculating genotype likelihoods
+
+Summary output file name is /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/NA12348.lksummary
+0.999925002775 2.64697796017e-23 1e-200
+chr1:56537438-56537938	NA12348	75	75	0	0.999925002775	2.64697796017e-23	1e-200	0,226,2000
+
+0.983520587596 1.49011611938e-08 2.51188643151e-87
+chr2:21158058-21158558	NA12348	26	26	0	0.983520587596	1.49011611938e-08	2.51188643151e-87	0,78,866
+
+2.50746398611e-78 7.45058059692e-09 7.77109861234e-11
+chr5:34112915-34113415	NA12348	27	3	24	2.50746398611e-78	7.45058059692e-09	7.77109861234e-11	695,0,20
+
+1.21054743397e-42 2.38418579102e-07 1.56861280917e-27
+chr6:118304749-118305249	NA12348	22	9	13	1.21054743397e-42	2.38418579102e-07	1.56861280917e-27	353,0,202
+
+1.25829303569e-133 1.81898940355e-12 6.14090414888e-08
+chr11:14478231-14478731	NA12348	39	2	37	1.25829303569e-133	1.81898940355e-12	6.14090414888e-08	1257,45,0
+
+DONE!
+VCF written to /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12348/NA12348.vcf
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 132 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 132 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] (25, 50, 75) percentile: (368, 404, 475)
+[infer_isize] low and high boundaries: 154 and 689 for estimating avg and std
+[infer_isize] inferred external isize from 75 pairs: 418.760 +/- 84.433
+[infer_isize] skewness: 0.673; kurtosis: 0.340; ap_prior: 1.00e-05
+[infer_isize] inferred maximum insert size: 784 (4.32 sigma)
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 0 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 132 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 121 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 121 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 10 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 121 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 95 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 95 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 17 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 95 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 92 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 92 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 13 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 92 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 139 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.4% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 139 sequences have been processed.
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_read_seq] 0.4% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 16 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 139 sequences have been processed.
+Found 5 siteIntervals
+No exclusion regions to check
+Will do sample name NA12716
+Bam file: /workdir/cg629/Projects/TypeTE_tutorial/bams/NA12716.final.sorted.bam
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716
+Have 5 intervals to process
+chr1:56537188-56538188
+Reads considered: 291, found: 124
+Found 124 rp to do
+initial sam dict contains 291 reads
+After first pass, we have 29 reads to find
+Wrote out 248
+Ready for pass 3 -- have 0 to do
+Wrote out 248
+chr2:21157808-21158808
+Reads considered: 302, found: 127
+Found 127 rp to do
+initial sam dict contains 302 reads
+After first pass, we have 46 reads to find
+Wrote out 254
+Ready for pass 3 -- have 0 to do
+Wrote out 254
+chr5:34112665-34113665
+Reads considered: 346, found: 128
+Found 128 rp to do
+initial sam dict contains 346 reads
+After first pass, we have 51 reads to find
+Wrote out 256
+Ready for pass 3 -- have 0 to do
+Wrote out 256
+chr6:118304499-118305499
+Reads considered: 255, found: 114
+Found 114 rp to do
+initial sam dict contains 255 reads
+After first pass, we have 56 reads to find
+Wrote out 228
+Ready for pass 3 -- have 0 to do
+Wrote out 228
+chr11:14477981-14478981
+Reads considered: 363, found: 170
+Found 170 rp to do
+initial sam dict contains 363 reads
+After first pass, we have 61 reads to find
+Wrote out 340
+Ready for pass 3 -- have 0 to do
+Wrote out 340
+Have extracted all reads for the sample!
+Begin map to alt alleles steps!
+Have 5 intervals to process
+made seq file /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/NA12716.intervalreads.seq
+Read in matching info for 5 intervals
+read in 1326 sequences
+Making samples base /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping
+['chr1:56537438-56537938', ['chr1', 56537188, 56538188, 56537688]]
+Have 124 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr1:56537438-56537938/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr1:56537438-56537938/mapped.sam.filter.bam
+['chr2:21158058-21158558', ['chr2', 21157808, 21158808, 21158308]]
+Have 127 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr2:21158058-21158558/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr2:21158058-21158558/mapped.sam.filter.bam
+['chr5:34112915-34113415', ['chr5', 34112665, 34113665, 34113165]]
+Have 128 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr5:34112915-34113415/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr5:34112915-34113415/mapped.sam.filter.bam
+['chr6:118304749-118305249', ['chr6', 118304499, 118305499, 118304999]]
+Have 114 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr6:118304749-118305249/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr6:118304749-118305249/mapped.sam.filter.bam
+['chr11:14478231-14478731', ['chr11', 14477981, 14478981, 14478481]]
+Have 170 read names
+/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read1.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read1.fq.sai
+/programs/bwa-0.5.9/bwa aln -q 15 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read2.fq > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read2.fq.sai
+/programs/bwa-0.5.9/bwa sampe -a 1000 -A /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/locusAlleles/chr11:14478231-14478731/alleles.fa /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read1.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read2.fq.sai /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read1.fq /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/read2.fq> /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/mapped.sam
+samtools view -b -F 256 /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/mapped.sam > /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/mapping/chr11:14478231-14478731/mapped.sam.filter.bam
+*****
+All Mapping Done
+******
+
+Calculating genotype likelihoods
+
+Summary output file name is /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/NA12716.lksummary
+0.999934002145 1.35525271561e-20 1e-200
+chr1:56537438-56537938	NA12716	66	66	0	0.999934002145	1.35525271561e-20	1e-200	0,199,2000
+
+3.97406260192e-131 9.09494701773e-13 7.6026536343e-11
+chr2:21158058-21158558	NA12716	40	3	37	3.97406260192e-131	9.09494701773e-13	7.6026536343e-11	1203,19,0
+
+1.98473505882e-104 2.91038304567e-11 6.18372864802e-16
+chr5:34112915-34113415	NA12716	35	5	30	1.98473505882e-104	2.91038304567e-11	6.18372864802e-16	932,0,47
+
+1.25860918403e-95 9.31322574615e-10 0.000244194060728
+chr6:118304749-118305249	NA12716	30	1	29	1.25860918403e-95	9.31322574615e-10	0.000244194060728	913,54,0
+
+3.80543725509e-68 7.27595761418e-12 1.56151710453e-54
+chr11:14478231-14478731	NA12716	37	17	20	3.80543725509e-68	7.27595761418e-12	1.56151710453e-54	563,0,427
+
+DONE!
+VCF written to /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_tutorial/samples/NA12716/NA12716.vcf
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 124 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 124 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] (25, 50, 75) percentile: (330, 397, 446)
+[infer_isize] low and high boundaries: 150 and 678 for estimating avg and std
+[infer_isize] inferred external isize from 66 pairs: 398.333 +/- 82.191
+[infer_isize] skewness: 0.186; kurtosis: 0.509; ap_prior: 1.00e-05
+[infer_isize] inferred maximum insert size: 754 (4.33 sigma)
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 0 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 124 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 127 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 127 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 19 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.01 sec
+[bwa_sai2sam_pe_core] 127 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 128 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 128 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 17 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 128 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 114 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 114 sequences have been processed.
+[bwa_read_seq] 0.0% bases are trimmed.
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 15 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 114 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 170 sequences have been processed.
+[bwa_aln] 17bp reads: max_diff = 2
+[bwa_aln] 38bp reads: max_diff = 3
+[bwa_aln] 64bp reads: max_diff = 4
+[bwa_aln] 93bp reads: max_diff = 5
+[bwa_aln] 124bp reads: max_diff = 6
+[bwa_aln] 157bp reads: max_diff = 7
+[bwa_aln] 190bp reads: max_diff = 8
+[bwa_aln] 225bp reads: max_diff = 9
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_aln_core] calculate SA coordinate... 0.00 sec
+[bwa_aln_core] write to the disk... 0.00 sec
+[bwa_aln_core] 170 sequences have been processed.
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_read_seq] 0.1% bases are trimmed.
+[bwa_sai2sam_pe_core] convert to sequence coordinate... 
+[infer_isize] fail to infer insert size: too few good pairs
+[bwa_cal_pac_pos_pe] discard insert size estimate as user's request.
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] changing coordinates of 17 alignments.
+[bwa_sai2sam_pe_core] align unmapped mate...
+[bwa_sai2sam_pe_core] time elapses: 0.00 sec
+[bwa_sai2sam_pe_core] refine gapped alignments... 0.00 sec
+[bwa_sai2sam_pe_core] print alignments... 0.00 sec
+[bwa_sai2sam_pe_core] 170 sequences have been processed.
+12:44:04	Genotyping... Done
+12:44:04	Generating outputs...
+Using column name 'NA12348' for ./NA12348/NA12348.vcf.gz:NA12348
+Using column name 'NA12413' for ./NA12413/NA12413.vcf.gz:NA12413
+Using column name 'NA12716' for ./NA12716/NA12716.vcf.gz:NA12716
+12:44:04	Generating outputs... Done
+12:44:04	TypeTE completed!!!

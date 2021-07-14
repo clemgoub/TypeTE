@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ###########################################
-# TypeTE - parameterfile_NoRef.init       #
+# TypeTE - parameterfile_NRef.init        #
 #                                         #
 # configuration file for the pipeline     #
 #                                         #
@@ -13,7 +13,7 @@
 ### MAIN PARAMETERS
 
 # user data
-VCF="/workdir/cg629/bin/TypeTE/tutorial/NRef_tutorial.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
+VCF="/workdir/cg629/Projects/TypeTE_tutorial/NRef_tutorial.recode.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
 BAMPATH="/workdir/cg629/Projects/TypeTE_tutorial/bams" # Path to the bams folder
 BAMFILE="/workdir/cg629/Projects/TypeTE_tutorial/bams/bamlist.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
 
@@ -24,7 +24,7 @@ GENOME="/workdir/cg629/Projects/TypeTE_tutorial/GCA_000001405.15_GRCh38_no_alt_a
 
 # output
 OUTDIR="/workdir/cg629/Projects/TypeTE_tutorial" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
-PROJECT="OUTPUTS_NRef" # Name of the project (name of the folder)
+PROJECT="OUTPUTS_NRef_tutorial" # Name of the project (name of the folder)
 
 # multi-threading
 individual_nb="1" # number of individual per job (try to minimize that number)
