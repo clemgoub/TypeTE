@@ -33,7 +33,6 @@ IFS=$'\n'
 for list in $input
 do
 
-
 pos=$(printf '%s\n' "$list" | awk '{print $1}')
 assembled=$(printf '%s\n' "$list" | awk '{print $7}')
 TSD=$(printf '%s\n' "$list" | awk '{print $NF}' | sed 's/null//g')
@@ -105,7 +104,7 @@ $BEDTOOLS getfasta -fi $OUTDIR/$PROJECT/region''$pos''.fasta -bed $OUTDIR/$PROJE
 
 fi
 
-# ### cleaning
+### cleaning
 # rm left.bed
 # rm right.bed
 # rm *.seq
@@ -119,5 +118,5 @@ rm $OUTDIR/$PROJECT/region* &> /dev/null
 rm $OUTDIR/$PROJECT/blast*.bed &> /dev/null
 
 # return delimiter to previous value
-IFS=$IFSq_BAK
+IFS=$IFS_BAK
 IFS_BAK=
