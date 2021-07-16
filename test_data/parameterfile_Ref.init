@@ -1,7 +1,7 @@
 #! /bin/bash
 
 ###########################################
-# TypeTE - parameterfile_NRef.init        #
+# TypeTE - parameterfile_Ref.init         #
 #                                         #
 # configuration file for the pipeline     #
 #                                         #
@@ -40,9 +40,9 @@ PICARD="/programs/picard-tools-2.9.0" #Path to Picard Tools
 BEDTOOLS="/programs/bedtools-2.27.1/bin/bedtools" #Path to bedtools executable
 SEQTK="/programs/seqtk" #Path to seqtk executable
 BAMUTILS="/programs/bamUtil" #Path to bamUtil
-SPADES="/programs/spades/bin" #Path to spades bin directory (to locate spades.py and dispades.py)
-MINIA="/workdir/cg629/bin/minia-v2.0.7-bin-Linux/bin" #Path to minia bin directory
-CAP3="/programs/CAP3" #Path to CAP3 directory
+SPADES="/programs/spades-3.5.0/bin" #Path to spades bin directory (to locate spades.py and dispades.py)
+MINIA="/workdir/cg629/bin/minia/build/bin" #Path to minia bin directory
+CAP3="/workdir/cg629/bin/CAP3" #Path to CAP3 directory
 BLAST="/programs/ncbi-blast-2.7.1+/bin" #Path to blast bin directory
 BWA="/programs/bwa-0.5.9/bwa" #Path to bwa executable
 BGZIP="bgzip" #Path to bgzip executable
