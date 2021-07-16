@@ -1,0 +1,80 @@
+nohup: ignoring input
+###########################
+# TypeTE - Non-Reference  #
+###########################
+15:58:24	preparing input from MELT vcf...
+15:58:24	DONE.
+Joining individuals and MEI coordinates...
+15:58:24	DONE.
+15:58:24	Splitting individuals for paralellization of read extraction...
+Starting to split based on 1 individuals ....
+DONE..
+15:58:24	Extracting reads...
+16:11:40	Finding Repbase consensus for each MEI...
+16:11:40	generates individual .bed file per locus...
+1:72638770-72639270...
+16:11:40	concatenate individual discordant reads .bed per locus...
+1:72638770-72639270...
+16:11:40	intersect concatenated locus .bed with RepeatMasker track...
+1:72638770-72639270...
+      6 AluYa5
+16:11:40	generates individual .bed file per locus...
+10:69994656-69995156...
+16:11:40	concatenate individual discordant reads .bed per locus...
+10:69994656-69995156...
+16:11:40	intersect concatenated locus .bed with RepeatMasker track...
+10:69994656-69995156...
+      9 AluYb8
+16:11:42	Extracting the TE sequences in fasta format...
+AluYa5
+AluYb8
+16:11:42	Done! Results in 
+16:11:42	Assembling MEI, retreiving orientation and TSDs...
+16:11:43	Generating input table for genotyping...
+sort: cannot read: /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_testdata/genomeloc.strand.prediction.5.1.txt: No such file or directory
+16:11:43	Generating input table for genotyping...Done.
+16:11:43	Genotyping...
+Traceback (most recent call last):
+  File "insertion-genotype/create-alternative-alleles.py", line 33, in <module>
+    inFile = open(options.alleleFile,'r')
+IOError: [Errno 2] No such file or directory: '/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_testdata/OUTPUTS_NRef_testdata.allele'
+Traceback (most recent call last):
+  File "insertion-genotype/process-sample.py", line 90, in <module>
+    myData['siteIntervals'] = brkptgen.get_site_intervals_from_table(options.alleleFile)
+  File "/local/workdir/cg629/bin/TypeTE/insertion-genotype/brkptgen.py", line 81, in get_site_intervals_from_table
+    inFile = open(bpIntervalTable,'r')
+IOError: [Errno 2] No such file or directory: '/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_testdata/OUTPUTS_NRef_testdata.allele'
+Traceback (most recent call last):
+  File "insertion-genotype/process-sample.py", line 90, in <module>
+    myData['siteIntervals'] = brkptgen.get_site_intervals_from_table(options.alleleFile)
+  File "/local/workdir/cg629/bin/TypeTE/insertion-genotype/brkptgen.py", line 81, in get_site_intervals_from_table
+    inFile = open(bpIntervalTable,'r')
+IOError: [Errno 2] No such file or directory: '/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_testdata/OUTPUTS_NRef_testdata.allele'
+Traceback (most recent call last):
+  File "insertion-genotype/process-sample.py", line 90, in <module>
+    myData['siteIntervals'] = brkptgen.get_site_intervals_from_table(options.alleleFile)
+  File "/local/workdir/cg629/bin/TypeTE/insertion-genotype/brkptgen.py", line 81, in get_site_intervals_from_table
+    inFile = open(bpIntervalTable,'r')
+IOError: [Errno 2] No such file or directory: '/workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_testdata/OUTPUTS_NRef_testdata.allele'
+16:11:43	Genotyping... Done
+16:11:43	Generating outputs...
+./run_TypeTE_NRef.sh: line 166: cd: /workdir/cg629/Projects/TypeTE_tutorial/OUTPUTS_NRef_testdata/samples/: No such file or directory
+[bgzip] No such file or directory: insertion-genotype/insertion-genotype.vcf
+[tabix] the compression of 'insertion-genotype/insertion-genotype.vcf.gz' is not BGZF
+[bgzip] No such file or directory: Ressources/Ressources.vcf
+[tabix] the compression of 'Ressources/Ressources.vcf.gz' is not BGZF
+[bgzip] No such file or directory: test_data/test_data.vcf
+[tabix] the compression of 'test_data/test_data.vcf.gz' is not BGZF
+[bgzip] No such file or directory: tutorial/tutorial.vcf
+[tabix] the compression of 'tutorial/tutorial.vcf.gz' is not BGZF
+
+gzip: ./insertion-genotype/insertion-genotype.vcf.gz: unexpected end of file
+Broken VCF header, no column names?
+ at /home/cg629/perl5/lib/perl5/x86_64-linux-thread-multi/Vcf.pm line 172.
+	Vcf::throw(Vcf4_2=HASH(0xef2460), "Broken VCF header, no column names?") called at /home/cg629/perl5/lib/perl5/x86_64-linux-thread-multi/Vcf.pm line 865
+	VcfReader::_read_column_names(Vcf4_2=HASH(0xef2460)) called at /home/cg629/perl5/lib/perl5/x86_64-linux-thread-multi/Vcf.pm line 600
+	VcfReader::parse_header(Vcf4_2=HASH(0xef2460)) called at /programs/bin/vcftools/vcf-merge line 183
+	main::init_cols(HASH(0x13094b0), Vcf4_2=HASH(0x12f00b0)) called at /programs/bin/vcftools/vcf-merge line 279
+	main::merge_vcf_files(HASH(0x13094b0)) called at /programs/bin/vcftools/vcf-merge line 12
+16:11:43	Generating outputs... Done
+16:11:43	TypeTE completed!!!

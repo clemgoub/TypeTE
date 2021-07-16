@@ -13,7 +13,7 @@
 ### MAIN PARAMETERS
 
 # user data
-VCF="/workdir/cg629/Projects/TypeTE_tutorial/NRef_tutorial.recode.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
+VCF="/workdir/cg629/bin/TypeTE/tutorial/NRef_tutorial.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
 BAMPATH="/workdir/cg629/Projects/TypeTE_tutorial/bams" # Path to the bams folder
 BAMFILE="/workdir/cg629/Projects/TypeTE_tutorial/bams/bamlist.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
 
