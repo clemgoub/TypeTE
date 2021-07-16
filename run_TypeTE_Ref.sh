@@ -7,9 +7,19 @@
 # This script genotype the non-reference  #
 # insertions                              #
 # Author: Clement Goubert                 #
-# Date: 08/2018                           #
-# Version: 1.0                            #
+# Date: 07/2021                           #
+# Version: 1.1                            #
 ###########################################
+
+# ***changelog v1.0 --> v1.1***
+# - Output vcf:
+#    - Cleanup output vcfs from irrelevant info fields in header
+#    - Reference alleles are now printed in the traditionnal (REF/ALT) format, with REF = TE present = 0, and ALT = TE absent (deletion) = 1. 
+# - Hard code python2.7 in assembly script to match Spades requirements
+# - Improve Non-Reference allele reconstruction script at TSD
+# - Clean bugs and silence non-threatening error messages
+# - Change parameterfile_NoRef.ini to parameterfile_NRef.ini to match regular script naming
+# - Create tutorial section (upcoming manuscript)
 
 #load the user options, outdir path and dependencies paths
 source ./parameterfile_Ref.init # load the parameterfile as argument
