@@ -195,7 +195,7 @@ nohup ./run_TypeTE_NR.sh &> TypeTE_TESTRUN.log &
 
 5. Expected results
 
-The genotype from the original vcf (<>/TypeTE/test_data/test_data_nonref.vcf) are the following
+The genotypes from the original vcf (<>/TypeTE/test_data/test_data_nonref.vcf) are the following
 
 |         | NA07056 | NA11830 |NA12144|
 |---------|---------|---------|---------|
@@ -204,18 +204,12 @@ The genotype from the original vcf (<>/TypeTE/test_data/test_data_nonref.vcf) ar
 
 
 
-
-The new genotype should be 
+The new genotypes should be 
 
 |         | NA07056 | NA11830 |NA12144|
 |---------|---------|---------|---------|
 | 1_72639020 | 0/1 | **0/1** | 0/1 |
 | 10_69994906| 0/0 | 0/1 |0/1|
-
-```diff
-- The results of this test run are not expected to reflect the true genotypes -
-- since they are generated with only 3 individuals                            -
-```
 
 
 ## Reference-insertions
@@ -237,7 +231,7 @@ nohup ./run_TypeTE_Ref.sh &> TypeTE_TESTRUN_ref.log &
 ```
 4. Expected results
 
-The genotype from the original vcf (<>/TypeTE/test_data/test_data_ref.vcf) are the following
+The genotypes from the original vcf (<>/TypeTE/test_data/test_data_ref.vcf) are the following
 
 |         | NA07056 | NA11830 |NA12144|
 |---------|---------|---------|---------|
@@ -245,8 +239,7 @@ The genotype from the original vcf (<>/TypeTE/test_data/test_data_ref.vcf) are t
 | 6_7717368| 0/1 | 0/1 |0/1|
 
 
-
-The new genotypes should be 
+The new genotypess should be 
 
 |         | NA07056 | NA11830 |NA12144|
 |---------|---------|---------|---------|
