@@ -86,7 +86,11 @@ brkptgen.setup_exclusion(myData)
 samplesBase = myData['alleleBase'] + 'samples'
 if os.path.isdir(samplesBase) is False:
     print 'Making samples base',samplesBase
+<<<<<<< HEAD
     cmd = 'mkdir ' + samplesBase
+=======
+    cmd = 'mkdir -p ' + samplesBase
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print samplesBase,'exists!'
@@ -96,7 +100,11 @@ myData['sampleBase'] = samplesBase + '/' + myData['sampleName']
 
 if os.path.isdir(myData['sampleBase']) is False:
     print 'Making samples base',myData['sampleBase']
+<<<<<<< HEAD
     cmd = 'mkdir ' + myData['sampleBase']
+=======
+    cmd = 'mkdir -p ' + myData['sampleBase']
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print myData['sampleBase'],'exists!'
@@ -141,7 +149,11 @@ print 'read in %i sequences' % len(myData['nameToSeq'])
 myData['mappingDirBase'] = myData['sampleBase'] + 'mapping'
 if os.path.isdir(myData['mappingDirBase']) is False:
     print 'Making samples base',myData['mappingDirBase']
+<<<<<<< HEAD
     cmd = 'mkdir ' + myData['mappingDirBase']
+=======
+    cmd = 'mkdir -p ' + myData['mappingDirBase']
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print myData['mappingDirBase'],'exists!'
@@ -157,7 +169,11 @@ for siteInterval in myData['siteIntervals']:
     siteData['siteID'] =  siteID
     siteData['mappingOutDir'] = myData['mappingDirBase'] + siteID
     if os.path.isdir(siteData['mappingOutDir']) is False:
+<<<<<<< HEAD
         cmd = 'mkdir ' + siteData['mappingOutDir']
+=======
+        cmd = 'mkdir -p ' + siteData['mappingOutDir']
+>>>>>>> TypeREF-dev
         brkptgen.runCMD(cmd)
     siteData['mappingOutDir'] += '/'
     

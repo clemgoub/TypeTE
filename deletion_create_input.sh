@@ -2,7 +2,7 @@
 
 # usage deletion_create_input.sh RM_insertions_TSD_strands
 
-source parameterfile_Ref.init
+source ./parameterfile_Ref.init
 # source ~/CorrectHet/reGenotypeTE_del/reGenotypeTE/parameterfile_Ref.init
 # find the 1000 bp up and downstream of the TE
 
@@ -39,13 +39,13 @@ if [[ $TSD == "noTSDs" ]]
 	# echo "$TE_loc"
 
 	# extract the sequence of them | change the refgenome path by a user input
-	leftsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
-	rightsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$right_TE_del" | sed 's/ /\t/g'))
+	leftsq=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
+	rightsq=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$right_TE_del" | sed 's/ /\t/g'))
 	noTE=$(paste -d "," <(echo "$leftsq") <(echo "$rightsq") | awk 'getline seq {print seq}' | sed $'s/,/\t/g')
-	TE=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
+	TE=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
 
 	# generate the table
-	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
+	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$TE") <(echo "$noTE") 
 
 elif [[ $TSD == *.* ]] # if TSDs have mismatches, will keep the 5' one for the non TE
 
@@ -61,8 +61,8 @@ elif [[ $TSD == *.* ]] # if TSDs have mismatches, will keep the 5' one for the n
 	# echo "$TE_loc"
 
 	# extract the sequence of them | change the refgenome path by a user input
-	leftsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
-	rightsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$right_TE_del" | sed 's/ /\t/g'))
+	leftsq=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
+	rightsq=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$right_TE_del" | sed 's/ /\t/g'))
 	noTE=$(paste -d "," <(echo "$leftsq") <(echo "$rightsq") | awk 'getline seq {print seq}' | sed $'s/,/\t/g')
 	
 	
@@ -82,10 +82,10 @@ elif [[ $TSD == *.* ]] # if TSDs have mismatches, will keep the 5' one for the n
 
 		fi
 
-	TE=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
+	TE=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
 
 	# generate the table
-	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
+	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$TE") <(echo "$noTE")
 
 
 else
@@ -99,16 +99,16 @@ else
  #        echo "$TE_loc"
 
 	# extract the sequence of them | change the refgenome path by a user input
-	leftsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
-	rightsq=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$right_TE_del" | sed 's/ /\t/g'))
+	leftsq=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$left_TE_del" | sed 's/ /\t/g'))
+	rightsq=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$right_TE_del" | sed 's/ /\t/g'))
 	noTE=$(paste -d "," <(echo "$leftsq" | awk 'getline seq {print seq}') <(echo "$TSD") <(echo "$rightsq" | awk 'getline seq {print seq}') | sed $'s/,//g')
-	TE=$($BEDTOOLS/bedtools getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
+	TE=$($BEDTOOLS getfasta -fi $GENOME -bed <(echo "$TE_loc" | sed 's/ /\t/g') | awk 'getline seq {print seq}')
 	#echo "$leftsq"
 	#echo "$rightsq"
 	#echo "$TE"
 	#echo "$noTE"
 	# generate the table
-	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$noTE") <(echo "$TE")
+	paste <(echo "$left-$right" | sed 's/-/\t/g' | awk '{print $1"-"$4}') <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print $1"\t"$2}') <(echo ".") <(echo "$left" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($2-500)}') <(echo "$right" | sed 's/:/\t/g;s/-/\t/g' | awk '{print ($3+500)}') <(echo "$TE") <(echo "$noTE") 
 
 
 fi

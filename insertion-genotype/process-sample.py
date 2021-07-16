@@ -111,7 +111,11 @@ if os.path.isfile(myData['bam']) is False:
 samplesBase = myData['alleleBase'] + 'samples'
 if os.path.isdir(samplesBase) is False:
     print 'Making samples base',samplesBase
+<<<<<<< HEAD
     cmd = 'mkdir ' + samplesBase
+=======
+    cmd = 'mkdir -p ' + samplesBase
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print samplesBase,'exists!'
@@ -121,7 +125,11 @@ myData['sampleBase'] = samplesBase + '/' + myData['sampleName']
 
 if os.path.isdir(myData['sampleBase']) is False:
     print 'Making samples base',myData['sampleBase']
+<<<<<<< HEAD
     cmd = 'mkdir ' + myData['sampleBase']
+=======
+    cmd = 'mkdir -p ' + myData['sampleBase']
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print myData['sampleBase'],'exists!'
@@ -354,7 +362,11 @@ print 'read in %i sequences' % len(myData['nameToSeq'])
 myData['mappingDirBase'] = myData['sampleBase'] + 'mapping'
 if os.path.isdir(myData['mappingDirBase']) is False:
     print 'Making samples base',myData['mappingDirBase']
+<<<<<<< HEAD
     cmd = 'mkdir ' + myData['mappingDirBase']
+=======
+    cmd = 'mkdir -p ' + myData['mappingDirBase']
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print myData['mappingDirBase'],'exists!'
@@ -370,7 +382,11 @@ for siteInterval in myData['siteIntervals']:
     siteData['siteID'] =  siteID
     siteData['mappingOutDir'] = myData['mappingDirBase'] + siteID
     if os.path.isdir(siteData['mappingOutDir']) is False:
+<<<<<<< HEAD
         cmd = 'mkdir ' + siteData['mappingOutDir']
+=======
+        cmd = 'mkdir -p ' + siteData['mappingOutDir']
+>>>>>>> TypeREF-dev
         brkptgen.runCMD(cmd)
     siteData['mappingOutDir'] += '/'
     
@@ -439,15 +455,23 @@ myData['lhSummaryFileName'] =  myData['sampleBase'] + myData['sampleName'] + '.l
 myData['outVCFName'] = myData['sampleBase'] + myData['sampleName'] + '.vcf'
 outVCF = open(myData['outVCFName'],'w')
 outVCF.write('##fileformat=VCFv4.1\n')
+<<<<<<< HEAD
 outVCF.write('##fileDate=20170629\n')
 outVCF.write('##reference=canFam3.1\n')
+=======
+>>>>>>> TypeREF-dev
 outVCF.write('##FORMAT=<ID=AD,Number=.,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">\n')
 outVCF.write('##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read Depth (only filtered reads used for calling)">\n')
 outVCF.write('##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">\n')
 outVCF.write('##FORMAT=<ID=GQ,Number=1,Type=Float,Description="Genotype Quality">\n')
 outVCF.write('##FORMAT=<ID=PL,Number=3,Type=Float,Description="Normalized, Phred-scaled likelihoods for AA,AB,BB genotypes where A=ref and B=alt">\n')
+<<<<<<< HEAD
 
 outVCF.write('##ALT=<ID=INS:ME:HERVK,Description="Insertion of HERVK element">\n')
+=======
+outVCF.write('##REF=<ID=CN:0,Description="Copy Number is 0 for the Alu insertion">\n')
+outVCF.write('##ALT=<ID=INS:ME:ALU,Description="Insertion of Alu element">\n')
+>>>>>>> TypeREF-dev
 outVCF.write('##INFO=<ID=DP,Number=1,Type=Integer,Description="Filtered Depth">\n')
 header = ['#CHROM','POS','ID','REF','ALT','QUAL','FILTER','INFO','FORMAT']
 
@@ -491,7 +515,11 @@ for line in inFile:
     siteID = line[0]
     # put in 'N' for ref... not right, but ok for now?
     # also <MEI> isn't exaclt right
+<<<<<<< HEAD
     nl = [siteIDToPos[siteID][0],siteIDToPos[siteID][1],siteID,'N','<MEI>','.','.']
+=======
+    nl = [siteIDToPos[siteID][0],siteIDToPos[siteID][1],siteID,'<CN:0>','<INS:ME:ALU>','.','.']
+>>>>>>> TypeREF-dev
     totDepth = int(line[2])
     i = 'DP=%i' % totDepth
     i += ';' + alleleSeqs[siteID]

@@ -18,7 +18,7 @@
 
 ### USAGE: ./identify_mei_from_RM.sh loci_bam_folder output_folder #folders must be in full path (no relative) without final "/"
 
-source parameterfile_NoRef.init
+source ./parameterfile_NRef.init
 
 # Pick up the discordant mates from the bam files, generates .bed per individual / locus
 paste <(date | awk '{print $4}') <(echo "generates individual .bed file per locus...")
@@ -64,7 +64,7 @@ for file in $listeofposition
 do
 	echo "$file..."
 	# intersect for each locus the RepeatMasker track and select the best overlap
-	TE=$($BEDTOOLS/bedtools intersect -wao -a <(awk '{print $0"\t"NR}' $file""_concat.bed) -b $RM_TRACK | awk '{print $1"_"$2"_"$3"_"$4"\t"$0}' | sort -k1,1 -k9,9nr | sort -u -k1,1 | sed $'s/repName=//g;s/;/\t/g' | cut -f 9 | sort | uniq -c | sort -k1,1nr | grep -v "\." | head -n 1)
+	TE=$($BEDTOOLS intersect -wao -a <(awk '{print $0"\t"NR}' $file""_concat.bed) -b $RM_TRACK | awk '{print $1"_"$2"_"$3"_"$4"\t"$0}' | sort -k1,1 -k9,9nr | sort -u -k1,1 | sed $'s/repName=//g;s/;/\t/g' | cut -f 9 | sort | uniq -c | sort -k1,1nr | grep -v "\." | head -n 1)
 	echo "$TE"
 	paste <(echo "$file") <(echo $TE) | sed 's/\.\.\///g' >> $2/position_and_TE # print the locus | number of discordant mates that support | TE (one line per locus)
 	#paste <(echo "$file") <(echo $TE) | sed $'s/_concat\.bed//g' | sed 's/\.\.\///g;s/\t/xXx/g;s/ /xXx/g' >> $2/position_and_TE # print the locus | number of discordant mates that support | TE (one line per locus)

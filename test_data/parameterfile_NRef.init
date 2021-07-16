@@ -1,0 +1,49 @@
+#! /bin/bash
+
+###########################################
+# TypeTE - parameterfile_NRef.init        #
+#                                         #
+# configuration file for the pipeline     #
+#                                         #
+# Author: Clement Goubert                 #
+# Date: 03/14/2019                        #
+# Version: 1.0                            #
+###########################################
+
+### MAIN PARAMETERS
+
+# user data
+VCF="/workdir/cg629/bin/TypeTE/test_data/test_data_nonref.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
+BAMPATH="/workdir/cg629/Projects/TypeTE_tutorial/test_data/" # Path to the bams folder
+BAMFILE="/workdir/cg629/bin/TypeTE/test_data/input_table.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
+
+# genome data
+RM_TRACK="/workdir/cg629/bin/TypeTE/Ressources/RepeatMasker_Alu_hg19.bed" # set by default for hg19
+RM_FASTA="/workdir/cg629/bin/TypeTE/Ressources/refinelib" # set by default to be compatible with the Repeat Masker track included in the package
+GENOME="/workdir/cg629/Projects/testTypeTE/hs37d5.fa" # Path the the reference genome sequence
+
+# output
+OUTDIR="/workdir/cg629/Projects/TypeTE_tutorial" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
+PROJECT="OUTPUTS_NRef_testdata" # Name of the project (name of the folder)
+
+# multi-threading
+individual_nb="1" # number of individual per job (try to minimize that number)
+CPU="3" # number of CPU (try to maximize that number) # CPU x individual_nb >= total # of individuals
+
+## non-mendatory parameters
+MAP="NO" #OR NO (experimental)
+
+### DEPENDENCIES PATH
+# /!\ PERL MUST BE IN PATH /!\
+PARALLEL="/programs/parallel/bin/parallel" #Path to the GNU Parallel program
+PICARD="/programs/picard-tools-2.9.0" #Path to Picard Tools
+BEDTOOLS="/programs/bedtools-2.27.1/bin/bedtools" #Path to bedtools executable
+SEQTK="/programs/seqtk" #Path to seqtk executable
+BAMUTILS="/programs/bamUtil" #Path to bamUtil
+SPADES="/programs/spades-3.5.0/bin" #Path to spades bin directory (to locate spades.py and dispades.py)
+MINIA="/workdir/cg629/bin/minia/build/bin" #Path to minia bin directory
+CAP3="/workdir/cg629/bin/CAP3" #Path to CAP3 directory
+BLAST="/programs/ncbi-blast-2.7.1+/bin" #Path to blast bin directory
+BWA="/programs/bwa-0.5.9/bwa" #Path to bwa executable
+BGZIP="bgzip" #Path to bgzip executable
+TABIX="tabix" #Path to tabix executable

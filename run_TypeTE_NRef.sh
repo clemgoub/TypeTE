@@ -1,23 +1,33 @@
 #! /bin/bash
 
 ###########################################
-# TypeTE - run_TypeTE_NoRef               #
+# TypeTE - run_TypeTE_NRef                #
 #                                         #
 # This is the main script of the pipeline #
 # to genotype Non-Reference insertions    #
 #                                         #
 # Author: Clement Goubert                 #
-# Date: 03/14/2019                        #
-# Version: 1.0                            #
+# Date: 07/2021                           #
+# Version: 1.1                            #
 ###########################################
 
+# ***changelog v1.0 --> v1.1***
+# - Output vcf:
+#    - Cleanup output vcfs from irrelevant info fields in header
+#    - Reference alleles are now printed in the traditionnal (REF/ALT) format, with REF = TE present = 0, and ALT = TE absent (deletion) = 1. 
+# - Hard code python2.7 in assembly script to match Spades requirements
+# - Improve Non-Reference allele reconstruction script at TSD
+# - Clean bugs and silence non-threatening error messages
+# - Change parameterfile_NoRef.ini to parameterfile_NRef.ini to match regular script naming
+# - Create tutorial section (upcoming manuscript)
+
 #load the user options, outdir path and dependencies paths
-source parameterfile_NoRef.init
+source ./parameterfile_NRef.init
 
 #START
-echo "#####################"
-echo "#      TypeTE       #"
-echo "#####################"
+echo "###########################"
+echo "# TypeTE - Non-Reference  #"
+echo "###########################"
 
 ################################################
 # 0: Setup and create input from MELT files ####
@@ -69,7 +79,7 @@ paste <(date | awk '{print $4}') <(echo "Extracting reads...")
 
 cd  $OUTDIR/$PROJECT/splitbyindividuals #cd in the splitfile directory
 
-cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" 
+cat ../List_of_split_files.txt | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Process_bams "perl $whereamI/03_processbam_forreadextract_v15.0.pl -g $GENOME -t $BAMFILE -f {} -p $OUTDIR/$PROJECT -bl $BAMPATH -pt $PICARD -sq $SEQTK -bu $BAMUTILS -bt $BEDTOOLS" &> $OUTDIR/$PROJECT/extractreads.log
 
 cd $whereamI #comes back to the working dir
 
@@ -103,7 +113,7 @@ ls $OUTDIR/$PROJECT/splitbylocus/locus_* > $OUTDIR/$PROJECT/splitbylocus/List_of
 # Run in parallel find TE from Repbase
 
 mkdir -p  $OUTDIR/$PROJECT/Repbase_intersect # creates the output folder if inexistent
-rm -r $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE # remove the output table for safety if one already exist
+rm -r $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE &>/dev/null # remove the output table for safety if one already exist
 ls $OUTDIR/$PROJECT/splitbylocus/*.part | $PARALLEL -j $CPU --results $OUTDIR/$PROJECT/Repbase_intersect "./identify_mei_from_RM.sh {} $OUTDIR/$PROJECT/Repbase_intersect"
 
 # Extract the TE sequence
@@ -121,7 +131,7 @@ do
 done
 
 cat $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/*.fasta > $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences/RM_consensus.fa
-rm $OUTDIR/$PROJECT/Repbase_intersect/TE_headers
+rm $OUTDIR/$PROJECT/Repbase_intersect/TE_headers &>/dev/null
 
 paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 
@@ -131,8 +141,8 @@ paste <(date | awk '{print $4}') <(echo "Done! Results in $2")
 
 paste <(date | awk '{print $4}') <(echo "Assembling MEI, retreiving orientation and TSDs...")
 
-rm -r $OUTDIR/$PROJECT/Assembled_TEreads
-perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU
+rm -r $OUTDIR/$PROJECT/Assembled_TEreads &>/dev/null
+perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJECT/orientTE -g $OUTDIR/$PROJECT/ExtractGenomicsequences -t $OUTDIR/$PROJECT/Repbase_intersect/TE_sequences -l $OUTDIR/$PROJECT/Repbase_intersect/position_and_TE -sp $SPADES -mn $MINIA -cp $CAP3 -bp $BLAST -cu $CPU &> $OUTDIR/$PROJECT/assembly.log
 
 #######################################
 # 6: Generate input for genotyping ####
@@ -140,9 +150,9 @@ perl 04_orientTE_extractTE_v5.0_pipeline.pl -p $OUTDIR/$PROJECT -d $OUTDIR/$PROJ
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...")
 
-rm $OUTDIR/$PROJECT/$PROJECT.allele
+rm $OUTDIR/$PROJECT/$PROJECT.allele &>/dev/null
 FullLength="$OUTDIR/$PROJECT/Assembled_TEsequences.*.txt.full_len.fasta"
-./de_novo_create_input_v2.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.5.1.txt $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
+./de_novo_create_input_v3.sh $OUTDIR/$PROJECT/$PROJECT.input $OUTDIR/$PROJECT/genomeloc.strand.prediction.5.1.txt $OUTDIR/$PROJECT/Repbase_intersect $FullLength $OUTDIR/$PROJECT/$PROJECT.allele
 
 paste <(date | awk '{print $4}') <(echo "Generating input table for genotyping...Done.")
 

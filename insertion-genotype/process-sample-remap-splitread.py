@@ -86,7 +86,11 @@ if os.path.isdir(myData['oldSampleGenDir']) is False:
 samplesBase = myData['newGenBaseDir'] + '/' + myData['sampleName']
 if os.path.isdir(samplesBase) is False:
     print 'Making samples base',samplesBase
+<<<<<<< HEAD
     cmd = 'mkdir ' + samplesBase
+=======
+    cmd = 'mkdir -p ' + samplesBase
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print samplesBase,'exists!'
@@ -95,7 +99,11 @@ myData['samplesBase'] = samplesBase + '/'
 myData['mappingDirBase'] = myData['samplesBase'] + 'mapping'
 if os.path.isdir(myData['mappingDirBase']) is False:
     print 'Making samples base',myData['mappingDirBase']
+<<<<<<< HEAD
     cmd = 'mkdir ' + myData['mappingDirBase']
+=======
+    cmd = 'mkdir -p ' + myData['mappingDirBase']
+>>>>>>> TypeREF-dev
     brkptgen.runCMD(cmd)
 else:
     print myData['mappingDirBase'],'exists!'
@@ -171,7 +179,11 @@ for interval_i in range(len(myData['brkpntIntervals'])):
     siteData['siteInterval'] = siteInterval
     siteData['mappingOutDir'] = myData['mappingDirBase'] + siteID
     if os.path.isdir(siteData['mappingOutDir']) is False:
+<<<<<<< HEAD
         cmd = 'mkdir ' + siteData['mappingOutDir']
+=======
+        cmd = 'mkdir -p ' + siteData['mappingOutDir']
+>>>>>>> TypeREF-dev
         brkptgen.runCMD(cmd)
     siteData['mappingOutDir'] += '/'
             

@@ -7,16 +7,26 @@
 # This script genotype the non-reference  #
 # insertions                              #
 # Author: Clement Goubert                 #
-# Date: 08/2018                           #
-# Version: 1.0                            #
+# Date: 07/2021                           #
+# Version: 1.1                            #
 ###########################################
 
+# ***changelog v1.0 --> v1.1***
+# - Output vcf:
+#    - Cleanup output vcfs from irrelevant info fields in header
+#    - Reference alleles are now printed in the traditionnal (REF/ALT) format, with REF = TE present = 0, and ALT = TE absent (deletion) = 1. 
+# - Hard code python2.7 in assembly script to match Spades requirements
+# - Improve Non-Reference allele reconstruction script at TSD
+# - Clean bugs and silence non-threatening error messages
+# - Change parameterfile_NoRef.ini to parameterfile_NRef.ini to match regular script naming
+# - Create tutorial section (upcoming manuscript)
+
 #load the user options, outdir path and dependencies paths
-source parameterfile_Ref.init # load the parameterfile as argument
+source ./parameterfile_Ref.init # load the parameterfile as argument
 
 #START
 echo "###########################"
-echo "#      reGenotypeTE       #"
+echo "#   TypeTE - Reference    #"
 echo "###########################"
 
 ################################################
@@ -35,8 +45,8 @@ whereamI=$(pwd)
  fi
  }
 
- mkdir -p $OUTDIR/$PROJECT
- rm -r $OUTDIR/$PROJECT/* #cleanup previous failed run
+ mkdir -p $OUTDIR/$PROJECT 
+ rm -r $OUTDIR/$PROJECT/* &>/dev/null #cleanup previous failed run
 
 #Creates the <project>.input in $OUTDIR/$PROJECT
 
@@ -94,14 +104,14 @@ paste <(sort -k1,1 $OUTDIR/$PROJECT/output_TSD_Intervals.out/TEcordinates_with_b
 paste <(date | awk '{print $4}') <(echo "Genotyping...")
 
 # remove older files in case of re-run
-rm -r $OUTDIR/$PROJECT/locusAlleles
-rm -r $OUTDIR/$PROJECT/samples
+rm -r $OUTDIR/$PROJECT/locusAlleles &>/dev/null
+rm -r $OUTDIR/$PROJECT/samples &>/dev/null
 
 ### create alternatives alleles
 python2.7 insertion-genotype/create-alternative-alleles.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --bwa $BWA
 
 ### genotype per individual
-cat $BAMFILE | $PARALLEL -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python2.7 insertion-genotype/process-sample.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
+cat $BAMFILE | $PARALLEL -j $CPU --colsep '\t' --results $OUTDIR/$PROJECT/genotyping_logs "python2.7 insertion-genotype/process-sample-del.py --allelefile $OUTDIR/$PROJECT/$PROJECT.allele --allelebase $OUTDIR/$PROJECT --samplename {1} --bwa $BWA --bam $BAMPATH/{2}"
 
 wait
 
