@@ -14,18 +14,13 @@
 
 # user data
 VCF="/workdir/cg629/bin/TypeTE/test_data/test_data_nonref.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
-BAMPATH="/workdir/cg629/Projects/TypeTE_tutorial/test_data" # Path to the bams folder
-BAMFILE="/workdir/cg629/bin/TypeTE/test_data/test_data_bams.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
-
-# user data
-VCF="/workdir/cg629/Projects/TypeTE_tutorial/NRef_tutorial.recode.vcf" #Path to MELT vcf (.vcf or .vcf.gz) must contain INFO field with TSD and MEI type
-BAMPATH="/workdir/cg629/Projects/TypeTE_tutorial/bams" # Path to the bams folder
-BAMFILE="/workdir/cg629/Projects/TypeTE_tutorial/bams/bamlist.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
+BAMPATH="/workdir/cg629/Projects/TypeTE_tutorial/test_data/" # Path to the bams folder
+BAMFILE="/workdir/cg629/bin/TypeTE/test_data/input_table.txt" # <indiv_name> <bam_name> (2 fields tab separated table)
 
 # genome data
-RM_TRACK="/workdir/cg629/bin/TypeTE/Ressources/RepeatMasker_Alu_hg38.bed" # set by default for hg19
+RM_TRACK="/workdir/cg629/bin/TypeTE/Ressources/RepeatMasker_Alu_hg19.bed" # set by default for hg19
 RM_FASTA="/workdir/cg629/bin/TypeTE/Ressources/refinelib" # set by default to be compatible with the Repeat Masker track included in the package
-GENOME="/workdir/cg629/Projects/TypeTE_tutorial/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna" # Path the the reference genome sequence
+GENOME="/workdir/cg629/Projects/testTypeTE/hs37d5.fa" # Path the the reference genome sequence
 
 # output
 OUTDIR="/workdir/cg629/Projects/TypeTE_tutorial" # Path to place the output directory (will be named after PROJECT); OUTDIR must exist
@@ -45,9 +40,9 @@ PICARD="/programs/picard-tools-2.9.0" #Path to Picard Tools
 BEDTOOLS="/programs/bedtools-2.27.1/bin/bedtools" #Path to bedtools executable
 SEQTK="/programs/seqtk" #Path to seqtk executable
 BAMUTILS="/programs/bamUtil" #Path to bamUtil
-SPADES="/programs/spades/bin" #Path to spades bin directory (to locate spades.py and dispades.py)
-MINIA="/workdir/cg629/bin/minia-v2.0.7-bin-Linux/bin" #Path to minia bin directory
-CAP3="/programs/CAP3" #Path to CAP3 directory
+SPADES="/programs/spades-3.5.0/bin" #Path to spades bin directory (to locate spades.py and dispades.py)
+MINIA="/workdir/cg629/bin/minia/build/bin" #Path to minia bin directory
+CAP3="/workdir/cg629/bin/CAP3" #Path to CAP3 directory
 BLAST="/programs/ncbi-blast-2.7.1+/bin" #Path to blast bin directory
 BWA="/programs/bwa-0.5.9/bwa" #Path to bwa executable
 BGZIP="bgzip" #Path to bgzip executable
