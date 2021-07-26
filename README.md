@@ -214,12 +214,12 @@ The genotypes from the original vcf (<>/TypeTE/test_data/test_data_nonref.vcf) a
 
 
 The new genotypes should be 
-
-|         | NA07056 | NA11830 |NA12144|
-|---------|---------|---------|---------|
-| 1_72639020 | 0/1 | **0/1** | 0/1 |
-| 10_69994906| 0/0 | 0/1 |0/1|
-
+<!---
+%|         | NA07056 | NA11830 |NA12144|
+%|---------|---------|---------|---------|
+%| 1_72639020 | 0/1 | **0/1** | 0/1 |
+%| 10_69994906| 0/0 | 0/1 |0/1|
+-->
 
 ## Reference-insertions
 
@@ -249,9 +249,10 @@ The genotypes from the original vcf (<>/TypeTE/test_data/test_data_ref.vcf) are 
 
 
 The new genotypess should be 
-
+<!---
 |         | NA07056 | NA11830 |NA12144|
 |---------|---------|---------|---------|
 | 5_88043130 | 0/1 | 0/1 | **1/1** |
 | 6_7717368| 1/1 | 1/1 |0/0|
 
+-->
